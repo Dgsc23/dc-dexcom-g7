@@ -690,47 +690,55 @@ footer p{margin-bottom:.7rem}
 [hidden]{display:none!important}
 
 /* ============ PRINT: the fridge card ============ */
-/* One page, black on white, only the things worth having when the phone is
-   not in your hand. Everything interactive is dropped. */
+/* Hiding the guide piece by piece produced nine pages. This prints one
+   purpose-built card instead and suppresses everything else outright. */
+#printCard{display:none}
 @media print{
-  @page{margin:14mm}
-  :root{--scale:1}
-  .bar,.dock,.simple,.runner,.big-menu,.back-btn,#askSlot,
-  .say,.say-row,details.src,.filter-wrap,.results,.states,
-  .mode-link,.back-bar,.run-b,.runs,.ask-wrap,.chatrow,.quickq,
-  #s-screen svg,.sec-kicker,.chap-body,.gloss,.arrows,
-  #s-arrows,#s-family,#s-gloss,#ask,#track,#mine,footer .mast-note{
-    display:none!important;
-  }
-  #full{display:block!important}
+  @page{margin:12mm;size:portrait}
+  body>*{display:none!important}
   body{
-    background:#fff;color:#000;font-size:10.5pt;line-height:1.4;
-    padding:0;margin:0;
+    display:block!important;background:#fff!important;color:#000!important;
+    padding:0;margin:0;font-family:var(--sans);
   }
-  .wrap{max-width:none;padding:0}
-  section{padding:0 0 6mm;border-top:none}
-  h1{font-size:20pt;margin-bottom:2mm}
-  h2{font-size:13pt;margin:0 0 2mm;border-bottom:1pt solid #000;padding-bottom:1mm}
-  h3,.card-t{font-size:11pt;margin:0 0 1mm}
-  .mast{padding:0 0 5mm}
-  .standfirst{font-size:11pt;margin-bottom:3mm}
-  .card{border:none;padding:0 0 3mm;background:none;break-inside:avoid}
-  .dot{display:none}
-  .nums{border:1pt solid #000}
-  .num-row{
-    grid-template-columns:5.5rem 1fr;padding:1.2mm 2mm;
-    border-bottom:.4pt solid #999;break-inside:avoid;
+  #printCard{
+    display:block!important;font-size:9.2pt;line-height:1.3;
   }
-  .num-v{font-size:10pt;color:#000!important}
-  .num-d span{font-size:9pt;color:#333}
-  .call{border:1.5pt solid #000;padding:3mm;break-inside:avoid}
-  .tel{font-size:16pt;color:#000}
-  .inside{background:none;border:.5pt solid #666;padding:2mm}
-  .lede{font-weight:600}
-  a{color:#000;text-decoration:none}
-  .print-only{display:block!important}
+  #printCard h1{
+    font-family:var(--serif);font-size:16pt;margin:0 0 .8mm;color:#000;
+  }
+  #printCard .pc-sub{font-size:8.4pt;color:#333;margin:0 0 3mm}
+  #printCard h2{
+    font-size:9.4pt;margin:0 0 1.2mm;padding-bottom:.6mm;
+    border-bottom:1pt solid #000;font-family:var(--sans);
+    text-transform:uppercase;letter-spacing:.08em;
+  }
+  #printCard section{margin:0 0 3.2mm;break-inside:avoid;padding:0;border:none}
+  #printCard .pc-rule{
+    border:1pt solid #000;padding:1.8mm 2.4mm;margin-bottom:1.4mm;break-inside:avoid;
+  }
+  #printCard .pc-rule b{display:block;font-size:10pt;margin-bottom:.5mm}
+  #printCard .pc-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:0 5mm;
+  }
+  #printCard .pc-row{
+    display:grid;grid-template-columns:25mm 1fr;gap:2mm;
+    padding:.65mm 0;border-bottom:.3pt solid #bbb;break-inside:avoid;
+  }
+  #printCard .pc-row b{font-family:var(--mono);font-size:8.8pt}
+  #printCard .pc-row span{font-size:8.4pt}
+  #printCard ol{margin:0;padding-left:5mm}
+  #printCard li{margin-bottom:.4mm}
+  #printCard .pc-tel{
+    display:flex;justify-content:space-between;gap:4mm;
+    padding:.9mm 0;border-bottom:.3pt solid #bbb;
+  }
+  #printCard .pc-tel b{font-family:var(--mono);font-size:10pt}
+  #printCard .pc-foot{
+    margin-top:2.5mm;padding-top:1.4mm;border-top:.5pt solid #666;
+    font-size:7.6pt;color:#444;
+  }
+  #printCard .pc-treat{border-width:.6pt}
 }
-.print-only{display:none}
 
 /* ============ PHONE ============ */
 @media (max-width:33rem){
@@ -1226,6 +1234,70 @@ input,select,textarea{font-size:max(16px,1rem)}
   </div>
 
 </div>
+</div>
+
+<!-- ==================== PRINT: the fridge card ==================== -->
+<div id="printCard">
+  <h1>Dexcom G7: the short version</h1>
+  <p class="pc-sub">Everything below is from Dexcom's own user guide. Not medical advice. Doses and alarm levels belong to your doctor.</p>
+
+  <section>
+    <h2>The two rules</h2>
+    <div class="pc-rule">
+      <b>No number, or no arrow, means no decision.</b>
+      If either one is missing from the screen, do not use it to decide anything. Get the finger stick meter out. That includes warmup and any system message.
+    </div>
+    <div class="pc-rule">
+      <b>How you feel beats what it says.</b>
+      If you feel low but the screen says you are fine, believe your body. Wash your hands with soap and water, do a finger stick, and treat off the meter. When in doubt, get your meter out.
+    </div>
+  </section>
+
+  <section>
+    <h2>If you do not feel right</h2>
+    <ol>
+      <li>Sit down.</li>
+      <li>Wash your hands with soap and water, not sanitiser.</li>
+      <li>Do a finger stick from a fingertip.</li>
+      <li>If the meter matches how you feel, treat off the meter the way your doctor told you.</li>
+      <li>If it is not turning around, do not wait it out alone. Get help.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The numbers</h2>
+    <div class="pc-grid">
+      <div>
+        <div class="pc-row"><b id="pcLow">55</b><span>Urgent Low. Fixed, cannot be switched off, sounds even on silent.</span></div>
+        <div class="pc-row"><b>20 min</b><span>Urgent Low Soon: falling fast enough to hit 55 within 20 minutes.</span></div>
+        <div class="pc-row"><b id="pcLowSet">70</b><span>Your Low alarm. The red line.</span></div>
+        <div class="pc-row"><b>70&ndash;180</b><span>Target range, the shaded band.</span></div>
+        <div class="pc-row"><b id="pcHighSet">250</b><span>Your High alarm. The yellow line.</span></div>
+      </div>
+      <div>
+        <div class="pc-row"><b>5 min</b><span>New reading. Also how often an alarm repeats until you press OK.</span></div>
+        <div class="pc-row"><b>33 feet</b><span>How far the phone or receiver can be from the sensor.</span></div>
+        <div class="pc-row"><b>8 feet</b><span>Sensor is waterproof this deep. The receiver is not waterproof.</span></div>
+        <div class="pc-row"><b id="pcWear">10 days</b><span>Then 12 hours of grace. Nothing is wrong during grace.</span></div>
+        <div class="pc-row"><b>1 gram</b><span>Tylenol ceiling every 6 hours. More makes readings read high.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>System messages: what to do</h2>
+    <div class="pc-row"><b>Signal Loss</b><span>Get within 33 feet, same side of your body. Wait up to 30 minutes. Use the meter meanwhile.</span></div>
+    <div class="pc-row"><b>Brief Sensor Issue</b><span>Do NOT remove the sensor. It usually clears within 3 hours. Use the meter.</span></div>
+    <div class="pc-row"><b>Sensor Failed</b><span>That one is finished. Peel it off and put a new one on a different spot.</span></div>
+  </section>
+
+  <section>
+    <h2>Who to call</h2>
+    <div id="pcTels">
+      <div class="pc-tel"><span>Dexcom technical support, 24 hours</span><b>1-888-738-3646</b></div>
+    </div>
+    <p class="pc-foot">Sensors go on the back of the upper arm only, a different spot each time. Never wear it into an MRI. A CT scan is fine if the sensor is outside the scanned area and covered with a lead apron.</p>
+  </section>
 </div>
 
 <!-- ==================== DOCK ==================== -->
@@ -2310,15 +2382,7 @@ bigMenu.addEventListener("click", function(e){
   if (!b) return;
   var m = MENU[+b.dataset.menu];
   if (m.run){ openRun(runIdx(m.run), b); return; }
-  if (m.act === "print"){
-    // The print sheet is styled off the full guide, so it has to be the
-    // thing on screen when the dialog opens.
-    var was = elSimple.hidden ? "full" : "simple";
-    setMode("full", true);
-    window.print();
-    if (was === "simple") setMode("simple", true);
-    return;
-  }
+  if (m.act === "print"){ paintPrintCard(); window.print(); return; }
   if (m.act) showPanel(m.act);
 });
 
@@ -2452,6 +2516,42 @@ window.__manifest = function(){
     seen[x.id] = 1; return true;
   });
 };
+
+/* ============ THE PRINTED CARD ============ */
+/* Filled in from his own saved settings, so the paper on the fridge shows the
+   levels he is actually on rather than the factory defaults. */
+function paintPrintCard(){
+  function mine(id){ return (localStorage.getItem("g7mine_" + id) || "").trim(); }
+  var low = mine("mLow"), high = mine("mHigh");
+  document.getElementById("pcLowSet").textContent  = low  || "70";
+  document.getElementById("pcHighSet").textContent = high || "250";
+  document.getElementById("pcWear").textContent =
+    (localStorage.getItem("g7ver") === "15") ? "15 days" : "10 days";
+
+  var rows = [["Dexcom technical support, 24 hours", "1-888-738-3646"]];
+  var doc = mine("mDocTel");
+  if (doc) rows.push([mine("mDocName") || "My doctor", doc]);
+  var kin = mine("mKinTel");
+  if (kin) rows.push([mine("mKinName") || "Call first", kin]);
+  var ph = mine("mPharm");
+  if (ph) rows.push(["Pharmacy", ph]);
+  document.getElementById("pcTels").innerHTML = rows.map(function(r){
+    return '<div class="pc-tel"><span>' + esc(r[0]) + "</span><b>" + esc(r[1]) + "</b></div>";
+  }).join("");
+
+  var treat = mine("mTreat");
+  var card = document.getElementById("printCard");
+  var old = card.querySelector(".pc-treat");
+  if (old) old.remove();
+  if (treat){
+    var p = document.createElement("div");
+    p.className = "pc-rule pc-treat";
+    p.innerHTML = "<b>What I take for a low</b>" + esc(treat);
+    card.querySelector("section").appendChild(p);
+  }
+}
+// Browser print (Ctrl+P) must produce the same card as the button.
+window.addEventListener("beforeprint", paintPrintCard);
 
 /* ============ SHARE THE FAMILY PAGE ============ */
 (function shareFam(){
