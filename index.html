@@ -622,6 +622,13 @@ body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
 }
 .dial:hover{filter:brightness(1.08)}
 .dial small{font-weight:400;opacity:.85;font-size:calc(.85rem * var(--scale))}
+.famlink{
+  display:inline-block;background:var(--accent);color:var(--on-accent);
+  border:1px solid var(--accent);border-radius:4px;padding:.55rem 1.1rem;
+  text-decoration:none;font-weight:600;margin-right:.5rem;
+}
+.famlink:hover{filter:brightness(1.08)}
+.step-link{margin:1.2rem 0 0}
 .track-out{margin-top:.4rem}
 .track-line{
   display:flex;justify-content:space-between;gap:1rem;align-items:baseline;
@@ -906,7 +913,7 @@ input,select,textarea{font-size:max(16px,1rem)}
         <dt>Lines</dt><dd>The yellow dashed line is where your High alarm goes off. The red dashed line is where your Low alarm goes off. You and your doctor pick both.</dd>
       </dl>
 
-      <div class="say-row"><button class="say" data-say="#screenSay" data-clip="screen" data-voice="ava">Read this out loud</button></div>
+      <div class="say-row"><button class="say" data-say="#screenSay" data-voice="ava">Read this out loud</button></div>
       <p class="sr" id="screenSay">The screen shows three things. The number is where your sugar is right now. A fresh number arrives every five minutes. The arrow shows which way it is heading and how fast over the next thirty minutes. The colour tells you at a glance: white or grey means you are in your range, yellow means high, red means low. The pale stripe across the middle of the graph is seventy to one hundred eighty, the recommended target range. The yellow dashed line is where your high alarm goes off. The red dashed line is where your low alarm goes off.</p>
 
       <details class="src">
@@ -1060,7 +1067,7 @@ input,select,textarea{font-size:max(16px,1rem)}
         <button class="state-b" data-ver="10" aria-pressed="true">Dexcom G7</button>
         <button class="state-b" data-ver="15" aria-pressed="false">Dexcom G7 15 Day</button>
       </div>
-      <div class="say-row"><button class="say" data-say="#verSay" data-clip="ver" data-voice="ava">Read this out loud</button></div>
+      <div class="say-row"><button class="say" data-say="#verSay" data-voice="ava">Read this out loud</button></div>
       <p class="sr" id="verSay">There are two versions of the sensor. Check the box. If it says Dexcom G7 fifteen day, the sensor lasts fifteen days and warms up in sixty minutes. If it just says Dexcom G7, the sensor lasts ten days and warms up in about thirty minutes. Everything else about the two is the same.</p>
       <details class="src">
         <summary>The manual's exact words</summary>
@@ -1123,6 +1130,14 @@ input,select,textarea{font-size:max(16px,1rem)}
     </div>
 
     <div class="stack">
+      <div class="card">
+        <h3 class="card-t"><span class="dot is-ok"></span>There is a page written for them</h3>
+        <p>Rather than explaining all this yourself, send whoever is going to follow you this link. It walks them through installing the app, tells them what each alert means on their end, and is blunt about when to call you and when to call for help.</p>
+        <p><a class="famlink" href="family.html">Open the family page</a>
+           <button class="btn" id="copyFam">Copy the link to send</button></p>
+        <p class="saved-note" id="copyNote" hidden></p>
+      </div>
+
       <div class="card">
         <h3 class="card-t"><span class="dot is-ok"></span>How it works, in one paragraph</h3>
         <p>You turn on <strong>Share</strong> in your Dexcom G7 app and invite them by email. They install a separate free app called <strong>Dexcom Follow</strong> on their own phone. From then on your number lands on their phone every 5 minutes. They can set their own alarms for it, so their phone can wake them if you go low at three in the morning.</p>
@@ -1754,7 +1769,8 @@ var RUNS = [
     { h:"This is done on your phone, once.", p:["It needs the phone app. The receiver on its own cannot share.","Open the app and go to Connections, then Share. Turn Share on."] },
     { h:"Invite them by email.", p:["Tap Invite Follower and put in their name and email address.","Then choose what they get to see: just the number and arrow, or the trend graph as well. You pick, and you can change it later."] },
     { h:"They install Dexcom Follow on their own phone.", p:["They open the invitation email on the phone itself and tap the link. Follow is a separate free app, and they do not need the main Dexcom app at all.","Invitations expire after 7 days, so tell them to do it that evening."] },
-    { h:"They set their own alarms.", p:["In Follow, the gear icon next to your name sets a Low, a High, and a No Data alert, each with a delay so a brief dip does not wake them.","Urgent Low is fixed at 55 for followers too."], flagWarn:"Nobody should treat off the Follow app. What they see is always older than what you see. If it looks bad, they should ring you and have you check your own screen." }
+    { h:"They set their own alarms.", p:["In Follow, the gear icon next to your name sets a Low, a High, and a No Data alert, each with a delay so a brief dip does not wake them.","Urgent Low is fixed at 55 for followers too."], flagWarn:"Nobody should treat off the Follow app. What they see is always older than what you see. If it looks bad, they should ring you and have you check your own screen." },
+    { h:"Send them their own page.", p:["You do not have to explain any of this yourself. There is a short page written for whoever follows you.","It covers installing the app, what each alert means on their phone, and when to call you versus when to call for help."], link:{ href:"family.html", label:"Open the family page" } }
   ]}
 ];
 
@@ -1786,6 +1802,7 @@ function paintStep(){
       return '<button class="choice" data-choice="'+i+'">'+c+"</button>";
     }).join("") + "</div><div id=\"verdict\"></div>";
   }
+  if (st.link) html += '<p class="step-link"><a class="famlink" href="'+st.link.href+'">'+st.link.label+"</a></p>";
   if (st.flag)     html += '<div class="step-flag">'+st.flag+"</div>";
   if (st.flagWarn) html += '<div class="step-flag warn">'+st.flagWarn+"</div>";
   elBody.innerHTML = html;
@@ -1849,12 +1866,8 @@ btnBack.onclick  = function(){ if (idx > 0){ idx--; paintStep(); } };
 btnDone.onclick  = closeRun;
 document.getElementById("runClose").onclick = closeRun;
 btnSay.onclick = function(){
-  var st = cur.steps[idx];
-  var txt = st.h + " " + st.p.join(" ") + " " + (st.flag||"") + " " + (st.flagWarn||"");
-  if (st.choices) txt += " Your choices are: " + st.choices.map(function(c, ci){
-    return (ci + 1) + ". " + c + ".";
-  }).join(" ");
-  speak(btnSay, txt.replace(/<[^>]+>/g," ").replace(/\s+/g," "), "ava", "run-" + cur.id + "-" + idx);
+  var txt = runStepText(cur.steps[idx]);
+  speak(btnSay, txt, "ava", clipId("run", txt));
 };
 document.addEventListener("keydown", function(e){
   if (runner.hidden) return;
@@ -2046,10 +2059,10 @@ function ask(text, cannedIdx){
   if (!text || busy) return;
   chatinp.value = "";
   addMsg("user", esc(text), false,
-         typeof cannedIdx === "number" ? "qq-" + cannedIdx : null);
+         typeof cannedIdx === "number" ? clipId("qq", QUICK[cannedIdx].q) : null);
 
   if (typeof cannedIdx === "number"){
-    addMsg("bot", QUICK[cannedIdx].a, true, "qa-" + cannedIdx);
+    addMsg("bot", QUICK[cannedIdx].a, true, clipId("qa", quickAnswerText(QUICK[cannedIdx])));
     CHAT.push({ role:"user", content:text });
     CHAT.push({ role:"assistant", content:QUICK[cannedIdx].a.replace(/<[^>]+>/g," ") });
     return;
@@ -2321,6 +2334,34 @@ document.getElementById("dock").addEventListener("click", function(e){
   showPanel(what);
 });
 
+/* ============ CLIP IDENTITY ============ */
+/* A clip's name is a hash of the words it says. Position-based names looked
+   fine until a card was inserted, at which point every later name silently
+   pointed at someone else's recording. Deriving the name from the text makes
+   that impossible: edit the words and you get a new name, so a stale
+   recording can never be played against changed text. */
+function hash32(str){
+  var h = 2166136261;                       // FNV-1a
+  for (var i = 0; i < str.length; i++){
+    h ^= str.charCodeAt(i);
+    h = (h + (h<<1) + (h<<4) + (h<<7) + (h<<8) + (h<<24)) >>> 0;
+  }
+  return ("0000000" + h.toString(16)).slice(-8);
+}
+function norm(t){ return String(t).replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim(); }
+function clipId(prefix, text){ return prefix + "-" + hash32(norm(text)); }
+
+/* Single source of truth for what each thing says, so the recorder and the
+   page can never disagree about the text or therefore about the name. */
+function runStepText(st){
+  var say = [st.h].concat(st.p, st.flag || [], st.flagWarn || []);
+  if (st.choices) say = say.concat("Your choices are:", st.choices.map(function(c, ci){
+    return (ci + 1) + ". " + c + ".";
+  }));
+  return norm(say.join(" "));
+}
+function quickAnswerText(x){ return norm(x.a.replace(/<br\s*\/?>/gi, " ")); }
+
 /* ============ READ-ALOUD COVERAGE ============ */
 /* Give every explanatory card its own button rather than maintaining a list
    by hand. Ids are derived from section + position, and the recording script
@@ -2337,7 +2378,6 @@ function sayableText(el){
   return flatten(c);
 }
 function addSayButtons(){
-  var n = 0;
   // Text lives in an off-page bin, not inside the card, so the search index
   // does not pick up a duplicate copy of every card it reads aloud.
   var bin = document.createElement("div");
@@ -2349,11 +2389,12 @@ function addSayButtons(){
     if (!sec) return;
     Array.prototype.forEach.call(sec.querySelectorAll(".card"), function(card){
       if (card.querySelector(".say")) return;
-      var id = "card-" + (n++);
+      var text = sayableText(card);
+      var id = clipId("card", text);
       var holder = document.createElement("span");
       holder.id = "t-" + id;
       holder.className = "sr";
-      holder.textContent = sayableText(card);
+      holder.textContent = text;
       var b = document.createElement("button");
       b.className = "say";
       b.setAttribute("data-say", "#t-" + id);
@@ -2371,33 +2412,39 @@ function addSayButtons(){
 }
 addSayButtons();
 
+/* Any hand-written say button gets its name from its text too, at load, so
+   the page asks for exactly what the recorder produced. */
+Array.prototype.forEach.call(document.querySelectorAll("[data-say]"), function(b){
+  if (b.getAttribute("data-clip")) return;
+  var src = document.querySelector(b.getAttribute("data-say"));
+  var t = src ? norm(src.textContent || "") : "";
+  if (t) b.setAttribute("data-clip", clipId("pg", t));
+});
+
 /* The recorder calls this in a real browser, so the manifest is exactly what
    the page will ask for at runtime. */
 window.__manifest = function(){
   var out = [];
-  Array.prototype.forEach.call(document.querySelectorAll("[data-clip]"), function(b){
+  // Static buttons name themselves from their own text, same rule as the rest.
+  Array.prototype.forEach.call(document.querySelectorAll("[data-say]"), function(b){
     var src = document.querySelector(b.getAttribute("data-say"));
     if (!src) return;
-    out.push({ id:b.getAttribute("data-clip"),
-               voice:b.getAttribute("data-voice") || "ava",
-               text:(src.textContent || "").replace(/\s+/g," ").trim() });
+    var t = norm(src.textContent || "");
+    if (!t) return;
+    var id = b.getAttribute("data-clip") || clipId("pg", t);
+    b.setAttribute("data-clip", id);
+    out.push({ id:id, voice:b.getAttribute("data-voice") || "ava", text:t });
   });
   RUNS.forEach(function(r){
-    r.steps.forEach(function(st, si){
-      var say = [st.h].concat(st.p, st.flag || [], st.flagWarn || []);
-      // Read the options aloud too, but never the answer: that is the point.
-      if (st.choices) say = say.concat("Your choices are:", st.choices.map(function(c, ci){
-        return (ci + 1) + ". " + c + ".";
-      }));
-      out.push({ id:"run-" + r.id + "-" + si, voice:"ava",
-                 text:say.join(" ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim() });
+    r.steps.forEach(function(st){
+      var t = runStepText(st);
+      out.push({ id:clipId("run", t), voice:"ava", text:t });
     });
   });
-  QUICK.forEach(function(x, i){
-    out.push({ id:"qq-" + i, voice:"emma", text:x.q });
-    out.push({ id:"qa-" + i, voice:"ava",
-               text:x.a.replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g,"")
-                       .replace(/\s+/g," ").trim() });
+  QUICK.forEach(function(x){
+    out.push({ id:clipId("qq", x.q), voice:"emma", text:norm(x.q) });
+    var a = quickAnswerText(x);
+    out.push({ id:clipId("qa", a), voice:"ava", text:a });
   });
   var seen = {};
   return out.filter(function(x){
@@ -2405,6 +2452,30 @@ window.__manifest = function(){
     seen[x.id] = 1; return true;
   });
 };
+
+/* ============ SHARE THE FAMILY PAGE ============ */
+(function shareFam(){
+  var btn = document.getElementById("copyFam");
+  var note = document.getElementById("copyNote");
+  if (!btn) return;
+  btn.onclick = function(){
+    var url = new URL("family.html", location.href).href;
+    function done(msg){ note.textContent = msg; note.hidden = false; }
+    if (navigator.share){
+      navigator.share({ title:"Following a Dexcom G7", url:url })
+        .then(function(){ done("Sent."); })
+        .catch(function(){});
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url)
+        .then(function(){ done("Link copied. Paste it into a text or an email."); })
+        .catch(function(){ done(url); });
+      return;
+    }
+    done(url);
+  };
+})();
 
 /* ============ HOME SCREEN + OFFLINE ============ */
 /* A bookmark he cannot find is a page he never opens, so this asks once and
