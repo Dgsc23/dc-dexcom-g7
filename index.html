@@ -91,6 +91,10 @@ button,input{font-family:inherit;font-size:inherit}
 }
 
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
+/* The top bar is sticky, so anchored jumps must stop clear of it or the
+   heading you jumped to ends up hidden underneath. */
+section[id],[id]{scroll-margin-top:5rem}
 body{
   margin:0;
   background:var(--ground);
@@ -100,6 +104,7 @@ body{
   line-height:1.62;
   -webkit-text-size-adjust:100%;
 }
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:2px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
@@ -414,6 +419,117 @@ svg{display:block;max-width:100%;height:auto}
 }
 .tel:hover{text-decoration:underline}
 
+/* ============ SIMPLE MODE (the front door) ============ */
+.simple{
+  max-width:30rem;margin:0 auto;
+  padding:2.25rem 1.15rem calc(3rem + env(safe-area-inset-bottom));
+}
+.simple-head{margin-bottom:2rem}
+.simple-head h1{
+  font-size:calc(2.05rem * var(--scale));margin-bottom:.6rem;
+}
+.simple-head p{
+  color:var(--ink-soft);font-size:calc(1.06rem * var(--scale));margin:0;
+}
+.menu-lab{
+  font-family:var(--mono);font-size:calc(.74rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);
+  margin:0 0 .75rem;
+}
+.big-menu{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.6rem}
+.big{
+  display:flex;align-items:center;gap:1rem;width:100%;text-align:left;
+  background:var(--surface);border:1px solid var(--rule-strong);
+  border-radius:5px;padding:1.05rem 1.15rem;min-height:4.2rem;
+  text-decoration:none;color:var(--ink);
+  -webkit-tap-highlight-color:transparent;
+}
+.big:hover,.big:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
+.big:active{transform:translateY(1px)}
+.big-txt{flex:1;min-width:0}
+.big-txt b{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:calc(1.3rem * var(--scale));line-height:1.25;
+}
+.big-txt span{
+  display:block;color:var(--ink-soft);
+  font-size:calc(.95rem * var(--scale));line-height:1.4;margin-top:.12rem;
+}
+.big-go{flex:none;color:var(--accent)}
+.big.urgent{border-color:var(--low);background:var(--low-soft)}
+.big.urgent .big-go{color:var(--low)}
+.big.urgent:hover,.big.urgent:focus-visible{border-color:var(--low);background:var(--low-soft)}
+.simple-sep{border:none;border-top:1px solid var(--rule);margin:1.6rem 0}
+.mode-link{
+  display:block;width:100%;text-align:center;background:none;border:none;
+  color:var(--ink-soft);font-size:calc(.98rem * var(--scale));
+  padding:.9rem;text-decoration:underline;text-underline-offset:.2em;
+}
+.mode-link:hover{color:var(--accent)}
+.back-bar{
+  display:flex;justify-content:center;padding:1.5rem 1.15rem
+    calc(2.5rem + env(safe-area-inset-bottom));
+}
+#askSlot:empty{display:none}
+#askSlot{margin-bottom:1.6rem}
+#askSlot section{padding:0;border-top:none}
+#askSlot .sec-head{margin-bottom:1.2rem}
+#askSlot .filter-wrap{margin-bottom:0}
+.back-btn{
+  display:flex;align-items:center;gap:.5rem;
+  background:none;border:1px solid var(--rule-strong);border-radius:5px;
+  padding:.7rem 1rem;margin-bottom:1.1rem;width:100%;
+  font-size:calc(1rem * var(--scale));color:var(--ink-soft);
+}
+.back-btn::before{content:"\2190";color:var(--accent);font-size:1.1em}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ============ ASK / CHATBOT ============ */
+.ask-wrap{background:var(--surface);border:1px solid var(--rule-strong);padding:1.35rem 1.4rem}
+.quickq{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.1rem}
+.qq{
+  background:var(--ground);border:1px solid var(--rule-strong);
+  padding:.42rem .85rem;border-radius:999px;
+  font-size:calc(.92rem * var(--scale));line-height:1.35;text-align:left;
+}
+.qq:hover{border-color:var(--accent);color:var(--accent)}
+.chatlog{display:flex;flex-direction:column;gap:.8rem;margin-bottom:1.1rem}
+.chatlog:empty{display:none}
+.msg{padding:.85rem 1.05rem;font-size:calc(1.04rem * var(--scale));line-height:1.6}
+.msg b.who{
+  display:block;font-family:var(--mono);font-size:calc(.72rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);
+  margin-bottom:.35rem;font-weight:400;
+}
+.msg.u{background:var(--accent-soft);border-left:3px solid var(--accent)}
+.msg.a{background:var(--surface-2);border-left:3px solid var(--rule-strong)}
+.msg.a.canned{border-left-color:var(--accent)}
+.msg .say{margin-top:.7rem}
+.chatrow{display:flex;gap:.5rem;flex-wrap:wrap}
+#chatinp{
+  flex:1 1 14rem;font:inherit;font-size:calc(1.02rem * var(--scale));
+  padding:.7rem .9rem;background:var(--ground);color:var(--ink);
+  border:1px solid var(--rule-strong);border-radius:3px;
+}
+#chatinp::placeholder{color:var(--ink-faint)}
+.sendbtn{
+  background:var(--accent);border:1px solid var(--accent);color:var(--on-accent);
+  padding:.7rem 1.5rem;border-radius:3px;font-weight:600;
+  font-size:calc(1.02rem * var(--scale));
+}
+.sendbtn:hover{filter:brightness(1.08)}
+.sendbtn[disabled]{opacity:.45;cursor:default;filter:none}
+.ask-foot{
+  margin-top:1.1rem;padding-top:.8rem;border-top:1px solid var(--rule);
+  font-size:calc(.9rem * var(--scale));color:var(--ink-faint);
+}
+.bar-ask{
+  background:var(--accent);border:1px solid var(--accent);color:var(--on-accent);
+  padding:.32rem .8rem;border-radius:3px;font-size:calc(.85rem * var(--scale));
+  text-decoration:none;font-weight:600;line-height:1.3;white-space:nowrap;
+}
+.bar-ask:hover{filter:brightness(1.08)}
+
 /* ============ FILTER ============ */
 .filter-wrap{position:relative;margin-bottom:1.4rem}
 #filter{
@@ -426,19 +542,75 @@ svg{display:block;max-width:100%;height:auto}
   font-family:var(--mono);font-size:calc(.78rem * var(--scale));
   color:var(--ink-faint);margin-top:.5rem;letter-spacing:.03em;
 }
-mark{background:var(--accent-soft);color:inherit;padding:.05em .15em}
+mark{background:var(--accent-soft);color:var(--ink);padding:.05em .15em;font-weight:600}
+.results{display:flex;flex-direction:column;gap:.4rem;margin-top:.9rem}
+.res{
+  text-align:left;background:var(--surface);border:1px solid var(--rule);
+  padding:.7rem .9rem;display:block;width:100%;
+}
+.res:hover{border-color:var(--accent)}
+.res-sec{
+  display:block;font-family:var(--mono);font-size:calc(.7rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.15rem;
+}
+.res b{display:block;font-size:calc(1.02rem * var(--scale));font-weight:600;line-height:1.3}
+.res-snip{
+  display:block;color:var(--ink-soft);font-size:calc(.88rem * var(--scale));
+  line-height:1.45;margin-top:.2rem;
+}
+.flash{animation:flashk 1.6s ease-out}
+@keyframes flashk{
+  0%,55%{box-shadow:0 0 0 3px var(--accent);background:var(--accent-soft)}
+  100%{box-shadow:0 0 0 3px transparent}
+}
+@media (prefers-reduced-motion:reduce){
+  .flash{animation:none;box-shadow:0 0 0 3px var(--accent)}
+}
 
 /* ============ FOOTER ============ */
 footer{padding:2.5rem 0 4rem;color:var(--ink-faint);font-size:calc(.9rem * var(--scale))}
 footer p{margin-bottom:.7rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 [hidden]{display:none!important}
+
+/* ============ PHONE ============ */
+@media (max-width:33rem){
+  .wrap{padding:0 1rem}
+  .bar-in{padding:.5rem 1rem}
+  .bar-name{font-size:calc(.9rem * var(--scale))}
+  h1{font-size:calc(2.05rem * var(--scale))}
+  h2{font-size:calc(1.55rem * var(--scale))}
+  .card,.ask-wrap,.screen,.call{padding:1.1rem}
+  .num-row{grid-template-columns:1fr;gap:.15rem}
+  .runs{grid-template-columns:1fr}
+  .callouts{grid-template-columns:1fr;gap:.15rem .75rem}
+  .callouts dt{margin-top:.5rem}
+  /* Thumb-reachable controls: the primary button spans the width. */
+  .runner-foot{flex-wrap:wrap;padding:.8rem 1rem calc(1.2rem + env(safe-area-inset-bottom))}
+  .btn-lg{flex:1 1 100%;order:-1;padding:.95rem 1rem;font-size:calc(1.1rem * var(--scale))}
+  .btn-gh{flex:1 1 auto;padding:.7rem .9rem}
+  .foot-sp{display:none}
+  .runner-body{padding:1.15rem 1rem}
+  .step-h{font-size:calc(1.7rem * var(--scale))}
+  .step-p{font-size:calc(1.1rem * var(--scale))}
+  .chatrow{flex-direction:column}
+  .sendbtn{width:100%;padding:.85rem}
+  .chap>summary{grid-template-columns:1.8rem 1fr;gap:.6rem;padding:.9rem 1rem}
+  .chap-body{padding:0 1rem 1.1rem}
+}
+/* iOS: dynamic toolbars make 100% height unreliable for a fixed overlay. */
+@supports (height:100dvh){ .runner{height:100dvh} }
+.runner-bar{padding-top:calc(.7rem + env(safe-area-inset-top))}
+button,.big,a{-webkit-tap-highlight-color:rgba(63,122,110,.15)}
+/* Keep iOS from zooming the page when a field is focused. */
+input,select,textarea{font-size:max(16px,1rem)}
 </style>
 </head>
 <body>
 <div class="bar">
   <div class="bar-in">
     <span class="bar-name">The Dexcom G7, in plain English</span>
+    <a class="bar-ask" href="#ask">Ask a question</a>
     <div class="ctrl">
       <span class="ctrl-lab">Text</span>
       <button class="btn btn-sz" id="szDown" aria-label="Make text smaller">A</button>
@@ -447,6 +619,26 @@ footer p{margin-bottom:.7rem}
   </div>
 </div>
 
+<!-- ==================== SIMPLE MODE: the front door ==================== -->
+<div class="simple" id="simple">
+  <header class="simple-head">
+    <p class="eyebrow">His Dexcom G7</p>
+    <h1>What do you need?</h1>
+    <p>Tap one. Each one walks you through it a single step at a time. Nothing here can break anything.</p>
+  </header>
+
+  <p class="menu-lab" id="menuLab">Right now</p>
+  <div class="big-menu" id="bigMenu"></div>
+
+  <button class="back-btn" id="backToMenu" hidden>Back to the buttons</button>
+  <div id="askSlot"></div>
+
+  <hr class="simple-sep" id="simpleSep">
+  <button class="mode-link" id="toFull">Show me the whole guide</button>
+</div>
+
+<!-- ==================== FULL GUIDE ==================== -->
+<div id="full" hidden>
 <div class="wrap">
 
   <header class="mast">
@@ -457,7 +649,7 @@ footer p{margin-bottom:.7rem}
   </header>
 
   <!-- ==================== HERO: THE SCREEN ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-screen" data-label="The screen">
     <div class="sec-head">
       <span class="sec-kicker">Start here</span>
       <h2>The screen, explained once</h2>
@@ -520,7 +712,7 @@ footer p{margin-bottom:.7rem}
   </section>
 
   <!-- ==================== THE TWO RULES ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-rules" data-label="The two rules">
     <div class="sec-head">
       <span class="sec-kicker">The two rules</span>
       <h2>When to trust it, and when to get the meter out</h2>
@@ -573,8 +765,28 @@ footer p{margin-bottom:.7rem}
     </div>
   </section>
 
+  <!-- ==================== ASK ==================== -->
+  <section class="bleed" id="ask" data-label="Ask a question">
+    <div class="sec-head">
+      <span class="sec-kicker">Ask it anything</span>
+      <h2>Type a question the way you would say it</h2>
+      <p class="sec-sub">No need to know the right words. "Can I shower with this thing on" works fine. Tap one of the common questions for an instant answer, or type your own and it will read the manual for you.</p>
+    </div>
+
+    <div class="ask-wrap">
+      <div class="quickq" id="quickq"></div>
+      <div class="chatlog" id="chatlog"></div>
+      <div class="chatrow">
+        <label class="sr" for="chatinp">Your question</label>
+        <input type="text" id="chatinp" placeholder="Type your question here" autocomplete="off">
+        <button class="sendbtn" id="sendbtn">Ask</button>
+      </div>
+      <p class="ask-foot" id="askFoot">The instant answers above come straight from the manual. Typed questions go to an assistant that has been given the manual to read. It can be wrong, so anything about his own doses, alarm levels, or symptoms belongs with his doctor, not here.</p>
+    </div>
+  </section>
+
   <!-- ==================== SPEED RUNS ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-runs" data-label="Speed runs">
     <div class="sec-head">
       <span class="sec-kicker">Speed runs</span>
       <h2>One step at a time, nothing else on the screen</h2>
@@ -584,7 +796,7 @@ footer p{margin-bottom:.7rem}
   </section>
 
   <!-- ==================== ARROWS ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-arrows" data-label="The arrow">
     <div class="sec-head">
       <span class="sec-kicker">The arrow</span>
       <h2>The number is the speedometer reading. The arrow is the speed.</h2>
@@ -607,7 +819,7 @@ footer p{margin-bottom:.7rem}
   </section>
 
   <!-- ==================== NUMBERS ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-numbers" data-label="Numbers worth knowing">
     <div class="sec-head">
       <span class="sec-kicker">Numbers worth knowing</span>
       <h2>The whole system, in fourteen numbers</h2>
@@ -652,7 +864,7 @@ footer p{margin-bottom:.7rem}
   </section>
 
   <!-- ==================== ALERTS ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-alerts" data-label="Alarms">
     <div class="sec-head">
       <span class="sec-kicker">Alarms</span>
       <h2>Every alarm it can make, one at a time</h2>
@@ -686,13 +898,14 @@ footer p{margin-bottom:.7rem}
       <label class="sr" for="filter">Search the guide</label>
       <input type="search" id="filter" placeholder="Search everything: try shower, alarm, arrow, travel, itchy" autocomplete="off">
       <p class="hit-note" id="hitNote" hidden></p>
+      <div class="results" id="results" hidden></div>
     </div>
 
     <div id="chapList"></div>
   </section>
 
   <!-- ==================== FAMILY ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-family" data-label="For the family">
     <div class="sec-head">
       <span class="sec-kicker">For the family</span>
       <h2>You can watch his numbers from your own phone</h2>
@@ -741,7 +954,7 @@ footer p{margin-bottom:.7rem}
   </section>
 
   <!-- ==================== GLOSSARY ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-gloss" data-label="Vocabulary">
     <div class="sec-head">
       <span class="sec-kicker">Their words, your words</span>
       <h2>The vocabulary, decoded</h2>
@@ -751,7 +964,7 @@ footer p{margin-bottom:.7rem}
   </section>
 
   <!-- ==================== CALL ==================== -->
-  <section class="bleed">
+  <section class="bleed" id="s-call" data-label="Who to call">
     <div class="sec-head">
       <span class="sec-kicker">When to pick up the phone</span>
       <h2>Dexcom answers 24 hours a day</h2>
@@ -783,6 +996,11 @@ footer p{margin-bottom:.7rem}
     <p>This page is a plain-language companion written for one family. It is not made by Dexcom, it is not a substitute for the user guide that came in the box, and it is not medical advice. Where this page and the official guide ever disagree, the official guide is right. Alarm levels, insulin doses, and treatment plans belong to his doctor.</p>
   </footer>
 
+  <div class="back-bar">
+    <button class="mode-link" id="toSimple">Back to the simple buttons</button>
+  </div>
+
+</div>
 </div>
 
 <!-- ==================== SPEED RUN VIEWER ==================== -->
@@ -824,30 +1042,78 @@ document.getElementById("szUp").onclick   = function(){ scale += 0.12; applyScal
 document.getElementById("szDown").onclick = function(){ scale -= 0.12; applyScale(); };
 
 /* ============ READ ALOUD ============ */
+/* Same voice convention as the school tools: Ava explains, Emma asks.
+   Ava and Emma are Microsoft natural voices, so they show up in Edge and in
+   Chrome on Windows. Anywhere they are missing we fall back to the best
+   available English voice rather than going silent. */
+var VOICES = [];
+var VOICE_PICK = { ava:null, emma:null };
+function pickVoices(){
+  VOICES = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  if (!VOICES.length) return;
+  function find(name){
+    var en = VOICES.filter(function(v){ return /^en(-|_|$)/i.test(v.lang || ""); });
+    var pool = en.length ? en : VOICES;
+    // Prefer the natural/online build of the voice when both exist.
+    var exact = pool.filter(function(v){ return new RegExp("\\b"+name+"\\b","i").test(v.name); });
+    if (exact.length){
+      var nat = exact.filter(function(v){ return /natural|online/i.test(v.name); });
+      return (nat[0] || exact[0]);
+    }
+    return null;
+  }
+  VOICE_PICK.ava  = find("Ava");
+  VOICE_PICK.emma = find("Emma");
+  if (!VOICE_PICK.ava){
+    var en = VOICES.filter(function(v){ return /^en(-|_|$)/i.test(v.lang || ""); });
+    var pool = en.length ? en : VOICES;
+    VOICE_PICK.ava = pool.filter(function(v){ return /natural|online/i.test(v.name); })[0] ||
+                     pool.filter(function(v){ return /female|zira|jenny|aria|samantha/i.test(v.name); })[0] ||
+                     pool[0] || null;
+  }
+  if (!VOICE_PICK.emma) VOICE_PICK.emma = VOICE_PICK.ava;
+}
+pickVoices();
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = pickVoices;
+
 var speaking = null;
 function stopSpeech(){
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   if (speaking){ speaking.setAttribute("aria-pressed","false"); speaking.textContent = speaking.dataset.label; }
   speaking = null;
 }
-function speak(btn, text){
+function speak(btn, text, who){
   if (!window.speechSynthesis){ btn.textContent = "Not available on this browser"; return; }
   if (speaking === btn){ stopSpeech(); return; }
   stopSpeech();
+  if (!VOICES.length) pickVoices();
   if (!btn.dataset.label) btn.dataset.label = btn.textContent;
-  var u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.88; u.pitch = 1;
-  u.onend = function(){ if (speaking === btn) stopSpeech(); };
+  // Long passages get chunked; some engines silently truncate a single
+  // very long utterance.
+  var parts = String(text).replace(/\s+/g," ").trim().match(/[^.!?]+[.!?]*\s*/g) || [text];
+  var chunks = [], buf = "";
+  parts.forEach(function(p){
+    if ((buf + p).length > 220 && buf){ chunks.push(buf); buf = p; } else { buf += p; }
+  });
+  if (buf) chunks.push(buf);
+
+  var v = VOICE_PICK[who === "emma" ? "emma" : "ava"];
   speaking = btn;
   btn.setAttribute("aria-pressed","true");
   btn.textContent = "Stop";
-  window.speechSynthesis.speak(u);
+  chunks.forEach(function(c, i){
+    var u = new SpeechSynthesisUtterance(c);
+    if (v){ u.voice = v; u.lang = v.lang; }
+    u.rate = 0.9; u.pitch = 1;
+    if (i === chunks.length - 1) u.onend = function(){ if (speaking === btn) stopSpeech(); };
+    window.speechSynthesis.speak(u);
+  });
 }
 document.addEventListener("click", function(e){
   var b = e.target.closest("[data-say]");
   if (!b) return;
   var src = document.querySelector(b.getAttribute("data-say"));
-  if (src) speak(b, src.textContent);
+  if (src) speak(b, src.textContent, b.getAttribute("data-voice"));
 });
 
 /* ============ HERO SCREEN ============ */
@@ -1241,30 +1507,451 @@ document.addEventListener("keydown", function(e){
   else if (e.key === "ArrowLeft"){ btnBack.click(); }
 });
 
-/* ============ FILTER ============ */
-var filter = document.getElementById("filter");
+/* ============ ASK: instant answers ============ */
+/* These are deterministic and come straight from the guides. Safety-critical
+   questions live here on purpose so they never depend on a model or a network. */
+var QUICK = [
+  { q:"The alarm went off. What do I do?",
+    a:"Read the words on the screen first, before anything else. That word tells you what to do.<br><br>"+
+      "<b>Urgent Low</b> means 55 or below right now. <b>Low</b> means at or below your Low setting. Treat either one the way your doctor told you to.<br><br>"+
+      "<b>Urgent Low Soon</b> means you are still above 55 but falling fast enough to get there within 20 minutes. Eat or drink something now.<br><br>"+
+      "<b>High</b> means at or above your High setting. If you took insulin in the last hour or two, the usual answer is to wait, not to take more.<br><br>"+
+      "Then press OK. Until you press OK it repeats every 5 minutes." },
+
+  { q:"There is no number on the screen",
+    a:"Do not pull the sensor off. Almost every no-number situation fixes itself.<br><br>"+
+      "Get the finger stick meter out and use that meanwhile. No number, or no arrow, means this device does not get a vote.<br><br>"+
+      "Bring the phone or receiver within 33 feet of the sensor and on the same side of your body. Walls, water, and your own body block the signal.<br><br>"+
+      "If it says <b>Brief Sensor Issue</b>, leave the sensor alone. It usually clears within 3 hours.<br><br>"+
+      "Signal Loss past 30 minutes, or Brief Sensor Issue past 3 hours, is worth ringing Dexcom on 1-888-738-3646." },
+
+  { q:"Can I shower or swim with it?",
+    a:"Yes. Once it is inserted the sensor is waterproof down to 8 feet. Shower, bathe, and swim with it on.<br><br>"+
+      "The <b>receiver is not waterproof</b>. Leave that out of the water.<br><br>"+
+      "While you are underwater the signal cannot get through, so expect a gap in the graph. It fills itself back in afterwards, up to 24 hours of it.<br><br>"+
+      "The patch sticks best when it is kept dry, especially in the first 12 hours. Pat it dry when it gets wet." },
+
+  { q:"When do I change the sensor?",
+    a:"You get warnings before it runs out, and then a <b>12 hour grace period</b> starts. Nothing is wrong during grace and it works exactly as it always did. That time is spare on purpose so you can change it when it suits you.<br><br>"+
+      "To check what is left: phone, Connections then Sensor. Receiver, Menu, Information, Sensor, Sensor Info.<br><br>"+
+      "To swap: phone, Connections, Sensor, Replace Sensor. Receiver, Menu, Replace Sensor. Do it on one device only.<br><br>"+
+      "Put the new one on a different spot. Never the same site twice in a row." },
+
+  { q:"Why doesn't it match my finger stick?",
+    a:"Because they are measuring two different things. The finger stick reads sugar in your blood. The sensor reads the fluid between the cells under your skin, which runs a few minutes behind.<br><br>"+
+      "It is like reading the temperature in the next room. Accurate, but a little behind. When sugar is moving fast the gap looks bigger, and when it settles the two come back together.<br><br>"+
+      "Other honest reasons: hands not washed with soap and water before the finger stick, which is the most common cause of a bad meter reading, and the first day of a new sensor, when the two run further apart and then close up over about 24 hours.<br><br>"+
+      "Neither number is broken. If how you feel does not match the screen, use the meter." },
+
+  { q:"It won't stop beeping",
+    a:"Because it has not been acknowledged yet. An alarm repeats every 5 minutes until you press OK. Deal with the situation first, then press OK.<br><br>"+
+      "If the alarms are genuinely too much, that is a settings problem with a proper fix, not something to put up with. You can change the sound, set most alarms to vibrate, turn Snooze off so they stop repeating, or use Delay 1st Alert so a High alarm does not fire while insulin is still working.<br><br>"+
+      "You can also build a separate night-time profile that stays quiet except for a real emergency.<br><br>"+
+      "Talk to the doctor before changing any alarm level. Do not switch the alarms off wholesale, they are the reason this beats a meter." },
+
+  { q:"Can he take Tylenol?",
+    a:"Yes, within a limit. Up to <b>1 gram, 1,000 mg, of acetaminophen every 6 hours</b> is fine and the readings stay trustworthy.<br><br>"+
+      "Above that dose the sensor reads <b>higher</b> than he really is, which is the dangerous direction to be wrong in, because it can hide a low.<br><br>"+
+      "One other medicine matters: <b>hydroxyurea</b>. If he is ever prescribed it, the sensor cannot be used for treatment decisions at all. Meter only, and tell the prescribing doctor he wears a CGM." },
+
+  { q:"MRI, CT scan, X-ray, airport?",
+    a:"<b>MRI: take it off first.</b> No part of the system can go into an MRI, or into high-frequency heat treatment called diathermy.<br><br>"+
+      "<b>CT scan and radiation therapy: allowed</b>, as long as the sensor is kept out of the scanned area and covered with a lead apron. Tell the radiographer he is wearing it.<br><br>"+
+      "<b>Airport: fine.</b> He can wear it through the walk-through metal detector and the body scanner, or ask for a hand wand and pat-down instead. Because security usually takes the phone and receiver off you, use the meter until you are through. On the plane, phone in airplane mode, receiver simply stays on." },
+
+  { q:"Where does the sensor go?",
+    a:"The <b>back of the upper arm</b>, for adults. Not the belly, even if an older G6 went there.<br><br>"+
+      "Avoid anywhere with loose skin or too little fat, anywhere he sleeps on or that gets bumped, anywhere within 3 inches of an injection site, and anywhere scarred, tattooed, irritated, or hairy.<br><br>"+
+      "Move to a different spot every time so the skin gets to recover." },
+
+  { q:"How does family see his numbers?",
+    a:"On his phone: Connections, then Share, turn it on, then Invite Follower with a name and email. He chooses whether they see just the number or the graph too, and he can pause or remove anyone whenever he likes.<br><br>"+
+      "On their phone: open the invitation email on the phone itself, tap the link, install the free <b>Dexcom Follow</b> app, accept. Invitations expire after 7 days.<br><br>"+
+      "Followers set their own Low, High, and No Data alerts, each with a delay so a brief dip does not wake them.<br><br>"+
+      "<b>Never treat off the Follow app.</b> What a follower sees is always older than what he sees. If it looks bad, ring him and have him check his own screen.<br><br>"+
+      "This needs the phone app. The receiver on its own cannot share." },
+
+  { q:"The patch is peeling off",
+    a:"Prevention first: the site must be flat, clean, and <b>completely dry</b> before the sensor goes on. Alcohol wipe, then let it dry all the way. Avoid hairy spots and places where the skin folds when he bends.<br><br>"+
+      "The longer the patch is kept dry and sweat-free in the first 12 hours, the longer it tends to hold. Pat it dry when it gets wet.<br><br>"+
+      "If it is already lifting, you can trim the peeled parts and put medical tape over it. Extra adhesive under the overpatch is allowed too.<br><br>"+
+      "Always use the overpatch. It is required, not a spare.<br><br>"+
+      "If a sensor falls off early, ring Dexcom. They replace them and it is a routine call." },
+
+  { q:"His skin is itchy and red",
+    a:"Some people react to the adhesive. Most reactions are mild and settle within a week.<br><br>"+
+      "What helps: never use the same site twice in a row, moisturise between sensors but never on the day of insertion, and remove old adhesive residue properly with body oil or an adhesive remover.<br><br>"+
+      "<b>If there is real itching, burning, or a rash, call his doctor.</b> That is not something to put up with, and the manual says to contact a healthcare provider for significant irritation.<br><br>"+
+      "Redness, swelling, or pain at the site can also mean infection, which is a doctor call, not a Dexcom call." }
+];
+
+var quickWrap = document.getElementById("quickq");
+quickWrap.innerHTML = QUICK.map(function(x,i){
+  return '<button class="qq" data-q="'+i+'">'+x.q+"</button>";
+}).join("");
+
+/* ============ ASK: the assistant ============ */
+var WORKER = "https://fab-ai.dgync1.workers.dev";
+var CHAT = [];
+var chatlog = document.getElementById("chatlog");
+var chatinp = document.getElementById("chatinp");
+var sendbtn = document.getElementById("sendbtn");
+var askFoot = document.getElementById("askFoot");
+var busy = false;
+var sayId = 0;
+
+/* Facts drawn from the Dexcom guides, so answers come from the manual
+   rather than from whatever the model happens to remember. */
+var FACTS = [
+"DEXCOM G7 FACTS, from the official Dexcom user guides:",
+"Readings: a new sensor reading every 5 minutes. Number colours: white or grey in range, yellow high, red low. Below 40 the screen shows LOW with no number; above 400 it shows HIGH with no number.",
+"Target range: 70 to 180 mg/dL, the shaded band on the graph. Very High is above 250, Very Low is below 54.",
+"Alarms. Urgent Low: fires at 55 or below, cannot be turned off or changed, sounds even when the phone is muted unless Silence All is on. Urgent Low Soon: fires when falling fast enough to reach 55 within 20 minutes, can fire while the number still looks normal. Low: default 70, adjustable 60 to 150, the red line. High: default 250, adjustable 100 to 400, the yellow line. Low and High must be at least 20 mg/dL apart. Rising Fast and Falling Fast: off by default, trigger at 3 mg/dL per minute or optionally 2 to 3 per minute. Alarms repeat every 5 minutes until acknowledged with OK.",
+"Trend arrows over 30 minutes: flat is under 30 mg/dL of change; slanted is 30 to 60; straight up or down is 60 to 90; doubled is over 90. No arrow means no trend can be worked out.",
+"THE TWO SAFETY RULES. One: if there is no number OR no arrow, do not make a treatment decision from the device, use the blood glucose meter. This includes sensor warmup and any system message. Two: if symptoms do not match the reading, use the meter. The manual's phrase is 'when in doubt, get your BG meter out'.",
+"Wear time: original Dexcom G7 lasts up to 10 days with about a 30 minute warmup. Dexcom G7 15 Day lasts up to 15 days with a 60 minute warmup. Both then get a 12 hour grace period during which everything works normally. About 26% of 15 Day sensors may not last the full 15 days.",
+"Insertion: back of the upper arm only, adults. Wash hands, alcohol wipe the site, let it dry completely. Unscrew cap, press applicator flat until the clear ring disappears, press the button. Save the applicator, the pairing code is on it. Press the sensor top for 10 seconds, rub around the patch 3 times, then apply the overpatch, which is required. Avoid loose skin, spots you sleep on, within 3 inches of an injection site, and scarred, tattooed, irritated or hairy skin. Change site every time.",
+"Removal: peel like a bandage, loosen an edge, soak with baby oil or adhesive remover, pull slowly folding the patch over itself in the direction of hair growth.",
+"Distances: keep the phone or receiver within 33 feet of the sensor, a smartwatch within 20 feet. Same side of the body works best. Walls, water and the body itself block the signal.",
+"Water: the sensor is waterproof to 8 feet, so shower, bathe and swim. The receiver is NOT waterproof. Underwater the signal stops, and up to 24 hours of missed readings backfill afterwards.",
+"System messages. Signal Loss: connection lost, get within 33 feet, wait up to 30 minutes, call support if longer. Brief Sensor Issue: DO NOT remove the sensor, it usually clears within 3 hours, most common on day one, call support if longer. Sensor Failed and Replace Sensor Now: that sensor is finished, remove it and start a new one.",
+"Medicines. Acetaminophen or Tylenol: up to 1 gram every 6 hours is fine; more makes readings read falsely HIGH. Hydroxyurea: makes readings read falsely high, so the G7 must NOT be used for treatment decisions at all while taking it.",
+"Scans: MR unsafe, never wear any component into an MRI or diathermy. CT scan and radiation therapy are allowed if the sensor is outside the scanned area and covered with a lead apron. Airport metal detectors and body scanners are fine, or ask for a hand wand and pat-down; use the meter while separated from the display device.",
+"Not evaluated for people on dialysis or who are critically ill. Prescription device, adults 18 and older for the 15 Day version.",
+"Accuracy: the meter measures blood, the sensor measures interstitial fluid, so they will not match exactly and neither is broken. Differences are larger on the sensor's first day and when glucose is moving fast. Unwashed hands are the most common cause of a bad meter value. Calibration is OPTIONAL: fingertip sample only, entered within 5 minutes, only when glucose is stable, only values 40 to 400, only on one device not both.",
+"Share and Follow: Share sends readings every 5 minutes to Followers who install the separate free Dexcom Follow app. Invitations expire in 7 days. Follower data is ALWAYS older than the wearer's, so Followers must never use it for treatment decisions. The Sharer controls what is shared and can pause or remove Followers. Requires the phone app; the receiver alone cannot share.",
+"Reports: 3, 7, 14, 30 and 90 day summaries showing Average Glucose, Time in Range, and GMI. GMI estimates A1C from sensor data and will differ from a lab A1C. Dexcom Clarity at dexcom.com/clarityapp holds fuller reports; receiver-only users should upload at least every 6 months, which is also how the receiver updates.",
+"Receiver: a dedicated medical device, recommended by Dexcom for anyone more comfortable with one. No internet needed, cannot be disrupted by phone settings or storage. Full charge takes up to 3 hours with Dexcom's own cable. It cannot use Share. Many people run both, phone by day and receiver at night.",
+"Storage: sensors between 36 and 86 degrees Fahrenheit, refrigerator fine, freezer never. Do not start a sensor past its Use By date.",
+"Alarm fatigue is fixable: change sounds, use vibrate, turn Snooze off, use Delay 1st Alert on the High alarm, or build a scheduled second night-time profile. Do not switch alarms off wholesale.",
+"Dexcom technical support: 1-888-738-3646, 24 hours a day. In the app, Profile then Contact."
+].join("\n");
+
+var SYS = [
+"You are a calm, patient helper explaining a Dexcom G7 continuous glucose monitor to an 81 year old man who is new to it, and to his family. He is a Vietnam veteran with PTSD who is easily overwhelmed, so your manner matters as much as your facts.",
+"",
+"HOW TO ANSWER:",
+"Answer in plain everyday English at about a sixth grade reading level. Short sentences. Short paragraphs. Get to the answer in the first sentence, then explain.",
+"Keep it under about 150 words unless the question genuinely needs more.",
+"Be warm and steady. Never alarming, never urgent-sounding, never use capital letters for emphasis. Reassure where reassurance is honest: most situations with this device are normal and fixable.",
+"If a technical term is unavoidable, give the plain word first and the official term after it in brackets.",
+"You may use <b> for emphasis and <br> for line breaks. Never use markdown, asterisks, hashes, or bullet characters.",
+"",
+"WHAT YOU MUST NOT DO:",
+"Never tell him how much insulin to take, never suggest changing a dose, and never suggest changing an alarm level. Those belong to his doctor. Say so plainly and move on.",
+"Never diagnose, and never tell him a symptom is nothing.",
+"If he describes feeling unwell, or symptoms that do not match his reading, tell him to use the finger stick meter, and if it is not resolving, to get medical help.",
+"Never contradict the facts below. If a question is not covered by them, say honestly that you do not know and point him to Dexcom support on 1-888-738-3646, available 24 hours, or to his doctor.",
+"Do not invent menu paths, settings, numbers, or features. If you are unsure a setting exists, say so.",
+"If asked something with nothing to do with the Dexcom or diabetes, gently say that is outside what you can help with here.",
+"",
+"You may use ordinary real-world knowledge to explain things clearly, for example what an MRI is or why washing hands matters, but every fact about how the Dexcom G7 itself behaves must come from the list below.",
+"",
+FACTS
+].join("\n");
+
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function addMsg(role, html, canned){
+  var d = document.createElement("div");
+  d.className = "msg " + (role === "user" ? "u" : "a") + (canned ? " canned" : "");
+  var who = role === "user" ? "You asked" : "Answer";
+  var id = "say" + (++sayId);
+  d.innerHTML = '<b class="who">'+who+'</b><span id="'+id+'">'+html+"</span>";
+  if (role !== "user"){
+    var b = document.createElement("button");
+    b.className = "say";
+    b.setAttribute("data-say", "#" + id);
+    b.textContent = "Read this out loud";
+    d.appendChild(b);
+  }
+  chatlog.appendChild(d);
+  d.scrollIntoView({ block:"nearest", behavior:"smooth" });
+  return d;
+}
+function setBusy(v){
+  busy = v;
+  sendbtn.disabled = v;
+  sendbtn.textContent = v ? "Reading the manual..." : "Ask";
+}
+function ask(text, cannedIdx){
+  text = (text || "").trim();
+  if (!text || busy) return;
+  chatinp.value = "";
+  addMsg("user", esc(text));
+
+  if (typeof cannedIdx === "number"){
+    addMsg("bot", QUICK[cannedIdx].a, true);
+    CHAT.push({ role:"user", content:text });
+    CHAT.push({ role:"assistant", content:QUICK[cannedIdx].a.replace(/<[^>]+>/g," ") });
+    return;
+  }
+
+  setBusy(true);
+  var pending = addMsg("bot", "Let me look that up.");
+  CHAT.push({ role:"user", content:text });
+
+  fetch(WORKER, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ system: SYS, messages: CHAT.slice(-10) })
+  })
+  .then(function(r){
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(function(d){
+    var t = d && (d.reply || d.response || d.text || d.completion ||
+      (d.message && d.message.content) ||
+      (d.choices && d.choices[0] && (d.choices[0].message ? d.choices[0].message.content : d.choices[0].text)) ||
+      (Array.isArray(d.content) && d.content.filter(function(b){return b.type==="text";}).map(function(b){return b.text;}).join("\n")));
+    if (!t) throw new Error("empty");
+    t = String(t).trim();
+    CHAT.push({ role:"assistant", content:t });
+    chatlog.removeChild(pending);
+    addMsg("bot", t.replace(/\n{2,}/g,"<br><br>").replace(/\n/g,"<br>"));
+  })
+  .catch(function(){
+    CHAT.pop();
+    chatlog.removeChild(pending);
+    addMsg("bot",
+      "I could not reach the assistant just now, so I cannot answer that one.<br><br>"+
+      "Everything else on this page still works without it. The common questions above are answered instantly, "+
+      "the search box further down looks through the whole guide, and the run-throughs all work offline.<br><br>"+
+      "For anything urgent, Dexcom answer the phone 24 hours a day on <b>1-888-738-3646</b>.");
+  })
+  .then(function(){ setBusy(false); });
+}
+quickWrap.addEventListener("click", function(e){
+  var b = e.target.closest("[data-q]");
+  if (b) ask(QUICK[+b.dataset.q].q, +b.dataset.q);
+});
+sendbtn.onclick = function(){ ask(chatinp.value); };
+chatinp.addEventListener("keydown", function(e){ if (e.key === "Enter") ask(chatinp.value); });
+
+/* The published-artifact copy runs under a strict policy that blocks outside
+   requests, so say so up front instead of letting it fail on first use. */
+if (location.hostname.indexOf("github.io") === -1 && location.protocol !== "file:"){
+  askFoot.innerHTML = "<b>Note:</b> the typed-question assistant only runs on the live site at "+
+    "dgsc23.github.io/dc-dexcom-g7. On this preview the instant answers above still work. "+
+    "Anything about his own doses, alarm levels, or symptoms belongs with his doctor.";
+}
+
+/* ============ SIMPLE MODE ============ */
+/* Nothing is removed in simple mode. The whole guide is one tap away; this
+   is just a calmer front door for someone who is easily overwhelmed. */
+var CHEV = '<svg class="big-go" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">'+
+  '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" '+
+  'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+var MENU = [
+  { run:1, t:"An alarm went off",        s:"Read it, know what it means, make it stop", urgent:true },
+  { run:0, t:"Read my number",           s:"What the screen is telling you right now" },
+  { run:2, t:"There is no number",       s:"What to do when the screen goes blank" },
+  { run:3, t:"Put a new sensor on",      s:"All eight steps, one at a time" },
+  { run:4, t:"Change the sensor",        s:"When it is due, and how to swap it" },
+  { run:5, t:"Let family see it",        s:"Put his numbers on your phone too" },
+  { act:"ask",  t:"Ask a question",      s:"Type it the way you would say it" },
+  { act:"find", t:"Look something up",   s:"Search the whole guide by any word" },
+  { act:"call", t:"Call Dexcom for help",s:"1-888-738-3646, answered day and night" }
+];
+document.getElementById("bigMenu").innerHTML = MENU.map(function(m,i){
+  var inner = '<span class="big-txt"><b>'+m.t+"</b><span>"+m.s+"</span></span>"+CHEV;
+  if (m.act === "call") return '<a class="big" href="tel:18887383646">'+inner+"</a>";
+  return '<button class="big'+(m.urgent?" urgent":"")+'" data-menu="'+i+'">'+inner+"</button>";
+}).join("");
+
+var elSimple = document.getElementById("simple");
+var elFull   = document.getElementById("full");
+var askSlot  = document.getElementById("askSlot");
+var backBtn  = document.getElementById("backToMenu");
+var menuLab  = document.getElementById("menuLab");
+var bigMenu  = document.getElementById("bigMenu");
+var simpleSep= document.getElementById("simpleSep");
+var toFullBtn= document.getElementById("toFull");
+
+/* Panels are the real sections, borrowed from the full guide and put back
+   afterwards, so there is only ever one of each and its handlers survive. */
+var panels = {};
+function registerPanel(key, node){
+  panels[key] = { node:node, home:node.parentNode, next:node.nextSibling };
+}
+registerPanel("ask",  document.getElementById("ask"));
+registerPanel("find", document.querySelector(".filter-wrap"));
+
+var openPanel = null;
+function returnPanels(){
+  Object.keys(panels).forEach(function(k){
+    var p = panels[k];
+    if (p.node.parentNode === askSlot) p.home.insertBefore(p.node, p.next);
+  });
+  openPanel = null;
+}
+function showPanel(key){
+  returnPanels();
+  askSlot.appendChild(panels[key].node);
+  openPanel = key;
+  menuLab.hidden = bigMenu.hidden = simpleSep.hidden = toFullBtn.hidden = true;
+  backBtn.hidden = false;
+  window.scrollTo(0, 0);
+  var focusEl = key === "ask" ? document.getElementById("chatinp")
+                              : document.getElementById("filter");
+  if (focusEl) setTimeout(function(){ focusEl.focus(); }, 120);
+}
+function closePanel(){
+  returnPanels();
+  menuLab.hidden = bigMenu.hidden = simpleSep.hidden = toFullBtn.hidden = false;
+  backBtn.hidden = true;
+  window.scrollTo(0, 0);
+}
+backBtn.onclick = closePanel;
+
+function setMode(mode, keepScroll){
+  var simple = mode !== "full";
+  if (!simple) closePanel();
+  elSimple.hidden = !simple;
+  elFull.hidden = simple;
+  document.querySelector(".bar-ask").hidden = simple;
+  localStorage.setItem("g7mode", simple ? "simple" : "full");
+  if (!keepScroll) window.scrollTo(0, 0);
+}
+setMode(localStorage.getItem("g7mode") === "full" ? "full" : "simple", true);
+
+toFullBtn.onclick = function(){ setMode("full"); };
+document.getElementById("toSimple").onclick = function(){ setMode("simple"); };
+
+bigMenu.addEventListener("click", function(e){
+  var b = e.target.closest("[data-menu]");
+  if (!b) return;
+  var m = MENU[+b.dataset.menu];
+  if (typeof m.run === "number"){ openRun(m.run, b); return; }
+  if (m.act === "ask" || m.act === "find") showPanel(m.act);
+});
+
+/* ============ SEARCH ============ */
+/* Searches the whole page, not just the chapters: alarms, numbers, arrows,
+   glossary, run-throughs and the common questions all get indexed. */
+var filter  = document.getElementById("filter");
 var hitNote = document.getElementById("hitNote");
+var results = document.getElementById("results");
 var chapEls = Array.prototype.slice.call(document.querySelectorAll(".chap"));
 chapEls.forEach(function(el){ el.dataset.hay = el.textContent.toLowerCase(); });
 
-filter.addEventListener("input", function(){
-  var q = filter.value.trim().toLowerCase();
+var INDEX = [];
+/* textContent runs adjacent blocks together ("8 feet"+"How deep" becomes
+   "8 feetHow deep"), which breaks snippets and whole-word matching. Going via
+   the markup puts a space wherever a tag was, and still works on the hidden
+   full guide, which innerText does not. */
+function flatten(el){
+  return el.innerHTML
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&mdash;/g, "-").replace(/&ndash;/g, "-")
+    .replace(/\s+/g, " ").trim();
+}
+function indexAll(){
+  INDEX = [];
+  var SRC = [
+    [".card", ".card-t"], [".gl-row", ".gl-t"], [".num-row", ".num-d b"],
+    [".arrow-row", "b"], [".run-b", "b"], [".qq", null], [".chap", ".chap-t"]
+  ];
+  SRC.forEach(function(pair){
+    Array.prototype.forEach.call(document.querySelectorAll(pair[0]), function(el){
+      var sec = el.closest("section[data-label]");
+      var tEl = pair[1] ? el.querySelector(pair[1]) : el;
+      if (!tEl) return;
+      var title;
+      if (el.classList.contains("chap")){
+        // The chapter heading carries its own subtitle; keep only the name.
+        var c = tEl.cloneNode(true);
+        var sub = c.querySelector(".chap-s");
+        if (sub) sub.remove();
+        title = flatten(c);
+        var num = el.querySelector(".chap-n");
+        if (num) title = "Chapter " + flatten(num) + ": " + title;
+      } else {
+        title = flatten(tEl);
+      }
+      if (!title) return;
+      INDEX.push({
+        el: el,
+        title: title,
+        sec: sec ? sec.getAttribute("data-label")
+                 : (el.classList.contains("chap") ? "The manual" : "Guide"),
+        hay: flatten(el).toLowerCase()
+      });
+    });
+  });
+}
+indexAll();
+
+function flash(el){
+  el.classList.add("flash");
+  setTimeout(function(){ el.classList.remove("flash"); }, 1600);
+}
+function goTo(entry){
+  // Results point into the full guide, so leave simple mode to show them.
+  if (!elSimple.hidden) setMode("full", true);
+  // The target may live in a collapsed chapter or a closed accordion.
+  var d = entry.el.closest("details");
+  while (d){ d.open = true; d = d.parentNode ? d.parentNode.closest("details") : null; }
+  setTimeout(function(){
+    entry.el.scrollIntoView({ block:"center", behavior:"smooth" });
+    flash(entry.el);
+  }, 40);
+}
+
+function runSearch(){
+  var raw = filter.value.trim();
+  var q = raw.toLowerCase();
   if (!q){
     chapEls.forEach(function(el){ el.hidden = false; el.open = false; });
     hitNote.hidden = true;
+    results.innerHTML = "";
+    results.hidden = true;
     return;
   }
-  var hits = 0;
   chapEls.forEach(function(el){
-    var match = el.dataset.hay.indexOf(q) > -1;
-    el.hidden = !match;
-    el.open = match;
-    if (match) hits++;
+    var m = el.dataset.hay.indexOf(q) > -1;
+    el.hidden = !m;
+    el.open = m;
   });
+  // Chapters get rows too: in simple mode the chapter list itself is not on
+  // screen, so filtering them out would leave the count with nothing to show.
+  var hits = INDEX.filter(function(x){ return x.hay.indexOf(q) > -1; });
+  var rows = hits.slice(0, 14);
+
+  results.innerHTML = rows.map(function(x, i){
+    var at = x.hay.indexOf(q);
+    var from = Math.max(0, at - 45);
+    var lead = from ? "…" : "";
+    var snip = lead + x.hay.slice(from, at + q.length + 75) + "…";
+    // Wrap the hit in sentinels, escape everything, then swap the sentinels
+    // for real tags. That way a snippet can never inject markup.
+    var lo = lead.length + (at - from);
+    snip = snip.slice(0, lo) + "" + snip.slice(lo, lo + q.length) +
+           "" + snip.slice(lo + q.length);
+    snip = snip.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+               .replace(//g, "<mark>").replace(//g, "</mark>");
+    return '<button class="res" data-res="' + i + '"><span class="res-sec">' +
+           esc(x.sec) + '</span><b>' + esc(x.title) +
+           '</b><span class="res-snip">' + snip + '</span></button>';
+  }).join("");
+  results.hidden = !rows.length;
+  results._rows = rows;
+
   hitNote.hidden = false;
-  hitNote.textContent = hits === 0
-    ? 'Nothing matched "' + filter.value + '". Try a simpler word, or ring Dexcom on 1-888-738-3646.'
-    : hits + (hits === 1 ? " chapter mentions " : " chapters mention ") + '"' + filter.value + '"';
+  hitNote.textContent = hits.length === 0
+    ? 'Nothing matched "'+raw+'". Try a simpler word, or go back and tap Ask a question.'
+    : hits.length + (hits.length === 1 ? " place mentions " : " places mention ") +
+      '"'+raw+'"' + (hits.length > rows.length ? ", showing the first "+rows.length : "");
+}
+filter.addEventListener("input", runSearch);
+results.addEventListener("click", function(e){
+  var b = e.target.closest("[data-res]");
+  if (b && results._rows) goTo(results._rows[+b.dataset.res]);
 });
 
 })();
