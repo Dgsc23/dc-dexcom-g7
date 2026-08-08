@@ -1,0 +1,29 @@
+{
+ "name": "The Dexcom G7, in Plain English",
+ "short_name": "Dexcom G7",
+ "description": "A plain-English guide to the Dexcom G7, built from Dexcom's own user guides.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#EDEFF0",
+ "theme_color": "#EDEFF0",
+ "icons": [
+  {
+   "src": "icon.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Following Someone's Dexcom G7</title>
+<meta name="description" content="How to follow someone's Dexcom G7 from your own phone: setting up Dexcom Follow, what each alert means, and when to call.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#EDEFF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14191C" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body,h1,h2,h3,p,dl,dd,ol,figure{margin:0}
+ul{margin:0}
+img,svg{max-width:100%}
+button,input,select{font-family:inherit;font-size:inherit}
+</style>
+<style>
+:root{
+  --ground:#EDEFF0;--surface:#FAFBFB;--surface-2:#E4E8EA;
+  --ink:#1B2327;--ink-soft:#55636B;--ink-faint:#7C8991;
+  --rule:#D4DADD;--rule-strong:#B9C3C7;
+  --accent:#3F7A6E;--accent-soft:#E0EBE8;--on-accent:#FFFFFF;
+  --high:#A8791C;--low:#A6453C;--low-soft:#F6E3E0;
+  --serif:Georgia,'Iowan Old Style','Palatino Linotype',Palatino,'Times New Roman',serif;
+  --sans:'Segoe UI Variable Text','Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --mono:ui-monospace,'Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#14191C;--surface:#1D2428;--surface-2:#252E33;
+    --ink:#E6EAEC;--ink-soft:#9AA7AD;--ink-faint:#7A878D;
+    --rule:#2C363B;--rule-strong:#3D4A50;
+    --accent:#6FB3A2;--accent-soft:#1F2E2C;--on-accent:#0F1A18;
+    --high:#D9A441;--low:#D9776C;--low-soft:#2E1D1B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#14191C;--surface:#1D2428;--surface-2:#252E33;
+  --ink:#E6EAEC;--ink-soft:#9AA7AD;--ink-faint:#7A878D;
+  --rule:#2C363B;--rule-strong:#3D4A50;
+  --accent:#6FB3A2;--accent-soft:#1F2E2C;--on-accent:#0F1A18;
+  --high:#D9A441;--low:#D9776C;--low-soft:#2E1D1B;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--sans);font-size:1.09rem;line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:40rem;margin:0 auto;padding:2.75rem 1.25rem 4rem}
+.eyebrow{
+  font-size:.74rem;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--accent);font-weight:600;margin:0 0 1rem;
+}
+h1{
+  font-family:var(--serif);font-weight:400;font-size:2.4rem;line-height:1.14;
+  margin:0 0 1rem;text-wrap:balance;letter-spacing:-.012em;
+}
+h2{
+  font-family:var(--serif);font-weight:400;font-size:1.6rem;line-height:1.22;
+  margin:0 0 .8rem;text-wrap:balance;
+}
+.stand{font-size:1.15rem;color:var(--ink-soft);margin:0 0 1.5rem;text-wrap:pretty}
+p{margin:0 0 1rem;text-wrap:pretty}
+p:last-child{margin-bottom:0}
+section{padding:2.25rem 0 0;border-top:1px solid var(--rule);margin-top:2.25rem}
+.card{background:var(--surface);border:1px solid var(--rule);padding:1.3rem 1.4rem;margin-bottom:1rem}
+.card h3{font-family:var(--serif);font-weight:400;font-size:1.2rem;margin:0 0 .5rem;line-height:1.3}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1rem}
+.steps li{
+  counter-increment:s;display:grid;grid-template-columns:2rem 1fr;gap:1rem;
+  align-items:baseline;
+}
+.steps li::before{
+  content:counter(s);font-family:var(--mono);font-size:.85rem;color:var(--accent);
+  border:1px solid var(--rule-strong);border-radius:50%;
+  width:1.9rem;height:1.9rem;display:flex;align-items:center;justify-content:center;
+}
+.steps b{display:block;font-weight:600}
+.steps span{color:var(--ink-soft);font-size:.97rem}
+.rule{
+  background:var(--low-soft);border-left:3px solid var(--low);
+  padding:1.1rem 1.25rem;margin:1.25rem 0;
+}
+.rule b{display:block;font-size:1.1rem;margin-bottom:.3rem}
+.tbl{border:1px solid var(--rule);background:var(--surface)}
+.row{display:grid;grid-template-columns:9rem 1fr;gap:1rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:none}
+.row b{font-family:var(--mono);font-size:.86rem;letter-spacing:.02em}
+.row.low b{color:var(--low)}
+.row.high b{color:var(--high)}
+.row span{color:var(--ink-soft);font-size:.97rem}
+.tel{
+  display:inline-block;font-family:var(--mono);font-size:1.35rem;font-weight:600;
+  color:var(--accent);text-decoration:none;margin:.2rem 0;
+}
+.tel:hover{text-decoration:underline}
+.cta{
+  display:inline-block;background:var(--accent);color:var(--on-accent);
+  border-radius:4px;padding:.7rem 1.3rem;text-decoration:none;font-weight:600;margin-top:.5rem;
+}
+.cta:hover{filter:brightness(1.08)}
+footer{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--rule);
+  color:var(--ink-faint);font-size:.9rem}
+@media (max-width:33rem){
+  .wrap{padding:2rem 1rem 3rem}
+  h1{font-size:1.95rem}h2{font-size:1.4rem}
+  .row{grid-template-columns:1fr;gap:.15rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">For family and caregivers</p>
+  <h1>You can see his glucose on your own phone.</h1>
+  <p class="stand">It updates every five minutes. You can set your own alarm so your phone wakes you if he goes low overnight. It takes about ten minutes to set up and it is free.</p>
+
+  <section style="border-top:none;margin-top:0;padding-top:0">
+    <h2>Setting it up</h2>
+    <div class="card">
+      <ol class="steps">
+        <li><b>He turns on Share.</b><span>On his phone, in the Dexcom G7 app: Connections, then Share, then switch it on. This needs his phone. The handheld receiver on its own cannot share.</span></li>
+        <li><b>He invites you by email.</b><span>Tap Invite Follower, enter your name and email address. He chooses whether you see just the number, or the graph as well.</span></li>
+        <li><b>You install Dexcom Follow.</b><span>Open his invitation email <em>on your phone</em> and tap the link. Follow is a separate free app. You do not need the main Dexcom app.</span></li>
+        <li><b>Accept within 7 days.</b><span>Invitations expire after a week. If yours lapses, he can tap Resend Invitation.</span></li>
+        <li><b>Set your own alarms.</b><span>Tap the gear icon next to his name. Set a Low, a High, and a No Data alert. Give each one a delay so a brief dip does not wake you for nothing.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>The one rule that matters</h2>
+    <div class="rule">
+      <b>Never treat from the Follow app.</b>
+      What you see is always older than what he sees. If his number looks alarming on your phone, call him and have him look at his own screen. His device makes the decisions. Yours is a smoke detector, not a thermostat.
+    </div>
+    <p>This is Dexcom's own instruction, not caution on my part. The manual says the information followers get <em>"isn't meant to be used for treatment decisions, analysis, or teaching."</em></p>
+  </section>
+
+  <section>
+    <h2>What the alerts mean when they reach you</h2>
+    <div class="tbl">
+      <div class="row low"><b>Urgent Low</b><span>He is at 55 mg/dL or below right now. Fixed at 55 for followers and cannot be changed. This is the one to act on.</span></div>
+      <div class="row low"><b>Low</b><span>He is at or below the level you chose, usually 70. He most likely already knows: his own device alarmed first.</span></div>
+      <div class="row high"><b>High</b><span>At or above your chosen level. Rarely urgent. If he has taken insulin in the last hour or two, the correct thing is usually to wait.</span></div>
+      <div class="row"><b>No Data</b><span>Nothing is arriving. Usually a flat phone, no internet, or he has walked away from his phone. It does not mean something happened to him.</span></div>
+    </div>
+    <p style="margin-top:1rem">Both apps have to be running, both phones need internet, and both need charge. If his phone is dead you see nothing, and that is normal rather than a fault.</p>
+  </section>
+
+  <section>
+    <h2>When to call him, and when to call for help</h2>
+    <div class="card">
+      <h3>Call him</h3>
+      <p>Urgent Low, or a low that is not coming back up after a while. Ask him to look at his own screen and do a finger stick. Ask whether he has treated it.</p>
+    </div>
+    <div class="card">
+      <h3>Call emergency services</h3>
+      <p>If he is confused, cannot be roused, cannot swallow safely, or is having a seizure. Do not wait to see if the number recovers, and do not try to give food or drink to someone who is not fully alert.</p>
+    </div>
+    <div class="card">
+      <h3>Call Dexcom, not the doctor</h3>
+      <p>Equipment problems: a sensor that failed early, a patch that fell off, an error code. They answer 24 hours a day and replacements are routine.</p>
+      <a class="tel" href="tel:18887383646">1-888-738-3646</a>
+    </div>
+    <div class="card">
+      <h3>Call his doctor</h3>
+      <p>Anything clinical: changing an alarm level, changing a dose, a site that is red, swollen, or badly itchy, or a pattern you are worried about. Alarm levels are a prescription decision, not a preference.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Two things worth knowing about him</h2>
+    <p>A follower alarm at three in the morning is frightening for you, and a phone call is frightening for him. Agree in advance what you will do, so neither of you is improvising at night.</p>
+    <p>And go easy on the number of alerts you set. If your phone cries wolf every evening you will start ignoring it, which is exactly when it matters. Set the Low a little lower than you think, and add a delay.</p>
+    <a class="cta" href="./">See his full plain-English guide</a>
+  </section>
+
+  <footer>
+    <p>Everything here comes from Dexcom's official G7 user guides. This page is a plain-language companion written for one family. It is not made by Dexcom and it is not medical advice.</p>
+  </footer>
+</div>
+</body>
+</html>

@@ -8,18 +8,20 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#EDEFF0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14191C" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Dexcom G7">
-<meta name="robots" content="noindex">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129658;</text></svg>">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
-/* reset: the artifact host supplies one, Pages does not */
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body,h1,h2,h3,p,dl,dd,figure{margin:0}
+body,h1,h2,h3,p,dl,dd,ol,figure{margin:0}
 ul{margin:0}
 img,svg{max-width:100%}
-button,input{font-family:inherit;font-size:inherit}
+button,input,select{font-family:inherit;font-size:inherit}
 </style>
 <style>
 /* ============ TOKENS: light is the bare :root ============ */
@@ -509,6 +511,20 @@ body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
 }
 .back-btn::before{content:"\2190";color:var(--accent);font-size:1.1em}
 .back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.install{
+  margin-top:1.6rem;padding:1rem 1.15rem;
+  background:var(--accent-soft);border:1px solid var(--accent);border-radius:5px;
+}
+.install b{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:calc(1.2rem * var(--scale));margin-bottom:.35rem;
+}
+.install p{font-size:calc(.98rem * var(--scale));color:var(--ink-soft);margin:0}
+.install-acts{display:flex;gap:.5rem;margin-top:.85rem;flex-wrap:wrap}
+.offline-note{
+  margin-top:1.2rem;font-size:calc(.88rem * var(--scale));
+  color:var(--ink-faint);text-align:center;
+}
 
 
 /* ============ ASK / CHATBOT ============ */
@@ -531,6 +547,11 @@ body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
 .msg.u{background:var(--accent-soft);border-left:3px solid var(--accent)}
 .msg.a{background:var(--surface-2);border-left:3px solid var(--rule-strong)}
 .msg.a.canned{border-left-color:var(--accent)}
+.msg.a.canned b.who{color:var(--accent)}
+.ai-flag{
+  margin:.75rem 0 0;padding-top:.6rem;border-top:1px solid var(--rule);
+  font-size:calc(.85rem * var(--scale));color:var(--ink-faint);line-height:1.45;
+}
 .msg .say{margin-top:.7rem}
 .chatrow{display:flex;gap:.5rem;flex-wrap:wrap}
 #chatinp{
@@ -556,6 +577,67 @@ body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
   text-decoration:none;font-weight:600;line-height:1.3;white-space:nowrap;
 }
 .bar-ask:hover{filter:brightness(1.08)}
+
+/* ============ CHOICES (practice drill) ============ */
+.choices{display:flex;flex-direction:column;gap:.55rem;margin:1.3rem 0 0}
+.choice{
+  text-align:left;background:var(--surface);border:1px solid var(--rule-strong);
+  border-radius:5px;padding:.85rem 1.05rem;font-size:calc(1.05rem * var(--scale));
+  line-height:1.35;min-height:3.2rem;
+}
+.choice:hover:not([disabled]){border-color:var(--accent);background:var(--accent-soft)}
+.choice[disabled]{cursor:default;opacity:.55}
+.choice.is-right{
+  border-color:var(--accent);background:var(--accent-soft);
+  color:var(--accent);font-weight:600;opacity:1;
+}
+.choice.is-right::after{content:"  \2713";font-weight:700}
+.choice.is-picked{border-color:var(--low);background:var(--low-soft);opacity:1}
+.verdict{margin-top:1.1rem;padding:.95rem 1.1rem;font-size:calc(1.02rem * var(--scale));line-height:1.55}
+.verdict.good{background:var(--accent-soft);border-left:3px solid var(--accent)}
+.verdict.soft{background:var(--surface);border-left:3px solid var(--rule-strong)}
+.verdict b{display:block;margin-bottom:.25rem}
+
+/* ============ FORM FIELDS (tracker, my details) ============ */
+.fld{display:block;margin-bottom:.9rem}
+.fld span{
+  display:block;font-family:var(--mono);font-size:calc(.72rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);margin-bottom:.3rem;
+}
+.fld input,.fld select{
+  width:100%;font:inherit;font-size:calc(1.02rem * var(--scale));
+  padding:.65rem .75rem;background:var(--ground);color:var(--ink);
+  border:1px solid var(--rule-strong);border-radius:4px;
+}
+.saved-note{
+  font-size:calc(.85rem * var(--scale));color:var(--ink-faint);
+  margin:.2rem 0 0;
+}
+.dial-row{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}
+.dial{
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  background:var(--accent);border:1px solid var(--accent);color:var(--on-accent);
+  border-radius:5px;padding:.8rem 1.05rem;text-decoration:none;font-weight:600;
+  font-size:calc(1.05rem * var(--scale));
+}
+.dial:hover{filter:brightness(1.08)}
+.dial small{font-weight:400;opacity:.85;font-size:calc(.85rem * var(--scale))}
+.track-out{margin-top:.4rem}
+.track-line{
+  display:flex;justify-content:space-between;gap:1rem;align-items:baseline;
+  padding:.7rem 0;border-top:1px solid var(--rule);
+}
+.track-line span{color:var(--ink-soft);font-size:calc(.95rem * var(--scale))}
+.track-line b{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:calc(1.02rem * var(--scale));text-align:right;
+}
+.track-big{
+  margin-top:1rem;padding:1rem 1.1rem;background:var(--accent-soft);
+  border-left:3px solid var(--accent);font-size:calc(1.08rem * var(--scale));
+}
+.track-big.due{background:var(--low-soft);border-left-color:var(--low)}
+.track-big b{display:block;font-family:var(--serif);font-size:calc(1.3rem * var(--scale));margin-bottom:.2rem}
 
 /* ============ FILTER ============ */
 .filter-wrap{position:relative;margin-bottom:1.4rem}
@@ -599,6 +681,49 @@ footer{padding:2.5rem 0 4rem;color:var(--ink-faint);font-size:calc(.9rem * var(-
 footer p{margin-bottom:.7rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 [hidden]{display:none!important}
+
+/* ============ PRINT: the fridge card ============ */
+/* One page, black on white, only the things worth having when the phone is
+   not in your hand. Everything interactive is dropped. */
+@media print{
+  @page{margin:14mm}
+  :root{--scale:1}
+  .bar,.dock,.simple,.runner,.big-menu,.back-btn,#askSlot,
+  .say,.say-row,details.src,.filter-wrap,.results,.states,
+  .mode-link,.back-bar,.run-b,.runs,.ask-wrap,.chatrow,.quickq,
+  #s-screen svg,.sec-kicker,.chap-body,.gloss,.arrows,
+  #s-arrows,#s-family,#s-gloss,#ask,#track,#mine,footer .mast-note{
+    display:none!important;
+  }
+  #full{display:block!important}
+  body{
+    background:#fff;color:#000;font-size:10.5pt;line-height:1.4;
+    padding:0;margin:0;
+  }
+  .wrap{max-width:none;padding:0}
+  section{padding:0 0 6mm;border-top:none}
+  h1{font-size:20pt;margin-bottom:2mm}
+  h2{font-size:13pt;margin:0 0 2mm;border-bottom:1pt solid #000;padding-bottom:1mm}
+  h3,.card-t{font-size:11pt;margin:0 0 1mm}
+  .mast{padding:0 0 5mm}
+  .standfirst{font-size:11pt;margin-bottom:3mm}
+  .card{border:none;padding:0 0 3mm;background:none;break-inside:avoid}
+  .dot{display:none}
+  .nums{border:1pt solid #000}
+  .num-row{
+    grid-template-columns:5.5rem 1fr;padding:1.2mm 2mm;
+    border-bottom:.4pt solid #999;break-inside:avoid;
+  }
+  .num-v{font-size:10pt;color:#000!important}
+  .num-d span{font-size:9pt;color:#333}
+  .call{border:1.5pt solid #000;padding:3mm;break-inside:avoid}
+  .tel{font-size:16pt;color:#000}
+  .inside{background:none;border:.5pt solid #666;padding:2mm}
+  .lede{font-weight:600}
+  a{color:#000;text-decoration:none}
+  .print-only{display:block!important}
+}
+.print-only{display:none}
 
 /* ============ PHONE ============ */
 @media (max-width:33rem){
@@ -659,6 +784,64 @@ input,select,textarea{font-size:max(16px,1rem)}
 
   <button class="back-btn" id="backToMenu" hidden>Back to the buttons</button>
   <div id="askSlot"></div>
+
+  <!-- Panels that live only in simple mode -->
+  <section id="track" data-label="When is it due" hidden>
+    <div class="sec-head">
+      <span class="sec-kicker">Sensor dates</span>
+      <h2>When does this one come off?</h2>
+      <p class="sec-sub">Tap the day you put it on. Everything else works itself out. This is saved on this phone only.</p>
+    </div>
+    <div class="card">
+      <label class="fld"><span>The day I put it on</span>
+        <input type="date" id="tStart"></label>
+      <label class="fld"><span>Which arm</span>
+        <select id="tArm">
+          <option value="left">Left arm</option>
+          <option value="right">Right arm</option>
+        </select></label>
+      <div id="tOut" class="track-out"></div>
+    </div>
+  </section>
+
+  <section id="mine" data-label="My own details" hidden>
+    <div class="sec-head">
+      <span class="sec-kicker">My own details</span>
+      <h2>Your numbers and your people</h2>
+      <p class="sec-sub">Fill this in once with your doctor. It is saved on this phone only and is never sent anywhere.</p>
+    </div>
+    <div class="card">
+      <label class="fld"><span>My Low alarm is set to</span>
+        <input type="text" id="mLow" inputmode="numeric" placeholder="70"></label>
+      <label class="fld"><span>My High alarm is set to</span>
+        <input type="text" id="mHigh" inputmode="numeric" placeholder="250"></label>
+      <label class="fld"><span>What I take for a low</span>
+        <input type="text" id="mTreat" placeholder="e.g. 4 glucose tablets, then recheck"></label>
+      <label class="fld"><span>My doctor</span>
+        <input type="text" id="mDocName" placeholder="Name"></label>
+      <label class="fld"><span>Doctor's phone</span>
+        <input type="tel" id="mDocTel" placeholder="Phone number"></label>
+      <label class="fld"><span>My pharmacy</span>
+        <input type="tel" id="mPharm" placeholder="Phone number"></label>
+      <label class="fld"><span>Who to call first</span>
+        <input type="text" id="mKinName" placeholder="Name"></label>
+      <label class="fld"><span>Their phone</span>
+        <input type="tel" id="mKinTel" placeholder="Phone number"></label>
+      <p class="saved-note" id="mSaved">Saved automatically as you type.</p>
+      <div id="mDial" class="dial-row"></div>
+    </div>
+  </section>
+
+  <div class="install" id="install" hidden>
+    <b>Put this on your home screen</b>
+    <p id="installHow"></p>
+    <div class="install-acts">
+      <button class="btn" id="installGo" hidden>Add it</button>
+      <button class="btn" id="installNo">No thanks</button>
+    </div>
+  </div>
+
+  <p class="offline-note" id="offlineNote" hidden></p>
 
   <hr class="simple-sep" id="simpleSep">
   <button class="mode-link" id="toFull">Show me the whole guide</button>
@@ -1532,6 +1715,41 @@ var RUNS = [
     { h:"New sensor, new spot.", p:["Only one sensor at a time, and never the same site twice in a row.","The eight insertion steps are in the speed run above if you want them one at a time."] }
   ]},
 
+  { id:"unwell", t:"I do not feel right", n:"5 steps", steps:[
+    { h:"Stop what you are doing and sit down.", p:["Shaky, sweaty, confused, weak, or just not yourself. Whatever the screen says, that feeling is worth taking seriously.","Sit down first. If this turns out to be a low, you do not want to be standing on a ladder or behind a wheel."] },
+    { h:"Do not go by the screen right now.", p:["This is the one situation where the Dexcom does not get the final say, even when it is showing a perfectly good number and arrow.","The manual is blunt about it: when how you feel does not match your reading, use the meter."], flagWarn:"When in doubt, get your meter out. Those are the manual's own words." },
+    { h:"Wash your hands. Soap and water.", p:["Not hand sanitizer. Soap and water, then dry them properly.","Unwashed hands are the single most common cause of a wrong meter reading, and a wrong reading right now is the last thing you need."] },
+    { h:"Do a finger stick.", p:["Use a fingertip, not the arm or the palm.","If the meter agrees with how you feel, treat off the meter, exactly the way your doctor told you to."] },
+    { h:"If it is not turning around, get help.", p:["Treat it, then give it a few minutes and check again.","If you are not coming back up, or you feel worse, do not sit and wait it out on your own. Call someone, and if it is severe, get emergency help."], flagWarn:"The manual says it plainly: if needed, seek immediate medical attention. Nobody will think you overreacted." }
+  ]},
+
+  { id:"practice", t:"Practice: what would you do?", n:"8 situations", unit:"Situation", steps:[
+    { h:"Early morning. Your Low alarm wakes you.", p:["The screen shows <b>70</b> with a slanted down arrow.","You have a number and you have an arrow. Your sugar is 70, which is low, and it is drifting down 30 to 60 in half an hour."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:0,
+      answer:"You have both a number and an arrow, and no reason to doubt them, so the Dexcom is enough. Treat the way you normally would." },
+    { h:"Breakfast, ninety minutes later.", p:["The screen shows <b>132</b> with a straight up arrow.","Rising 60 to 90 in half an hour."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:0,
+      answer:"Number and arrow are both there. Take your normal dose, and because of that up arrow, the manual says consider a little more. How much more is a conversation for your doctor." },
+    { h:"Thirty minutes after breakfast. A High alarm.", p:["The screen shows <b>221</b>.","You took your insulin half an hour ago."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:1,
+      answer:"Nothing. This is the big one. Insulin takes time to work, and the dose you took 30 minutes ago is only just getting going. Taking more on top of it is stacking, and that is how people crash a few hours later." },
+    { h:"An hour after that.", p:["The screen shows <b>117</b>.","You watched and waited, and the insulin did its job."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:1,
+      answer:"Nothing at all. You are back in range. Waiting was the right call, and this is what it looks like when it works." },
+    { h:"Mid-morning, about to have a snack.", p:["The screen says <b>Signal Loss</b>. No number, no arrow."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:2,
+      answer:"Meter. No number and no arrow means the Dexcom does not get a vote. Use the meter, and bring your phone or receiver closer to the sensor while you eat." },
+    { h:"Lunch, three hours later.", p:["The screen shows <b>108</b> with a straight down arrow.","Falling 60 to 90 in half an hour."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:0,
+      answer:"Number and arrow are both there, so the Dexcom is enough. Dose for lunch, and because it is falling, the manual says consider a little less than usual. Again, the amount is your doctor's call." },
+    { h:"Mid-afternoon, three hours after lunch.", p:["The screen shows <b>252</b>, and <b>no arrow at all</b>."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:2,
+      answer:"Meter. A high number is tempting to act on, but there is no arrow, so you do not know if it is climbing, falling, or sitting still. No arrow is the same as no number: get the meter out." },
+    { h:"Early evening. You feel shaky and sweaty.", p:["The screen shows <b>123</b> with a flat arrow. On paper, you are fine."],
+      choices:["Treat, using the Dexcom","Do nothing, watch and wait","Use the finger stick meter"], correct:2,
+      answer:"Meter. Your body and the screen disagree, and your body wins that argument every time. Wash your hands, do a finger stick, and if the meter matches how you feel, treat off the meter." }
+  ]},
+
   { id:"family", t:"Let my family see my numbers", n:"4 steps", steps:[
     { h:"This is done on your phone, once.", p:["It needs the phone app. The receiver on its own cannot share.","Open the app and go to Connections, then Share. Turn Share on."] },
     { h:"Invite them by email.", p:["Tap Invite Follower and put in their name and email address.","Then choose what they get to see: just the number and arrow, or the trend graph as well. You pick, and you can change it later."] },
@@ -1560,20 +1778,48 @@ var cur = null, curIdx = 0, idx = 0, opener = null;
 function paintStep(){
   var st = cur.steps[idx], n = cur.steps.length;
   elTitle.textContent = cur.t;
-  elCount.textContent = "Step " + (idx+1) + " of " + n;
+  elCount.textContent = (cur.unit || "Step") + " " + (idx+1) + " of " + n;
   elHead.textContent  = st.h;
   var html = st.p.map(function(x){ return '<p class="step-p">'+x+"</p>"; }).join("");
+  if (st.choices){
+    html += '<div class="choices" id="choices">' + st.choices.map(function(c, i){
+      return '<button class="choice" data-choice="'+i+'">'+c+"</button>";
+    }).join("") + "</div><div id=\"verdict\"></div>";
+  }
   if (st.flag)     html += '<div class="step-flag">'+st.flag+"</div>";
   if (st.flagWarn) html += '<div class="step-flag warn">'+st.flagWarn+"</div>";
   elBody.innerHTML = html;
   var pips = "";
   for (var i = 0; i < n; i++) pips += '<span class="pip'+(i<=idx?" done":"")+'"></span>';
   elPips.innerHTML = pips;
+  // A question step holds Next back until it has been answered, so nobody
+  // skips past without thinking. Answering is never scored or tallied.
+  if (st.choices){
+    var ch = document.getElementById("choices");
+    var vd = document.getElementById("verdict");
+    ch.addEventListener("click", function(e){
+      var b = e.target.closest("[data-choice]");
+      if (!b || ch.dataset.done) return;
+      ch.dataset.done = "1";
+      var picked = +b.dataset.choice, right = picked === st.correct;
+      Array.prototype.forEach.call(ch.querySelectorAll(".choice"), function(x, i){
+        x.disabled = true;
+        if (i === st.correct) x.classList.add("is-right");
+        else if (i === picked) x.classList.add("is-picked");
+      });
+      vd.innerHTML = '<div class="verdict '+(right?"good":"soft")+'">'+
+        "<b>"+(right ? "That is it." : "Not this time, and this one catches people out.")+"</b> "+
+        st.answer + "</div>";
+      btnNext.disabled = false;
+      vd.scrollIntoView({ block:"nearest", behavior:"smooth" });
+    });
+  }
   var last = idx === n - 1;
   btnBack.disabled = idx === 0;
   // On the last step the big coloured button becomes Finish, so the
   // primary action is never a greyed-out one.
   btnNext.hidden = last;
+  if (st.choices && !last) btnNext.disabled = true;
   btnDone.className = last ? "btn-lg" : "btn-gh";
   btnDone.textContent = last ? "That's everything. Close." : "Finish early";
   // Next vanishes on the last step, so don't let focus vanish with it.
@@ -1605,7 +1851,10 @@ document.getElementById("runClose").onclick = closeRun;
 btnSay.onclick = function(){
   var st = cur.steps[idx];
   var txt = st.h + " " + st.p.join(" ") + " " + (st.flag||"") + " " + (st.flagWarn||"");
-  speak(btnSay, txt.replace(/<[^>]+>/g," ").replace(/\s+/g," "), "ava", "run-" + curIdx + "-" + idx);
+  if (st.choices) txt += " Your choices are: " + st.choices.map(function(c, ci){
+    return (ci + 1) + ". " + c + ".";
+  }).join(" ");
+  speak(btnSay, txt.replace(/<[^>]+>/g," ").replace(/\s+/g," "), "ava", "run-" + cur.id + "-" + idx);
 };
 document.addEventListener("keydown", function(e){
   if (runner.hidden) return;
@@ -1765,9 +2014,17 @@ function esc(s){
 function addMsg(role, html, canned, clipId){
   var d = document.createElement("div");
   d.className = "msg " + (role === "user" ? "u" : "a") + (canned ? " canned" : "");
-  var who = role === "user" ? "You asked" : "Answer";
+  // A verified answer and a machine-written one must not look the same when
+  // the subject is insulin.
+  var who = role === "user" ? "You asked"
+          : canned ? "Straight from the manual"
+                   : "Answered by the assistant";
   var id = "say" + (++sayId);
   d.innerHTML = '<b class="who">'+who+'</b><span id="'+id+'">'+html+"</span>";
+  if (role !== "user" && !canned){
+    d.innerHTML += '<p class="ai-flag">Written by an assistant that was given the manual. '+
+      'It can still get things wrong. Doses, alarm levels, and how you are feeling are for your doctor.</p>';
+  }
   var b = document.createElement("button");
   b.className = "say";
   b.setAttribute("data-say", "#" + id);
@@ -1856,16 +2113,25 @@ var CHEV = '<svg class="big-go" width="22" height="22" viewBox="0 0 24 24" aria-
   'stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 var MENU = [
-  { run:1, t:"An alarm went off",        s:"Read it, know what it means, make it stop", urgent:true },
-  { run:0, t:"Read my number",           s:"What the screen is telling you right now" },
-  { run:2, t:"There is no number",       s:"What to do when the screen goes blank" },
-  { run:3, t:"Put a new sensor on",      s:"All eight steps, one at a time" },
-  { run:4, t:"Change the sensor",        s:"When it is due, and how to swap it" },
-  { run:5, t:"Let my family see it",     s:"Put your numbers on their phone too" },
+  { run:"unwell", t:"I do not feel right",  s:"Shaky, sweaty, or just not yourself", urgent:true },
+  { run:"alarm",  t:"An alarm went off",    s:"Read it, know what it means, make it stop", urgent:true },
+  { run:"read",   t:"Read my number",       s:"What the screen is telling you right now" },
+  { run:"nonum",  t:"There is no number",   s:"What to do when the screen goes blank" },
+  { act:"track",  t:"When is it due?",      s:"Sensor dates, and which arm is next" },
+  { run:"insert", t:"Put a new sensor on",  s:"All eight steps, one at a time" },
+  { run:"swap",   t:"Change the sensor",    s:"When it is due, and how to swap it" },
+  { run:"practice", t:"Practice: what would you do?", s:"Eight real situations from the manual" },
+  { run:"family", t:"Let my family see it", s:"Put your numbers on their phone too" },
+  { act:"mine",   t:"My own details",       s:"Your levels, your doctor, your pharmacy" },
+  { act:"print",  t:"Print the fridge card", s:"One page of the things worth having on paper" },
   { act:"ask",  t:"Ask a question",      s:"Type it the way you would say it" },
   { act:"find", t:"Look something up",   s:"Search the whole guide by any word" },
   { act:"call", t:"Call Dexcom for help",s:"1-888-738-3646, answered day and night" }
 ];
+function runIdx(id){
+  for (var i = 0; i < RUNS.length; i++) if (RUNS[i].id === id) return i;
+  return -1;
+}
 document.getElementById("bigMenu").innerHTML = MENU.map(function(m,i){
   var inner = '<span class="big-txt"><b>'+m.t+"</b><span>"+m.s+"</span></span>"+CHEV;
   if (m.act === "call") return '<a class="big" href="tel:18887383646">'+inner+"</a>";
@@ -1889,18 +2155,113 @@ function registerPanel(key, node){
 }
 registerPanel("ask",  document.getElementById("ask"));
 registerPanel("find", document.querySelector(".filter-wrap"));
+// These two live inside simple mode already, so they stay hidden until asked
+// for rather than being borrowed from the full guide.
+registerPanel("track", document.getElementById("track"));
+registerPanel("mine",  document.getElementById("mine"));
+panels.track.ownHide = panels.mine.ownHide = true;
+
+/* ============ SENSOR TRACKER ============ */
+/* Everything here stays in this browser. Nothing is sent anywhere and nothing
+   personal is ever committed to the repository. */
+var DAYNAME = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var MONTH = ["January","February","March","April","May","June","July",
+             "August","September","October","November","December"];
+function fmtDate(d){
+  return DAYNAME[d.getDay()] + ", " + MONTH[d.getMonth()] + " " + d.getDate();
+}
+function startOfDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+
+var tStart = document.getElementById("tStart");
+var tArm   = document.getElementById("tArm");
+var tOut   = document.getElementById("tOut");
+
+function paintTracker(){
+  var v = tStart.value;
+  if (!v){
+    tOut.innerHTML = '<p class="saved-note">Pick the day it went on and the dates will appear here.</p>';
+    return;
+  }
+  var parts = v.split("-");
+  var on = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+  var days = (localStorage.getItem("g7ver") === "15") ? 15 : 10;
+  var ends = new Date(on.getTime()); ends.setDate(ends.getDate() + days);
+  var today = startOfDay(new Date());
+  var left = Math.round((startOfDay(ends) - today) / 86400000);
+  var nextArm = tArm.value === "left" ? "right" : "left";
+
+  var head;
+  if (left > 1)       head = '<b>' + left + " days to go</b>You have plenty of time. Nothing to do yet.";
+  else if (left === 1) head = "<b>Tomorrow</b>Worth checking you have a spare sensor in the house.";
+  else if (left === 0) head = "<b>Today</b>It runs out today, then you get 12 more hours of grace. Change it when it suits you.";
+  else if (left > -1)  head = "<b>In the grace period</b>It still works normally. Change it at your convenience.";
+  else                head = "<b>This one is overdue</b>Time to put a fresh one on.";
+  var urgent = left <= 0;
+
+  tOut.innerHTML =
+    '<div class="track-line"><span>Put on</span><b>' + fmtDate(on) + "</b></div>" +
+    '<div class="track-line"><span>Lasts</span><b>' + days + " days</b></div>" +
+    '<div class="track-line"><span>Runs out</span><b>' + fmtDate(ends) +
+      ", around the time of day you put it on</b></div>" +
+    // Only the date was entered, so never invent a clock time for the expiry.
+    '<div class="track-line"><span>Then grace</span><b>12 more hours</b></div>' +
+    '<div class="track-line"><span>Next one goes on the</span><b>' + nextArm + " arm</b></div>" +
+    '<div class="track-big' + (urgent ? " due" : "") + '">' + head + "</div>";
+}
+["change","input"].forEach(function(ev){
+  tStart.addEventListener(ev, function(){
+    localStorage.setItem("g7start", tStart.value); paintTracker();
+  });
+  tArm.addEventListener(ev, function(){
+    localStorage.setItem("g7arm", tArm.value); paintTracker();
+  });
+});
+tStart.value = localStorage.getItem("g7start") || "";
+tArm.value   = localStorage.getItem("g7arm") || "left";
+paintTracker();
+
+/* ============ MY OWN DETAILS ============ */
+var MINE = ["mLow","mHigh","mTreat","mDocName","mDocTel","mPharm","mKinName","mKinTel"];
+function paintDial(){
+  var rows = [
+    ["mDocTel", "Call " + (document.getElementById("mDocName").value.trim() || "my doctor"), "Doctor"],
+    ["mKinTel", "Call " + (document.getElementById("mKinName").value.trim() || "my first call"), "Family"],
+    ["mPharm",  "Call my pharmacy", "Pharmacy"]
+  ];
+  var html = rows.map(function(r){
+    var tel = document.getElementById(r[0]).value.replace(/[^\d+]/g, "");
+    if (!tel) return "";
+    return '<a class="dial" href="tel:' + tel + '"><span>' + esc(r[1]) +
+           "</span><small>" + r[2] + "</small></a>";
+  }).join("");
+  html += '<a class="dial" href="tel:18887383646"><span>Call Dexcom</span><small>24 hours</small></a>';
+  document.getElementById("mDial").innerHTML = html;
+}
+MINE.forEach(function(id){
+  var el = document.getElementById(id);
+  el.value = localStorage.getItem("g7mine_" + id) || "";
+  el.addEventListener("input", function(){
+    localStorage.setItem("g7mine_" + id, el.value);
+    paintDial();
+  });
+});
+paintDial();
 
 var openPanel = null;
 function returnPanels(){
   Object.keys(panels).forEach(function(k){
     var p = panels[k];
-    if (p.node.parentNode === askSlot) p.home.insertBefore(p.node, p.next);
+    if (p.node.parentNode === askSlot){
+      p.home.insertBefore(p.node, p.next);
+      if (p.ownHide) p.node.hidden = true;
+    }
   });
   openPanel = null;
 }
 function showPanel(key){
   returnPanels();
   askSlot.appendChild(panels[key].node);
+  panels[key].node.hidden = false;
   openPanel = key;
   menuLab.hidden = bigMenu.hidden = simpleSep.hidden = toFullBtn.hidden = true;
   backBtn.hidden = false;
@@ -1935,8 +2296,17 @@ bigMenu.addEventListener("click", function(e){
   var b = e.target.closest("[data-menu]");
   if (!b) return;
   var m = MENU[+b.dataset.menu];
-  if (typeof m.run === "number"){ openRun(m.run, b); return; }
-  if (m.act === "ask" || m.act === "find") showPanel(m.act);
+  if (m.run){ openRun(runIdx(m.run), b); return; }
+  if (m.act === "print"){
+    // The print sheet is styled off the full guide, so it has to be the
+    // thing on screen when the dialog opens.
+    var was = elSimple.hidden ? "full" : "simple";
+    setMode("full", true);
+    window.print();
+    if (was === "simple") setMode("simple", true);
+    return;
+  }
+  if (m.act) showPanel(m.act);
 });
 
 /* Dock. Ask and Search always land in the same place no matter where you were,
@@ -2012,11 +2382,15 @@ window.__manifest = function(){
                voice:b.getAttribute("data-voice") || "ava",
                text:(src.textContent || "").replace(/\s+/g," ").trim() });
   });
-  RUNS.forEach(function(r, ri){
+  RUNS.forEach(function(r){
     r.steps.forEach(function(st, si){
-      out.push({ id:"run-" + ri + "-" + si, voice:"ava",
-                 text:[st.h].concat(st.p, st.flag || [], st.flagWarn || []).join(" ")
-                        .replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim() });
+      var say = [st.h].concat(st.p, st.flag || [], st.flagWarn || []);
+      // Read the options aloud too, but never the answer: that is the point.
+      if (st.choices) say = say.concat("Your choices are:", st.choices.map(function(c, ci){
+        return (ci + 1) + ". " + c + ".";
+      }));
+      out.push({ id:"run-" + r.id + "-" + si, voice:"ava",
+                 text:say.join(" ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim() });
     });
   });
   QUICK.forEach(function(x, i){
@@ -2031,6 +2405,58 @@ window.__manifest = function(){
     seen[x.id] = 1; return true;
   });
 };
+
+/* ============ HOME SCREEN + OFFLINE ============ */
+/* A bookmark he cannot find is a page he never opens, so this asks once and
+   then stays out of the way. */
+(function install(){
+  var box   = document.getElementById("install");
+  var how   = document.getElementById("installHow");
+  var goBtn = document.getElementById("installGo");
+  var noBtn = document.getElementById("installNo");
+  var note  = document.getElementById("offlineNote");
+  var standalone = window.matchMedia("(display-mode: standalone)").matches ||
+                   window.navigator.standalone === true;
+  var dismissed = localStorage.getItem("g7install") === "no";
+  var prompt = null;
+
+  var ua = navigator.userAgent;
+  var isiOS = /iPad|iPhone|iPod/.test(ua) ||
+              (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  if (!standalone && !dismissed){
+    how.textContent = isiOS
+      ? "Tap the share button at the bottom of Safari, the square with the arrow coming out of it. Scroll down and tap Add to Home Screen. It will sit with your other apps."
+      : "Open your browser's menu and choose Add to Home screen, or Install. It will sit with your other apps.";
+    box.hidden = false;
+  }
+
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault();
+    prompt = e;
+    if (box.hidden) return;
+    goBtn.hidden = false;
+    how.textContent = "One tap and it sits with your other apps, so you never have to go looking for it.";
+  });
+  goBtn.onclick = function(){
+    if (!prompt) return;
+    prompt.prompt();
+    prompt.userChoice.then(function(){ box.hidden = true; prompt = null; });
+  };
+  noBtn.onclick = function(){
+    localStorage.setItem("g7install","no");
+    box.hidden = true;
+  };
+
+  if ("serviceWorker" in navigator && location.protocol === "https:"){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").then(function(){
+        note.textContent = "Saved to this phone. It keeps working with no signal.";
+        note.hidden = false;
+      }).catch(function(){});
+    });
+  }
+})();
 
 /* ============ SEARCH ============ */
 /* Searches the whole page, not just the chapters: alarms, numbers, arrows,
