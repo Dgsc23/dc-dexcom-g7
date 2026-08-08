@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Dexcom G7, in Plain English</title>
+<meta name="description" content="A plain-English walkthrough of the whole Dexcom G7 manual: what the screen means, every alarm, and step-by-step run-throughs. Built from Dexcom's own user guides.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#EDEFF0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14191C" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dexcom G7">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129658;</text></svg>">
+<style>
+/* reset: the artifact host supplies one, Pages does not */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body,h1,h2,h3,p,dl,dd,figure{margin:0}
+ul{margin:0}
+img,svg{max-width:100%}
+button,input{font-family:inherit;font-size:inherit}
+</style>
+<style>
+/* ============ TOKENS: light is the bare :root ============ */
+:root{
+  --ground:#EDEFF0;
+  --surface:#FAFBFB;
+  --surface-2:#E4E8EA;
+  --ink:#1B2327;
+  --ink-soft:#55636B;
+  --ink-faint:#7C8991;
+  --rule:#D4DADD;
+  --rule-strong:#B9C3C7;
+  --accent:#3F7A6E;
+  --accent-soft:#E0EBE8;
+  --on-accent:#FFFFFF;
+  --high:#A8791C;
+  --high-soft:#F5EBD5;
+  --low:#A6453C;
+  --low-soft:#F6E3E0;
+  --band:#DDE3E4;
+  --focus:#3F7A6E;
+
+  --serif:Georgia,'Iowan Old Style','Palatino Linotype',Palatino,'Times New Roman',serif;
+  --sans:'Segoe UI Variable Text','Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --mono:ui-monospace,'Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  --scale:1;
+  --col:41rem;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#14191C;
+    --surface:#1D2428;
+    --surface-2:#252E33;
+    --ink:#E6EAEC;
+    --ink-soft:#9AA7AD;
+    --ink-faint:#7A878D;
+    --rule:#2C363B;
+    --rule-strong:#3D4A50;
+    --accent:#6FB3A2;
+    --accent-soft:#1F2E2C;
+    --on-accent:#0F1A18;
+    --high:#D9A441;
+    --high-soft:#2E2718;
+    --low:#D9776C;
+    --low-soft:#2E1D1B;
+    --band:#283238;
+    --focus:#6FB3A2;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#14191C;
+  --surface:#1D2428;
+  --surface-2:#252E33;
+  --ink:#E6EAEC;
+  --ink-soft:#9AA7AD;
+  --ink-faint:#7A878D;
+  --rule:#2C363B;
+  --rule-strong:#3D4A50;
+  --accent:#6FB3A2;
+  --accent-soft:#1F2E2C;
+  --on-accent:#0F1A18;
+  --high:#D9A441;
+  --high-soft:#2E2718;
+  --low:#D9776C;
+  --low-soft:#2E1D1B;
+  --band:#283238;
+  --focus:#6FB3A2;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:calc(1.125rem * var(--scale));
+  line-height:1.62;
+  -webkit-text-size-adjust:100%;
+}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ============ SHELL ============ */
+.wrap{max-width:var(--col);margin:0 auto;padding:0 1.25rem}
+.bleed{border-top:1px solid var(--rule)}
+
+/* ============ TOP BAR ============ */
+.bar{
+  position:sticky;top:0;z-index:40;
+  background:var(--ground);
+  border-bottom:1px solid var(--rule);
+}
+.bar-in{
+  max-width:var(--col);margin:0 auto;padding:.55rem 1.25rem;
+  display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
+}
+.bar-name{
+  font-family:var(--serif);font-size:calc(1rem * var(--scale));
+  margin-right:auto;letter-spacing:.01em;
+}
+.ctrl{display:flex;align-items:center;gap:.3rem}
+.ctrl-lab{
+  font-size:calc(.72rem * var(--scale));text-transform:uppercase;
+  letter-spacing:.11em;color:var(--ink-faint);
+}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{
+  background:var(--surface);border:1px solid var(--rule-strong);
+  padding:.32rem .7rem;border-radius:3px;line-height:1.2;
+}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sz{font-family:var(--serif);min-width:2.4rem}
+.btn-sz.big{font-size:calc(1.15rem * var(--scale))}
+
+/* ============ MASTHEAD ============ */
+.mast{padding:3.25rem 0 2.25rem}
+.eyebrow{
+  font-size:calc(.74rem * var(--scale));text-transform:uppercase;
+  letter-spacing:.16em;color:var(--accent);font-weight:600;margin:0 0 1rem;
+}
+h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:calc(2.6rem * var(--scale));line-height:1.12;
+  margin:0 0 1rem;text-wrap:balance;letter-spacing:-.012em;
+}
+.standfirst{
+  font-size:calc(1.2rem * var(--scale));color:var(--ink-soft);
+  margin:0 0 1.5rem;text-wrap:pretty;
+}
+.mast-note{
+  font-size:calc(.94rem * var(--scale));color:var(--ink-soft);
+  border-left:2px solid var(--rule-strong);padding-left:1rem;margin:0;
+}
+
+/* ============ SECTIONS ============ */
+section{padding:2.75rem 0 .5rem}
+.sec-head{margin:0 0 1.6rem}
+.sec-kicker{
+  font-family:var(--mono);font-size:calc(.72rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);
+  display:block;margin-bottom:.5rem;
+}
+h2{
+  font-family:var(--serif);font-weight:400;
+  font-size:calc(1.85rem * var(--scale));line-height:1.2;
+  margin:0 0 .5rem;text-wrap:balance;letter-spacing:-.008em;
+}
+h3{
+  font-family:var(--serif);font-weight:400;
+  font-size:calc(1.28rem * var(--scale));line-height:1.28;
+  margin:0 0 .45rem;text-wrap:balance;
+}
+.sec-sub{color:var(--ink-soft);margin:0;font-size:calc(1.02rem * var(--scale))}
+p{margin:0 0 1rem;text-wrap:pretty}
+p:last-child{margin-bottom:0}
+strong{font-weight:600}
+a{color:var(--accent);text-underline-offset:.18em}
+
+/* ============ CARDS ============ */
+.stack{display:flex;flex-direction:column;gap:1rem}
+.card{
+  background:var(--surface);border:1px solid var(--rule);
+  padding:1.35rem 1.4rem;
+}
+.card-t{
+  display:flex;align-items:baseline;gap:.6rem;margin:0 0 .55rem;
+  font-family:var(--serif);font-size:calc(1.22rem * var(--scale));line-height:1.3;
+}
+.dot{
+  width:.62rem;height:.62rem;border-radius:50%;flex:none;
+  background:var(--ink-faint);transform:translateY(-.12em);
+}
+.dot.is-low{background:var(--low)}
+.dot.is-high{background:var(--high)}
+.dot.is-ok{background:var(--accent)}
+.card p{font-size:calc(1.05rem * var(--scale))}
+.lede{font-size:calc(1.12rem * var(--scale))}
+
+/* the manual's exact words */
+details.src{margin-top:.9rem;border-top:1px solid var(--rule);padding-top:.7rem}
+details.src>summary{
+  cursor:pointer;list-style:none;
+  font-family:var(--mono);font-size:calc(.76rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.09em;color:var(--ink-faint);
+}
+details.src>summary::-webkit-details-marker{display:none}
+details.src>summary::before{content:"+ ";color:var(--accent)}
+details.src[open]>summary::before{content:"– "}
+details.src>summary:hover{color:var(--accent)}
+.quote{
+  margin:.8rem 0 0;padding:.85rem 1rem;background:var(--surface-2);
+  font-size:calc(.96rem * var(--scale));color:var(--ink-soft);
+  border-left:2px solid var(--rule-strong);
+}
+.quote p{font-size:inherit}
+.cite{
+  display:block;margin-top:.6rem;font-family:var(--mono);
+  font-size:calc(.74rem * var(--scale));color:var(--ink-faint);letter-spacing:.02em;
+}
+
+/* ============ READ ALOUD ============ */
+.say{
+  background:none;border:1px solid var(--rule-strong);border-radius:999px;
+  padding:.24rem .72rem;font-size:calc(.8rem * var(--scale));
+  color:var(--ink-soft);line-height:1.3;white-space:nowrap;
+}
+.say:hover{border-color:var(--accent);color:var(--accent)}
+.say[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.say-row{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
+
+/* ============ HERO SCREEN ============ */
+.screen{
+  background:var(--surface);border:1px solid var(--rule-strong);
+  padding:1.25rem;
+}
+.screen-top{display:flex;align-items:center;gap:1rem;margin-bottom:.9rem}
+.read-num{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:calc(3.4rem * var(--scale));line-height:1;font-weight:600;
+  letter-spacing:-.02em;
+}
+.read-unit{
+  font-family:var(--mono);font-size:calc(.85rem * var(--scale));
+  color:var(--ink-faint);letter-spacing:.06em;
+}
+.read-num.is-low{color:var(--low)}
+.read-num.is-high{color:var(--high)}
+svg{display:block;max-width:100%;height:auto}
+.states{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.state-b{
+  background:var(--surface);border:1px solid var(--rule-strong);
+  padding:.4rem .85rem;border-radius:3px;font-size:calc(.92rem * var(--scale));
+}
+.state-b[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.callouts{
+  display:grid;grid-template-columns:auto 1fr;gap:.55rem 1rem;
+  margin-top:1.25rem;font-size:calc(.98rem * var(--scale));
+}
+.callouts dt{font-family:var(--mono);font-size:calc(.82rem * var(--scale));color:var(--accent);padding-top:.18em}
+.callouts dd{margin:0;color:var(--ink-soft)}
+
+/* ============ ARROW TABLE ============ */
+.arrows{display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);background:var(--surface)}
+.arrow-row{
+  display:grid;grid-template-columns:3.4rem 1fr;gap:1rem;align-items:center;
+  padding:.85rem 1.1rem;border-bottom:1px solid var(--rule);
+}
+.arrow-row:last-child{border-bottom:none}
+.arrow-row b{display:block;font-weight:600}
+.arrow-row span{color:var(--ink-soft);font-size:calc(.95rem * var(--scale))}
+.arrow-art{display:flex;justify-content:center}
+
+/* ============ SPEED RUNS ============ */
+.runs{display:grid;gap:.7rem;grid-template-columns:1fr}
+@media(min-width:34rem){.runs{grid-template-columns:1fr 1fr}}
+.run-b{
+  text-align:left;background:var(--surface);border:1px solid var(--rule-strong);
+  padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.28rem;
+}
+.run-b:hover{border-color:var(--accent)}
+.run-b b{font-family:var(--serif);font-weight:400;font-size:calc(1.14rem * var(--scale));line-height:1.25}
+.run-b span{font-size:calc(.86rem * var(--scale));color:var(--ink-faint);font-family:var(--mono);letter-spacing:.03em}
+
+.runner[hidden]{display:none}
+.runner{
+  position:fixed;inset:0;z-index:100;background:var(--ground);
+  display:flex;flex-direction:column;
+}
+.runner-bar{
+  border-bottom:1px solid var(--rule);padding:.7rem 1.25rem;
+  display:flex;align-items:center;gap:1rem;
+  max-width:var(--col);margin:0 auto;width:100%;
+}
+.runner-title{
+  font-family:var(--mono);font-size:calc(.78rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);
+  margin-right:auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.runner-body{
+  flex:1;overflow-y:auto;display:flex;align-items:center;
+  padding:1.5rem 1.25rem;
+}
+.runner-inner{max-width:var(--col);margin:0 auto;width:100%}
+.pips{display:flex;gap:.4rem;margin-bottom:1.6rem;flex-wrap:wrap}
+.pip{width:1.9rem;height:.28rem;background:var(--rule-strong);border-radius:2px}
+.pip.done{background:var(--accent)}
+.step-n{
+  font-family:var(--mono);font-size:calc(.8rem * var(--scale));
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);
+  margin:0 0 .8rem;
+}
+.step-h{
+  font-family:var(--serif);font-weight:400;
+  font-size:calc(2.05rem * var(--scale));line-height:1.2;
+  margin:0 0 .9rem;text-wrap:balance;letter-spacing:-.01em;
+}
+.step-p{font-size:calc(1.18rem * var(--scale));color:var(--ink-soft);margin:0 0 1rem;max-width:34rem}
+.step-p:last-of-type{margin-bottom:0}
+.step-flag{
+  margin-top:1.2rem;padding:.9rem 1.1rem;background:var(--surface);
+  border-left:3px solid var(--accent);font-size:calc(1rem * var(--scale));
+}
+.step-flag.warn{border-left-color:var(--low);background:var(--low-soft)}
+.runner-foot{
+  border-top:1px solid var(--rule);padding:.9rem 1.25rem 1.4rem;
+  max-width:var(--col);margin:0 auto;width:100%;
+  display:flex;align-items:center;gap:.7rem;
+}
+.btn-lg{
+  background:var(--accent);border:1px solid var(--accent);color:var(--on-accent);
+  padding:.72rem 1.7rem;font-size:calc(1.08rem * var(--scale));
+  border-radius:3px;font-weight:600;
+}
+.btn-lg:hover{filter:brightness(1.08)}
+.btn-lg[disabled]{opacity:.35;cursor:default;filter:none}
+.btn-gh{
+  background:none;border:1px solid var(--rule-strong);
+  padding:.72rem 1.2rem;font-size:calc(1.02rem * var(--scale));border-radius:3px;
+}
+.btn-gh:hover{border-color:var(--accent);color:var(--accent)}
+.btn-gh[disabled]{opacity:.35;cursor:default}
+.foot-sp{margin-left:auto}
+
+/* ============ NUMBERS CARD ============ */
+.nums{border:1px solid var(--rule);background:var(--surface)}
+.num-row{
+  display:grid;grid-template-columns:7.2rem 1fr;gap:1rem;
+  padding:.8rem 1.1rem;border-bottom:1px solid var(--rule);align-items:baseline;
+}
+.num-row:last-child{border-bottom:none}
+.num-v{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:calc(1.14rem * var(--scale));font-weight:600;letter-spacing:-.01em;
+}
+.num-v.is-low{color:var(--low)}
+.num-v.is-high{color:var(--high)}
+.num-d b{display:block;font-weight:600}
+.num-d span{color:var(--ink-soft);font-size:calc(.94rem * var(--scale))}
+
+/* ============ CHAPTER LIST ============ */
+.chap{border:1px solid var(--rule);background:var(--surface);margin-bottom:.7rem}
+.chap>summary{
+  cursor:pointer;list-style:none;padding:1rem 1.2rem;
+  display:grid;grid-template-columns:2.5rem 1fr;gap:.9rem;align-items:baseline;
+}
+.chap>summary::-webkit-details-marker{display:none}
+.chap>summary:hover .chap-t{color:var(--accent)}
+.chap-n{
+  font-family:var(--mono);font-size:calc(.82rem * var(--scale));
+  color:var(--accent);letter-spacing:.04em;
+}
+.chap-t{font-family:var(--serif);font-size:calc(1.18rem * var(--scale));line-height:1.3}
+.chap-s{display:block;font-family:var(--sans);font-size:calc(.92rem * var(--scale));color:var(--ink-faint);margin-top:.15rem}
+.chap-body{padding:0 1.2rem 1.3rem;border-top:1px solid var(--rule)}
+.chap-body>*:first-child{margin-top:1.1rem}
+.chap-body p{font-size:calc(1.03rem * var(--scale))}
+.inside{
+  margin:1.1rem 0 0;padding:.9rem 1.1rem;background:var(--surface-2);
+  font-size:calc(.95rem * var(--scale));
+}
+.inside b{
+  display:block;font-family:var(--mono);font-size:calc(.72rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);
+  margin-bottom:.45rem;font-weight:400;
+}
+.inside ul{margin:0;padding-left:1.15rem;color:var(--ink-soft)}
+.inside li{margin-bottom:.2rem}
+.path{
+  font-family:var(--mono);font-size:.9em;background:var(--surface-2);
+  padding:.08em .38em;border-radius:2px;white-space:nowrap;
+}
+.chap-body .path{background:var(--ground)}
+
+/* ============ GLOSSARY ============ */
+.gloss{border:1px solid var(--rule);background:var(--surface)}
+.gl-row{padding:.85rem 1.1rem;border-bottom:1px solid var(--rule)}
+.gl-row:last-child{border-bottom:none}
+.gl-t{font-weight:600;margin:0 0 .1rem}
+.gl-t em{font-style:normal;font-family:var(--mono);font-size:calc(.78rem * var(--scale));color:var(--ink-faint);font-weight:400;margin-left:.4rem;letter-spacing:.03em}
+.gl-row p{margin:0;color:var(--ink-soft);font-size:calc(.98rem * var(--scale))}
+
+/* ============ CALL BOX ============ */
+.call{
+  border:1px solid var(--rule-strong);background:var(--surface);padding:1.4rem;
+}
+.tel{
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:calc(1.55rem * var(--scale));font-weight:600;
+  display:block;margin:.3rem 0 .35rem;letter-spacing:-.01em;
+  color:var(--accent);text-decoration:none;
+}
+.tel:hover{text-decoration:underline}
+
+/* ============ FILTER ============ */
+.filter-wrap{position:relative;margin-bottom:1.4rem}
+#filter{
+  width:100%;font:inherit;font-size:calc(1rem * var(--scale));
+  padding:.7rem .9rem;background:var(--surface);color:var(--ink);
+  border:1px solid var(--rule-strong);border-radius:3px;
+}
+#filter::placeholder{color:var(--ink-faint)}
+.hit-note{
+  font-family:var(--mono);font-size:calc(.78rem * var(--scale));
+  color:var(--ink-faint);margin-top:.5rem;letter-spacing:.03em;
+}
+mark{background:var(--accent-soft);color:inherit;padding:.05em .15em}
+
+/* ============ FOOTER ============ */
+footer{padding:2.5rem 0 4rem;color:var(--ink-faint);font-size:calc(.9rem * var(--scale))}
+footer p{margin-bottom:.7rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="bar-in">
+    <span class="bar-name">The Dexcom G7, in plain English</span>
+    <div class="ctrl">
+      <span class="ctrl-lab">Text</span>
+      <button class="btn btn-sz" id="szDown" aria-label="Make text smaller">A</button>
+      <button class="btn btn-sz big" id="szUp" aria-label="Make text bigger">A</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">A companion to the official user guide</p>
+    <h1>You are wearing a fuel gauge for your sugar.</h1>
+    <p class="standfirst">That is the whole idea. A finger stick tells you one number, one time. This little sensor on the back of your arm keeps telling you, all day and all night, without a single poke.</p>
+    <p class="mast-note">Everything here comes from Dexcom's own guides: the G7 User Guide, the G7 15 Day User Guide, the Start Here guide, App Essentials, and Using Your Receiver. Every card has a line at the bottom that opens up the manual's exact words, so anything on this page can be checked against the real thing. Nothing here is medical advice. Alarm levels, insulin, and treatment are decisions for his doctor.</p>
+  </header>
+
+  <!-- ==================== HERO: THE SCREEN ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">Start here</span>
+      <h2>The screen, explained once</h2>
+      <p class="sec-sub">This is what you will look at twenty times a day. Learn these three things and you have learned most of it.</p>
+    </div>
+
+    <div class="screen">
+      <div class="screen-top">
+        <div>
+          <div class="read-num" id="heroNum">143</div>
+          <div class="read-unit">mg/dL</div>
+        </div>
+        <div id="heroArrow" aria-hidden="true"></div>
+      </div>
+
+      <svg viewBox="0 0 600 215" role="img" aria-label="A trend graph showing recent sensor readings, with a yellow high line, a shaded target range, and a red low line.">
+        <!-- target band 70 to 180 -->
+        <rect x="40" y="130" width="540" height="55" fill="var(--band)"></rect>
+        <!-- high line 250 -->
+        <line x1="40" y1="95" x2="580" y2="95" stroke="var(--high)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+        <!-- low line 70 -->
+        <line x1="40" y1="185" x2="580" y2="185" stroke="var(--low)" stroke-width="1.5" stroke-dasharray="5 4"></line>
+        <!-- axis labels -->
+        <text x="32" y="99" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="var(--high)">250</text>
+        <text x="32" y="189" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="var(--low)">70</text>
+        <text x="32" y="24" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="var(--ink-faint)">400</text>
+        <text x="32" y="204" text-anchor="end" font-family="ui-monospace,Consolas,monospace" font-size="11" fill="var(--ink-faint)">40</text>
+        <!-- frame -->
+        <line x1="40" y1="200" x2="580" y2="200" stroke="var(--rule-strong)" stroke-width="1"></line>
+        <g id="heroDots"></g>
+      </svg>
+
+      <div class="states" role="group" aria-label="See what each colour means">
+        <button class="state-b" data-state="ok" aria-pressed="true">Show me in range</button>
+        <button class="state-b" data-state="high" aria-pressed="false">Show me a high</button>
+        <button class="state-b" data-state="low" aria-pressed="false">Show me a low</button>
+      </div>
+
+      <dl class="callouts">
+        <dt>Number</dt><dd id="coNum">Where your sugar is right now. A fresh one lands every 5 minutes.</dd>
+        <dt>Arrow</dt><dd id="coArrow">Which way it is heading, and how fast, over the next 30 minutes.</dd>
+        <dt>Colour</dt><dd id="coColour">White or grey is inside your range. Yellow is high. Red is low. Same three colours on the phone, the receiver, and the watch.</dd>
+        <dt>Shading</dt><dd>The pale stripe across the middle is 70 to 180. That band is the internationally recommended target range.</dd>
+        <dt>Lines</dt><dd>The yellow dashed line is where your High alarm goes off. The red dashed line is where your Low alarm goes off. You and your doctor pick both.</dd>
+      </dl>
+
+      <div class="say-row"><button class="say" data-say="#screenSay">Read this out loud</button></div>
+      <p class="sr" id="screenSay">The screen shows three things. The number is where your sugar is right now. A fresh number arrives every five minutes. The arrow shows which way it is heading and how fast over the next thirty minutes. The colour tells you at a glance: white or grey means you are in your range, yellow means high, red means low. The pale stripe across the middle of the graph is seventy to one hundred eighty, the recommended target range. The yellow dashed line is where your high alarm goes off. The red dashed line is where your low alarm goes off.</p>
+
+      <details class="src">
+        <summary>The manual's exact words</summary>
+        <div class="quote">
+          <p>"1. Number: The most recent sensor reading. 2. Trend arrow: Where glucose is heading based on the last few readings."</p>
+          <p>"Target range (shaded rectangle inside graph): 70&ndash;180 mg/dL is the international consensus for recommended target range."</p>
+          <p>"Red: Low, Urgent Low Soon, or Urgent Low. Yellow: High. White: Between your high and low alert levels."</p>
+          <span class="cite">Dexcom G7 User Guide, ch. 3, Phone App and Receiver Screens</span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==================== THE TWO RULES ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">The two rules</span>
+      <h2>When to trust it, and when to get the meter out</h2>
+      <p class="sec-sub">Out of this whole manual, these are the two rules that actually keep you safe. Everything else is convenience.</p>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h3 class="card-t"><span class="dot is-low"></span>Rule one: no number, or no arrow, means no decision</h3>
+        <p class="lede">If the screen is missing either one, do not use it to decide anything. Get the finger stick meter out and use that instead.</p>
+        <p>This includes the warmup period after you put on a new sensor, and any time a system message like Signal Loss is on the screen. The device is not lying to you, it just does not have enough to go on yet.</p>
+        <details class="src">
+          <summary>The manual's exact words</summary>
+          <div class="quote">
+            <p>"No number or no arrow, no CGM treatment decision: Use your BG meter to make treatment decisions when your Dexcom G7 CGM System doesn't show both a number and trend arrow as well as during the 30-minute sensor warmup period."</p>
+            <span class="cite">Dexcom G7 User Guide, ch. 2, Warnings</span>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h3 class="card-t"><span class="dot is-low"></span>Rule two: how you feel beats what it says</h3>
+        <p class="lede">If you feel low but the screen says you are fine, believe your body. Wash your hands with soap and water, do a finger stick, and treat off the meter.</p>
+        <p>The manual has a saying for this one, and it is worth remembering word for word: <strong>when in doubt, get your BG meter out.</strong> Shaky, sweaty, confused, or just not right, and the number does not match. That is exactly the moment the meter earns its keep.</p>
+        <details class="src">
+          <summary>The manual's exact words</summary>
+          <div class="quote">
+            <p>"When how you feel doesn't match your sensor reading, use your BG meter to treat even if you have a number and arrow. In other words, when in doubt, get your BG meter out."</p>
+            <p>"Don't ignore low/high symptoms: Use your BG meter to make treatment decisions when your sensor readings don't match your low/high symptoms. If needed, seek immediate medical attention."</p>
+            <span class="cite">Dexcom G7 User Guide, ch. 4, Treatment Decisions; ch. 2, Warnings</span>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h3 class="card-t"><span class="dot is-ok"></span>Why the meter and the Dexcom never quite agree</h3>
+        <p>They are measuring two different things. The finger stick reads sugar in your <strong>blood</strong>. The sensor reads sugar in the fluid between the cells just under your skin, which the manual calls <em>interstitial fluid</em>.</p>
+        <p>Think of it like reading the temperature in the next room over. It is accurate, but it runs a few minutes behind. When your sugar is moving fast, the gap looks bigger. When it settles, the two numbers come back together. Neither one is broken.</p>
+        <p>Two other honest reasons for a mismatch: unwashed hands on the finger stick, which is the most common cause of a bad meter reading, and the first day of a new sensor, when the two run further apart and then close up over about 24 hours.</p>
+        <details class="src">
+          <summary>The manual's exact words</summary>
+          <div class="quote">
+            <p>"One reason is they're measuring glucose in different fluids. The BG meter measures blood glucose while the sensor measures interstitial fluid."</p>
+            <p>"Hand cleanliness: Wash your hands with soap and water (not hand sanitizer) and dry them. Then test. Many inaccurate BG meter values are from hands not being washed thoroughly before testing."</p>
+            <p>"Sensor's first day: With newly inserted sensors, the differences between your BG meter and the sensor reading may be greater. Generally, the numbers get closer over the first 24 hours."</p>
+            <span class="cite">Dexcom G7 User Guide, ch. 11, Accuracy and calibration</span>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SPEED RUNS ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">Speed runs</span>
+      <h2>One step at a time, nothing else on the screen</h2>
+      <p class="sec-sub">Pick the thing you need to do. You get one instruction at a time, in big type, with a Next button. You cannot break anything and you can back out at any point.</p>
+    </div>
+    <div class="runs" id="runList"></div>
+  </section>
+
+  <!-- ==================== ARROWS ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">The arrow</span>
+      <h2>The number is the speedometer reading. The arrow is the speed.</h2>
+      <p class="sec-sub">A 70 sitting perfectly still and a 70 dropping like a stone are two completely different situations. This is the part most people skip, and it is the part that gives you your warning time.</p>
+    </div>
+
+    <div class="arrows" id="arrowTable"></div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3 class="card-t"><span class="dot"></span>What the arrow is worth</h3>
+      <p>Rising, so a little more insulin than usual might be right. Falling, so a little less. That is the manual's own guidance, and it is a conversation to have with the doctor before you start doing it, not something to work out on your own.</p>
+      <details class="src">
+        <summary>The manual's exact words</summary>
+        <div class="quote">
+          <p>"Talk to your healthcare provider about using the trend arrows to determine how much insulin to take. Trending up: Consider taking a little more insulin than usual when your glucose is rising. Trending down: Consider taking a little less insulin than usual when your glucose is falling."</p>
+          <span class="cite">Dexcom G7 User Guide, ch. 4, Using the trend arrows</span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==================== NUMBERS ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">Numbers worth knowing</span>
+      <h2>The whole system, in fourteen numbers</h2>
+      <p class="sec-sub">If you only ever memorise one part of this page, make it this. Print it and stick it on the fridge.</p>
+    </div>
+
+    <div class="nums">
+      <div class="num-row"><span class="num-v is-low">55</span><span class="num-d"><b>Urgent Low</b><span>Fixed. Cannot be changed, cannot be switched off. It sounds even when the phone is on silent, unless Silence All is running.</span></span></div>
+      <div class="num-row"><span class="num-v is-low">20 min</span><span class="num-d"><b>Urgent Low Soon</b><span>Your 20 minute head start. It fires when you are falling fast enough to reach 55 within 20 minutes, even if the number on screen still looks fine.</span></span></div>
+      <div class="num-row"><span class="num-v is-low">70</span><span class="num-d"><b>Low alarm, factory setting</b><span>Adjustable from 60 to 150 with your doctor. This is the red dashed line on the graph.</span></span></div>
+      <div class="num-row"><span class="num-v">70 to 180</span><span class="num-d"><b>Target range</b><span>The pale shaded stripe. Time spent inside it is what the reports call Time in Range.</span></span></div>
+      <div class="num-row"><span class="num-v is-high">250</span><span class="num-d"><b>High alarm, factory setting</b><span>Adjustable from 100 to 400. This is the yellow dashed line.</span></span></div>
+      <div class="num-row"><span class="num-v">20</span><span class="num-d"><b>Minimum gap</b><span>Your Low and High settings have to be at least 20 mg/dL apart.</span></span></div>
+      <div class="num-row"><span class="num-v is-low">under 40</span><span class="num-d"><b>Screen says LOW</b><span>Below 40 it stops giving a number and just says LOW. No number means meter.</span></span></div>
+      <div class="num-row"><span class="num-v is-high">over 400</span><span class="num-d"><b>Screen says HIGH</b><span>Above 400 it stops giving a number and just says HIGH. Same rule: meter.</span></span></div>
+      <div class="num-row"><span class="num-v">5 min</span><span class="num-d"><b>How often a new reading lands</b><span>Also how often an unacknowledged alarm repeats itself until you press OK.</span></span></div>
+      <div class="num-row"><span class="num-v">33 feet</span><span class="num-d"><b>How far the phone or receiver can wander</b><span>A smartwatch has to stay within 20 feet. Walls, water, and your own body all count as obstacles.</span></span></div>
+      <div class="num-row"><span class="num-v">8 feet</span><span class="num-d"><b>How deep the sensor is waterproof</b><span>Shower, bath, and swim with it on. The receiver is not waterproof at all. Leave that on dry land.</span></span></div>
+      <div class="num-row"><span class="num-v" id="numWear">10 days</span><span class="num-d"><b>How long a sensor lasts</b><span id="numWearD">Then a 12 hour grace period, which is spare time on purpose. Nothing is wrong during grace.</span></span></div>
+      <div class="num-row"><span class="num-v" id="numWarm">30 min</span><span class="num-d"><b>Warmup on a new sensor</b><span>No numbers and no alarms during warmup. It is not broken, it is getting acquainted. Use the meter.</span></span></div>
+      <div class="num-row"><span class="num-v">1 gram</span><span class="num-d"><b>Tylenol ceiling</b><span>Up to 1,000 mg of acetaminophen every 6 hours is fine. Above that, the sensor reads higher than you really are.</span></span></div>
+    </div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3 class="card-t"><span class="dot"></span>Which sensor is on his arm?</h3>
+      <p>There are two versions in circulation and they differ in exactly two numbers. Check the sensor box: if it says <strong>Dexcom G7 15 Day</strong>, tap the second button. If it just says <strong>Dexcom G7</strong>, leave it as it is.</p>
+      <div class="states" role="group" aria-label="Which sensor version">
+        <button class="state-b" data-ver="10" aria-pressed="true">Dexcom G7</button>
+        <button class="state-b" data-ver="15" aria-pressed="false">Dexcom G7 15 Day</button>
+      </div>
+      <div class="say-row"><button class="say" data-say="#verSay">Read this out loud</button></div>
+      <p class="sr" id="verSay">There are two versions of the sensor. Check the box. If it says Dexcom G7 fifteen day, the sensor lasts fifteen days and warms up in sixty minutes. If it just says Dexcom G7, the sensor lasts ten days and warms up in about thirty minutes. Everything else about the two is the same.</p>
+      <details class="src">
+        <summary>The manual's exact words</summary>
+        <div class="quote">
+          <p>"Each sensor session lasts up to 10 days with a 12-hour grace period at the end." Warmup: "Shorter warmup &mdash; less than 30 minutes."</p>
+          <p>"The sensor session lasts up to 15 days followed by an extra 12-hour grace period." Warmup: "during the 60-minute sensor warmup period."</p>
+          <span class="cite">Dexcom G7 User Guide, ch. 1 and ch. 2; Dexcom G7 15 Day User Guide, ch. 1 and ch. 2</span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==================== ALERTS ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">Alarms</span>
+      <h2>Every alarm it can make, one at a time</h2>
+      <p class="sec-sub">There are only two families. Glucose alarms are about your sugar. System alarms are about the equipment. Knowing which family you are looking at answers most of the panic before it starts.</p>
+    </div>
+    <div class="stack" id="alertList"></div>
+
+    <div class="card" style="margin-top:1rem">
+      <h3 class="card-t"><span class="dot is-ok"></span>Why it will not stop beeping</h3>
+      <p>Because you have not pressed OK yet. An alarm repeats every 5 minutes until it is acknowledged. That is deliberate, not a fault. Deal with the situation first, then press OK.</p>
+      <p>If the alarms are genuinely too much, that is a fixable settings problem and not something to endure. You can change the sound, set most alarms to vibrate, delay the High alarm so it does not fire while insulin is still working, or turn Snooze off so it stops repeating. There is a whole section of the manual on quieting it down, and it is covered in chapter 5 below.</p>
+      <details class="src">
+        <summary>The manual's exact words</summary>
+        <div class="quote">
+          <p>"When you get an alert, your first priority is to resolve it: make a treatment decision or fix a system issue. Afterward, acknowledge the alert... Until you acknowledge the alert, it re-alerts every 5 minutes."</p>
+          <span class="cite">Dexcom G7 User Guide, ch. 5, Responding to alerts</span>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==================== MANUAL WALKTHROUGH ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">The manual, cover to cover</span>
+      <h2>All eleven chapters and six appendices</h2>
+      <p class="sec-sub">This is the whole official user guide, in order, with each chapter said in ordinary language first. Open the one you want. Type in the box to search all of it at once.</p>
+    </div>
+
+    <div class="filter-wrap">
+      <label class="sr" for="filter">Search the guide</label>
+      <input type="search" id="filter" placeholder="Search everything: try shower, alarm, arrow, travel, itchy" autocomplete="off">
+      <p class="hit-note" id="hitNote" hidden></p>
+    </div>
+
+    <div id="chapList"></div>
+  </section>
+
+  <!-- ==================== FAMILY ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">For the family</span>
+      <h2>You can watch his numbers from your own phone</h2>
+      <p class="sec-sub">This is the feature most families do not know exists, and for an older parent living independently it is the whole reason to have a G7 rather than a meter.</p>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h3 class="card-t"><span class="dot is-ok"></span>How it works, in one paragraph</h3>
+        <p>He turns on <strong>Share</strong> in his Dexcom G7 app and invites you by email. You install a separate free app called <strong>Dexcom Follow</strong> on your own phone. From then on his number lands on your phone every 5 minutes. You can set your own alarms for it, so your phone can wake you if he goes low at three in the morning.</p>
+        <p>He stays in control the whole time. He chooses whether you see just the number or the graph too, and he can pause or remove any follower whenever he likes. You cannot change anything on his end. Invitations expire after 7 days, so accept it promptly.</p>
+        <p>This needs the phone app. It does not work from the receiver on its own.</p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-t"><span class="dot is-low"></span>The one hard rule for followers</h3>
+        <p class="lede">Never treat off the Follow app. What you are seeing is always older than what he is seeing.</p>
+        <p>If his number looks alarming on your phone, the move is to call him and have him look at his own screen. His device is the one that makes decisions. Yours is a smoke detector, not a thermostat.</p>
+        <details class="src">
+          <summary>The manual's exact words</summary>
+          <div class="quote">
+            <p>"Use as secondary notice: Your Followers' information is always older than yours. Use your current information to manage your diabetes, not your Followers' information. The information they get isn't meant to be used for treatment decisions, analysis, or teaching."</p>
+            <p>"Use your Dexcom G7 CGM System to make treatment decisions: Don't use Followers' information for treatment decisions, like treating for a low or dosing for a high."</p>
+            <span class="cite">Dexcom G7 User Guide, ch. 2, Share and Follow safety statements</span>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h3 class="card-t"><span class="dot"></span>Setting it up</h3>
+        <p><strong>On his phone:</strong> <span class="path">Connections &gt; Share</span>, turn Share on, then Invite Follower. Enter your name and email. He picks what you get to see and taps Send Invitation.</p>
+        <p><strong>On your phone:</strong> open the invitation email on the phone itself, tap the link, install Dexcom Follow, accept. Then set your own notification levels in the settings gear next to his name.</p>
+        <p>As a follower you can set a Low, a High, and a No Data alert, and each one has a <em>For More Than</em> delay so you are not woken by a two minute dip. Urgent Low is fixed at 55 for followers too.</p>
+        <p>One catch worth knowing: both apps have to be running, both phones need internet, and both need battery. If his phone is dead, you see nothing. That is not a fault, it is just the nature of it.</p>
+        <details class="src">
+          <summary>The manual's exact words</summary>
+          <div class="quote">
+            <p>"Your Followers don't need to have the Dexcom G7 phone or watch apps on their smart devices. They only need to download the Dexcom Follow app."</p>
+            <p>"Invitation Sent: You invited a Follower. They haven't accepted yet. They have 7 days to accept."</p>
+            <p>"Both apps (Dexcom G7 and Dexcom Follow) must be open or running in the background. The smart devices must work, be connected to the internet, and have charged batteries."</p>
+            <span class="cite">Dexcom G7 User Guide, ch. 7, Share and Dexcom Follow</span>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== GLOSSARY ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">Their words, your words</span>
+      <h2>The vocabulary, decoded</h2>
+      <p class="sec-sub">The manual and the doctor will use the term on the left. Here is what it actually means. The official term is kept beside each one so you are not learning a private language.</p>
+    </div>
+    <div class="gloss" id="glossList"></div>
+  </section>
+
+  <!-- ==================== CALL ==================== -->
+  <section class="bleed">
+    <div class="sec-head">
+      <span class="sec-kicker">When to pick up the phone</span>
+      <h2>Dexcom answers 24 hours a day</h2>
+    </div>
+
+    <div class="call">
+      <p style="margin-bottom:.2rem;color:var(--ink-soft)">Dexcom technical support, free, day or night</p>
+      <a class="tel" href="tel:18887383646">1-888-738-3646</a>
+      <p style="font-size:calc(.95rem * var(--scale));color:var(--ink-soft)">In the app you can also reach them at <span class="path">Profile &gt; Contact</span>. A free printed copy of the user guide can be ordered from the same number.</p>
+      <p style="margin-top:1rem"><strong>Call them when:</strong></p>
+      <div class="inside" style="margin-top:.6rem">
+        <b>Worth a call</b>
+        <ul>
+          <li>Signal Loss has gone on for more than 30 minutes</li>
+          <li>Brief Sensor Issue has gone on for more than 3 hours</li>
+          <li>A sensor failed early, or the patch fell off early. They replace them.</li>
+          <li>The applicator will not come off after inserting</li>
+          <li>The receiver shows a System Check error code. Have the code ready.</li>
+          <li>The speaker test does not beep and vibrate</li>
+        </ul>
+      </div>
+      <p style="margin-top:1rem"><strong>Call the doctor instead when:</strong> the site is red, swollen, sore, or itching badly; a sensor wire has broken off under the skin; or you want to change any alarm level, because those are clinical decisions.</p>
+      <p style="margin-top:1rem"><strong>Do not wait for anybody when:</strong> he is having symptoms of a severe low. Treat it, and if it is not resolving, get emergency help. The manual says it plainly: if needed, seek immediate medical attention.</p>
+    </div>
+  </section>
+
+  <footer class="bleed">
+    <p>Sources, all official and all current: the <strong>Dexcom G7 CGM User Guide</strong>, the <strong>Dexcom G7 15 Day CGM User Guide</strong>, the <strong>G7 Start Here Guide</strong>, <strong>G7 App Essentials</strong>, and <strong>G7 Using Your Receiver</strong>, published at dexcom.com/guides.</p>
+    <p>This page is a plain-language companion written for one family. It is not made by Dexcom, it is not a substitute for the user guide that came in the box, and it is not medical advice. Where this page and the official guide ever disagree, the official guide is right. Alarm levels, insulin doses, and treatment plans belong to his doctor.</p>
+  </footer>
+
+</div>
+
+<!-- ==================== SPEED RUN VIEWER ==================== -->
+<div class="runner" id="runner" hidden role="dialog" aria-modal="true" aria-labelledby="runnerTitle">
+  <div class="runner-bar">
+    <span class="runner-title" id="runnerTitle"></span>
+    <button class="say" id="runSay">Read out loud</button>
+    <button class="btn" id="runClose">Close</button>
+  </div>
+  <div class="runner-body">
+    <div class="runner-inner">
+      <div class="pips" id="runPips" aria-hidden="true"></div>
+      <p class="step-n" id="runCount"></p>
+      <h3 class="step-h" id="runHead"></h3>
+      <div id="runBody"></div>
+    </div>
+  </div>
+  <div class="runner-foot">
+    <button class="btn-gh" id="runBack">Back</button>
+    <button class="btn-lg" id="runNext">Next</button>
+    <span class="foot-sp"></span>
+    <button class="btn-gh" id="runDone">Finish</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ TEXT SIZE ============ */
+var scale = parseFloat(localStorage.getItem("g7scale") || "1");
+function applyScale(){
+  scale = Math.min(1.75, Math.max(0.85, scale));
+  document.documentElement.style.setProperty("--scale", scale);
+  localStorage.setItem("g7scale", scale);
+}
+applyScale();
+document.getElementById("szUp").onclick   = function(){ scale += 0.12; applyScale(); };
+document.getElementById("szDown").onclick = function(){ scale -= 0.12; applyScale(); };
+
+/* ============ READ ALOUD ============ */
+var speaking = null;
+function stopSpeech(){
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (speaking){ speaking.setAttribute("aria-pressed","false"); speaking.textContent = speaking.dataset.label; }
+  speaking = null;
+}
+function speak(btn, text){
+  if (!window.speechSynthesis){ btn.textContent = "Not available on this browser"; return; }
+  if (speaking === btn){ stopSpeech(); return; }
+  stopSpeech();
+  if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+  var u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.88; u.pitch = 1;
+  u.onend = function(){ if (speaking === btn) stopSpeech(); };
+  speaking = btn;
+  btn.setAttribute("aria-pressed","true");
+  btn.textContent = "Stop";
+  window.speechSynthesis.speak(u);
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest("[data-say]");
+  if (!b) return;
+  var src = document.querySelector(b.getAttribute("data-say"));
+  if (src) speak(b, src.textContent);
+});
+
+/* ============ HERO SCREEN ============ */
+function y(v){ return 20 + (400 - v) * 0.5; }
+var SERIES = {
+  ok:   { num:143, cls:"",        arrow:"flat",     pts:[128,131,135,140,146,150,147,144,141,140,142,143] },
+  high: { num:268, cls:"is-high", arrow:"up45",     pts:[151,158,168,181,196,210,223,235,246,255,262,268] },
+  low:  { num:61,  cls:"is-low",  arrow:"down45",   pts:[139,133,124,116,108,99,91,84,77,70,65,61] }
+};
+var ARROW_ART = {
+  flat:    'M4 16 L26 16 M20 10 L26 16 L20 22',
+  up45:    'M7 25 L25 7 M15 7 L25 7 L25 17',
+  down45:  'M7 7 L25 25 M25 15 L25 25 L15 25',
+  up:      'M16 27 L16 5 M9 12 L16 5 L23 12',
+  down:    'M16 5 L16 27 M9 20 L16 27 L23 20',
+  up2:     'M16 30 L16 12 M9 19 L16 12 L23 19 M9 9 L16 2 L23 9',
+  down2:   'M16 2 L16 20 M9 13 L16 20 L23 13 M9 23 L16 30 L23 23'
+};
+function arrowSvg(kind, colour, size){
+  size = size || 34;
+  return '<svg viewBox="0 0 32 32" width="'+size+'" height="'+size+'" aria-hidden="true">'+
+    '<path d="'+ARROW_ART[kind]+'" fill="none" stroke="'+colour+'" stroke-width="2.6" '+
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+var CO_ARROW = {
+  ok:   "Which way it is heading. Flat and steady here: changing less than 30 in half an hour.",
+  high: "Rising at a slant here: climbing 30 to 60 in half an hour.",
+  low:  "Falling at a slant here: dropping 30 to 60 in half an hour."
+};
+var CO_COLOUR = {
+  ok:   "White or grey means you are inside your range. That is this one.",
+  high: "Yellow means you are at or above your High setting. Same yellow as the dashed line.",
+  low:  "Red means you are at or below your Low setting. Red covers Low, Urgent Low Soon, and Urgent Low."
+};
+function paintHero(state){
+  var s = SERIES[state];
+  var n = document.getElementById("heroNum");
+  n.textContent = s.num;
+  n.className = "read-num " + s.cls;
+  var col = state === "high" ? "var(--high)" : state === "low" ? "var(--low)" : "var(--ink)";
+  document.getElementById("heroArrow").innerHTML = arrowSvg(s.arrow, col, 40);
+  var g = "", n2 = s.pts.length;
+  for (var i = 0; i < n2; i++){
+    var cx = 62 + i * (500 / (n2 - 1));
+    var cy = y(s.pts[i]);
+    var last = i === n2 - 1;
+    g += '<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="'+(last?6:3.2)+'" fill="'+(last?col:"var(--ink-faint)")+'"/>';
+  }
+  document.getElementById("heroDots").innerHTML = g;
+  document.getElementById("coArrow").textContent = CO_ARROW[state];
+  document.getElementById("coColour").textContent = CO_COLOUR[state];
+}
+paintHero("ok");
+Array.prototype.forEach.call(document.querySelectorAll("[data-state]"), function(b){
+  b.onclick = function(){
+    Array.prototype.forEach.call(document.querySelectorAll("[data-state]"), function(o){ o.setAttribute("aria-pressed","false"); });
+    b.setAttribute("aria-pressed","true");
+    paintHero(b.dataset.state);
+  };
+});
+
+/* ============ ARROW TABLE ============ */
+var ARROWS = [
+  ["flat",   "Steady",                "Barely moving. Changing less than 30 mg/dL in half an hour. This is the one you want."],
+  ["up45",   "Slowly rising",         "Climbing 30 to 60 mg/dL in half an hour."],
+  ["down45", "Slowly falling",        "Dropping 30 to 60 mg/dL in half an hour."],
+  ["up",     "Rising",                "Climbing 60 to 90 mg/dL in half an hour. Something is pushing it up."],
+  ["down",   "Falling",               "Dropping 60 to 90 mg/dL in half an hour. Worth paying attention to."],
+  ["up2",    "Rising rapidly",        "Climbing more than 90 mg/dL in half an hour."],
+  ["down2",  "Falling rapidly",       "Dropping more than 90 mg/dL in half an hour. This is the one that gets ahead of you."],
+  [null,     "No arrow at all",       "It cannot work out a trend. This is a meter moment. No arrow means no decision off this screen."]
+];
+document.getElementById("arrowTable").innerHTML = ARROWS.map(function(a){
+  var art = a[0] ? arrowSvg(a[0], "var(--ink)", 32)
+                 : '<span style="font-family:var(--mono);color:var(--low);font-size:.85rem">none</span>';
+  return '<div class="arrow-row"><div class="arrow-art">'+art+'</div>'+
+         '<div><b>'+a[1]+'</b><span>'+a[2]+'</span></div></div>';
+}).join("");
+
+/* ============ SENSOR VERSION ============ */
+var ver = localStorage.getItem("g7ver") || "10";
+function applyVer(){
+  var is15 = ver === "15";
+  document.getElementById("numWear").textContent = is15 ? "15 days" : "10 days";
+  document.getElementById("numWarm").textContent = is15 ? "60 min" : "30 min";
+  document.getElementById("numWearD").textContent = is15
+    ? "Then a 12 hour grace period, which is spare time on purpose. Dexcom's own study found about 26% of 15 day sensors do not make the full 15 days, so an early finish is normal and they will replace it."
+    : "Then a 12 hour grace period, which is spare time on purpose. Nothing is wrong during grace.";
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ver]"), function(b){
+    b.setAttribute("aria-pressed", b.dataset.ver === ver ? "true" : "false");
+  });
+  localStorage.setItem("g7ver", ver);
+}
+Array.prototype.forEach.call(document.querySelectorAll("[data-ver]"), function(b){
+  b.onclick = function(){ ver = b.dataset.ver; applyVer(); };
+});
+applyVer();
+
+/* ============ ALERTS ============ */
+var ALERTS = [
+  { k:"low", t:"Urgent Low", plain:"Your sugar is at 55 or below right now.",
+    body:"<p>This is the one alarm you cannot switch off and cannot change the level of. It is fixed at 55 and it will sound even if the phone is muted. The only thing that silences it is Silence All, and that is exactly why Silence All is worth being careful with.</p><p>Treat it the way the doctor has told you to. Then press OK.</p>",
+    q:'"Urgent Low alert: Alerts you when your sensor reading is 55 mg/dL or below." / "Even when your phone or smartwatch is muted, the Urgent Low alert sounds unless you\'re using Silence All."',
+    c:"ch. 5, Low alerts; ch. 2, Check settings" },
+
+  { k:"low", t:"Urgent Low Soon", plain:"You are falling fast enough to hit 55 within 20 minutes.",
+    body:"<p>This is the cleverest thing the device does, and it is worth understanding. It can fire while the number on screen still looks perfectly respectable, because it is watching the <em>rate</em>, not the number. It is handing you a 20 minute head start.</p><p>Eat or drink something now, before it gets there. That is the entire point of the alarm.</p>",
+    q:'"Urgent Low Soon alert: Alerts you when your sensor reading will be 55 mg/dL or below in less than 20 minutes. You can get an Urgent Low Soon alert even if your sensor reading is in your normal range. This alert lets you know you\'re falling fast so you can eat or drink right away to stop the fall."',
+    c:"ch. 5, Low alerts" },
+
+  { k:"low", t:"Low Glucose", plain:"You are at or below the Low number you and the doctor set. Usually 70.",
+    body:"<p>This is the red dashed line on the graph. You will get either this one or Urgent Low Soon when you are dropping, never both at once. Which one you get depends on how fast you are falling.</p><p>The manual makes a good point about this setting: pick the number that actually makes you get up and do something. If you never act until 65, an alarm at 80 is just noise you learn to ignore.</p>",
+    q:'"The Low and Urgent Low Soon alerts work together. When your glucose falls you will get one or the other, not both, depending on how fast it\'s falling." / "What sensor reading makes you respond? Set your alert level at that number."',
+    c:"ch. 5, Low alerts; ch. 5, Optimizing alerts" },
+
+  { k:"high", t:"High Glucose", plain:"You are at or above your High number. Factory setting is 250.",
+    body:"<p>The yellow dashed line. Before you do anything, ask one question: <strong>did I take insulin in the last hour or two?</strong> If you did, the answer is usually to wait, not to take more. Insulin takes time to work, and doubling up on it is how people end up crashing later.</p><p>If a High alarm goes off every single time you eat, that is a settings problem with a proper fix. The <em>Delay 1st Alert</em> setting holds the alarm back until you have been high for a set stretch, long enough for the insulin to have done its job. Worth raising with the doctor.</p>",
+    q:'"Bothered by High alerts after you eat, even though you took insulin? Talk to your healthcare provider about using the High alert Delay 1st Alert feature in the High alert settings to avoid getting an alert until your glucose has been high for a few hours."',
+    c:"ch. 5, High alert; ch. 5, Optimizing alerts" },
+
+  { k:"", t:"Rising Fast and Falling Fast", plain:"Optional alarms. Off by default. They watch speed, not level.",
+    body:"<p>These are off unless somebody turns them on. They fire when you are moving 3 mg/dL or more per minute, or you can set them to the gentler 2 to 3 per minute.</p><p>Falling Fast and Urgent Low Soon sound similar but are not the same thing. Urgent Low Soon is locked to one number and one deadline: 55, within 20 minutes. Falling Fast is whatever speed you choose, with no deadline attached. If you are falling fast and already at 55 or below, you get Urgent Low instead.</p><p>Turning Falling Fast on is one of the manual's own suggestions for catching night-time lows earlier.</p>",
+    q:'"Rising Fast and Falling Fast alerts: Lets you know when your sensor readings are changing quickly." / "If your glucose is falling fast and is at or below 55 mg/dL, you\'ll get an Urgent Low alert, not a Falling Fast alert."',
+    c:"ch. 5, Rising Fast and Falling Fast alerts" },
+
+  { k:"", t:"Signal Loss", plain:"System message. The sensor and the phone have lost touch.",
+    body:"<p>Nothing is wrong with you and nothing is wrong with the sensor. They have simply drifted out of earshot, or something got between them. Walls, water, and your own body all block it.</p><p>Get the phone or receiver within 33 feet and on the <strong>same side of your body</strong> as the sensor. Give it up to 30 minutes. If Bluetooth got switched off, turn it back on. When it reconnects, up to 24 hours of missed readings quietly fill themselves back into the graph.</p><p>Meanwhile: no readings, no alarms, use the meter. If it lasts past 30 minutes, call Dexcom.</p>",
+    q:'"Signal Loss alert: Alerts you when the display device temporarily stops getting sensor readings because there\'s an issue with the connection." / "Keep your display device on the same side of your body as your sensor. Bluetooth works best when the sensor and display device are in sight of each other."',
+    c:"ch. 5, System Alerts; ch. 11, Common system issues" },
+
+  { k:"", t:"Brief Sensor Issue", plain:"System message. The sensor cannot read you at this moment.",
+    body:"<p class=\"lede\">Do not pull the sensor off. This is the mistake this alarm causes, and it costs a whole sensor.</p><p>It usually sorts itself out within 3 hours, and it happens most often on the first day of a new sensor. Leave it alone, use the meter in the meantime, and let it recover.</p><p>If it is still going after 3 hours, then call Dexcom.</p>",
+    q:'"Your sensor has a temporary issue. This issue often happens during the first day of a sensor session, but it can happen anytime. It usually fixes itself within 3 hours. Don\'t remove sensor. Use BG meter for treatment decisions."',
+    c:"ch. 11, Common system issues" },
+
+  { k:"", t:"Sensor Failed and Replace Sensor Now", plain:"System message. That sensor is finished.",
+    body:"<p>This one is genuinely over. Peel it off from the edge and put a new one on, in a different spot. You get no readings and no alarms until the new one is paired and warmed up.</p><p><strong>Replace Sensor Now</strong> is the polite version of the same message: it means the 12 hour grace period has run out.</p><p>If a sensor fails early, ring Dexcom. They replace them, and it is a routine call, not an argument.</p>",
+    q:'"You won\'t get sensor readings or alerts until you start a new sensor. 1. Remove sensor now. Tip: Peel off patch from edge. 2. Insert and pair new sensor."',
+    c:"ch. 11, Common system issues; ch. 10, Next Sensor Session" }
+];
+document.getElementById("alertList").innerHTML = ALERTS.map(function(a){
+  return '<div class="card">'+
+    '<h3 class="card-t"><span class="dot '+(a.k?"is-"+a.k:"")+'"></span>'+a.t+'</h3>'+
+    '<p class="lede">'+a.plain+'</p>'+a.body+
+    '<details class="src"><summary>The manual\'s exact words</summary>'+
+    '<div class="quote"><p>'+a.q+'</p><span class="cite">Dexcom G7 User Guide, '+a.c+'</span></div></details></div>';
+}).join("");
+
+/* ============ CHAPTERS ============ */
+var CHAPTERS = [
+  { n:"1", t:"Welcome", s:"What the thing is and what it is for",
+    p:"<p>The opening chapter makes four promises: no more finger sticks for routine decisions, a warning before highs and lows instead of after, the ability to let family see your numbers, and reports that show you whether what you are doing is working.</p><p>It also says something quietly important that is easy to skim past: <strong>getting comfortable with this could take days, weeks, or even months.</strong> That is the manufacturer talking, not a pep talk. Nobody expects you to have it figured out in week one.</p>",
+    i:["What is in the box and what each piece does","How readings reach your phone, watch, or receiver","Dexcom's phone number and where to get a printed guide"],
+    q:'"Getting familiar with Dexcom G7 could take days, weeks, or even months." / "No more fingersticks: G7 allows you to make treatment decisions without fingersticks."' },
+
+  { n:"2", t:"Safety Information", s:"The warnings, and the two medicines that interfere",
+    p:"<p>The chapter people skip. Here is what is genuinely worth knowing out of it.</p><p><strong>Never wear it into an MRI.</strong> Take it off first. A CT scan is fine as long as the sensor is outside the scanned area and covered with a lead apron. Same for radiation therapy. Tell the radiographer you are wearing it.</p><p><strong>Tylenol has a ceiling.</strong> Up to 1,000 mg of acetaminophen every 6 hours and the readings stay trustworthy. Take more than that and the sensor reads higher than you actually are, which is the dangerous direction to be wrong in.</p><p><strong>Hydroxyurea breaks it.</strong> If he is ever put on hydroxyurea, the sensor cannot be used for treatment decisions at all. Meter only, and tell the prescribing doctor he wears a CGM.</p><p>Also here: it is not validated for people on dialysis or who are critically ill, and it is a prescription device.</p>",
+    i:["Contraindications: no MRI, no diathermy","Acetaminophen ceiling of 1 g every 6 hours","Hydroxyurea makes readings read falsely high","Airport scanners, Wi-Fi security, storage temperatures","The full glossary of terms"],
+    q:'"No MRI/CT/diathermy &mdash; MR unsafe: Don\'t wear any Dexcom G7 CGM System component during magnetic resonance imaging (MRI) or high-frequency electrical heat (diathermy) treatment. However, it\'s safe to have a CT scan if you keep the sensor out of the scanned area and cover the sensor with a lead apron during the scan." / "Don\'t use your Dexcom G7 CGM System for diabetes treatment decisions if you are taking hydroxyurea."' },
+
+  { n:"3", t:"Insertion Instructions and Screens", s:"Putting a sensor on, and reading what you see",
+    p:"<p>The seven insertion steps, plus a tour of the screens. The insertion steps are in the app too, and they are walked through one at a time in the speed run above.</p><p>The three details that decide whether a sensor stays on for the full run: alcohol wipe and let it dry <em>completely</em>, press the top of the sensor for a full 10 seconds, and always apply the overpatch. The overpatch is not optional and it is not a spare.</p><p>The screen tour covers the four tabs at the bottom of the phone app: Glucose, History, Connections, Profile. On the receiver it is one home screen with a Menu button and a four-way rocker.</p>",
+    i:["Choosing a site: back of the upper arm, adults only","Avoiding sites you sleep on, or within 3 inches of an injection site","The four phone tabs and the receiver menu","Number colours, all seven trend arrows, LOW and HIGH displays","Banners, tooltips, and what the icons mean"],
+    q:'"IMPORTANT! Wear Dexcom G7 sensors on the back of your upper arm, even if you wore Dexcom G6 sensors on your abdomen." / "You must apply the overpatch to keep the sensor on your body." / "Press the top of the sensor for 10 seconds. Rub firmly around the patch 3 times."' },
+
+  { n:"4", t:"Treatment Decisions", s:"The most important chapter in the book",
+    p:"<p>If he reads one chapter of the real manual, make it this one. It is short, and it is built around eight worked examples that follow one person through a single day: waking to a low, dosing for breakfast, a high alarm that should be ignored, a signal loss at snack time, and a moment where the symptoms and the screen disagree.</p><p>The lesson underneath all eight is the same. Number plus arrow plus what you already did, in that order. Not the number on its own.</p><p>The chapter also introduces <strong>stacking insulin</strong>, which is worth a plain definition: taking another dose before the last one has finished working. Like stamping the accelerator again because the car has not moved yet. The manual's advice is to agree a waiting time with the doctor in advance, so it is a decision you have already made rather than one you make while anxious.</p>",
+    i:["The two situations where you must use the meter instead","Watch and wait: not treating is often the right move","Using arrows to nudge a dose up or down","Eight worked examples through one full day"],
+    q:'"Don\'t stack insulin by taking doses too close together. Talk to your healthcare provider about the right amount of time for you to wait between doses so you don\'t accidentally force your glucose down too low." / "What you should do: Nothing. Watch and wait to avoid stacking insulin."' },
+
+  { n:"5", t:"Alerts", s:"Every alarm, and how to make it stop nagging",
+    p:"<p>The longest chapter, and the one that decides whether he keeps wearing this thing or gives up on it in a fortnight. Alarm fatigue is the number one reason people abandon a CGM, and this chapter is Dexcom's own answer to it.</p><p>Every alarm is listed above on this page. What is worth knowing is that the chapter ends with a whole section called <em>Optimizing alerts</em> that is essentially permission to turn things down: set levels to numbers you actually act on, switch off Snooze so alarms stop repeating, use Delay 1st Alert on the High, choose gentler sound themes, or set things to vibrate.</p><p>Two features deserve special mention. <strong>A second alert profile</strong> lets you build a completely separate night-time setup, on a schedule, so he can sleep through everything except a genuine emergency. And on the receiver there are softer sound themes, including one called Dexcom G7 Soft which is quieter than Soft Tones.</p><p>The one thing not to do is switch alarms off wholesale. They are the reason the device is better than a meter.</p>",
+    i:["All six glucose alarms and the system alarms","Acknowledging from the lock screen on iPhone and Android","Quiet Modes: Vibrate, and Silence All for up to 6 hours","Level, Snooze, Delay 1st Alert, Fall Rate, Rise Rate","Building a second night-time profile on a schedule","Six sound themes plus vibrate only"],
+    q:'"Keep your alerts on. They\'re an important part of making treatment decisions. Before changing your alerts, discuss the best alert settings for you with your healthcare provider." / "For example, if you want to sleep unless your glucose goes to 55 mg/dL, turn off all alerts in your Night alert profile and make Technical Alerts vibrate. (The Urgent Low alert will still sound.)"' },
+
+  { n:"6", t:"Set Up Displays, Medical Device, and Siri", s:"Phone, receiver, watch, widget",
+    p:"<p>You can run the phone app, the receiver, or both. Either order, and you do not have to choose forever.</p><p><strong>For an older user living alone, the receiver deserves serious thought.</strong> The manual actually recommends it, in its own words, for anyone more comfortable with a dedicated medical device. It does one job. It cannot run out of storage, cannot be interrupted by a software update, cannot be silenced by a phone setting nobody remembers changing, and it does not need internet.</p><p>The trade-off is real: no Share, no family following, no Clarity without plugging into a computer. Which is why plenty of people run both, with the phone in the pocket by day and the receiver on the nightstand at night. The manual suggests exactly that, with night settings on the receiver so the phone can stay out of the bedroom entirely.</p><p>Anything Apple: there is a home screen widget and a Siri shortcut, so he can simply ask out loud what his number is. For anyone who struggles with small screens, that is a bigger deal than it sounds.</p>",
+    i:["Phone app setup and where to find the pairing code","Internet needed for setup and sharing, Bluetooth for everything else","Apple home screen widget, and asking Siri for your number","Direct to Watch versus Standard Smartwatch mode","Quick Glance in the Android notification drawer","Receiver setup: hold power for 3 to 5 seconds"],
+    q:'"Consider using the receiver if you\'re more comfortable with a dedicated medical device. On the phone, the app may compete with other phone apps for battery and storage capacity and may require certain phone settings to function. The receiver doesn\'t have these limitations." / "Consider setting up the receiver with your nighttime alert settings, and the phone app with your daytime ones so you can leave your phone out of your bedroom."' },
+
+  { n:"7", t:"Phone App Connections", s:"Share, Follow, and the sensor's own screen",
+    p:"<p>The Connections tab holds the sensor itself, which is where you check how much time is left and where you tap Replace Sensor. It is also where Share lives.</p><p>Share and the Dexcom Follow app are covered in full in the family section of this page. The short version: his numbers can appear on your phone every 5 minutes, with your own alarms on top, and he keeps control of what you see and can revoke it at any time.</p>",
+    i:["Sensor screen: time left, pairing code, display devices","Replace Sensor and Stop Sensor Session","Inviting followers and choosing what they see","Follower statuses, and the 7 day invitation expiry","Sending data to Apple Health"],
+    q:'"Share sends your information every 5 minutes &mdash; almost as soon as you get it. Always treat using the primary Dexcom G7 phone or watch app, not the Dexcom Follow app."' },
+
+  { n:"8", t:"Events and History", s:"Writing down what you did, so the graph makes sense",
+    p:"<p>This is the chapter that turns the device from a monitor into a teacher, and it is the one people use least.</p><p>The graph shows you <em>what</em> happened. Events tell you <em>why</em>. Tap the plus button and log a meal, an insulin dose, some exercise, a finger stick, or just a note. Later, those markers sit underneath the graph, so instead of an unexplained mountain at 2pm you can see the sandwich that caused it.</p><p>You can log things up to 30 days after the fact, and edit or delete them afterwards. The one exception: a calibration cannot be edited, deleted, or backdated.</p><p>This is also the chapter that covers optional calibration, which is genuinely optional. The G7 needs no finger sticks to work. But if the sensor has been reading consistently high or consistently low against the meter for several hours, a calibration can pull them together. The rules are strict and worth following exactly: clean hands with soap and water, a fingertip sample, entered within 5 minutes, only when glucose is steady, only a value between 40 and 400, and only on one device, never both.</p>",
+    i:["Logging meals, insulin, activity, finger sticks, and notes","History tab holds 14 days on the phone, 15 events on the receiver","Optional calibration, and the six rules for doing it properly","Why sensor readings and meter values differ"],
+    q:'"Calibrating your Dexcom G7 using your BG meter is optional." / "Relieve pressure... Wait for stable glucose... Clean hands... Enter within 5 minutes... Calibrate in your phone app or receiver, not both... Only calibrate with BG meter values from 40 mg/dL to 400 mg/dL."' },
+
+  { n:"9", t:"Reports", s:"Time in Range, and the number the doctor will ask about",
+    p:"<p>Scroll down on the Glucose tab, or Menu then Reports on the receiver, and pick 3, 7, 14, 30, or 90 days.</p><p>Three numbers come back. <strong>Average Glucose</strong> is the average of every reading. <strong>Time in Range</strong> is the percentage of the time you spent between 70 and 180, and it is the one most doctors now care about most. <strong>GMI</strong>, or Glucose Management Indicator, is an estimate of what an A1C would look like based on sensor data. It will not match a lab A1C exactly, and the manual says so plainly, so do not be alarmed when the two disagree.</p><p>Take a photo of the 14 day or 30 day summary to the next appointment. It is worth more than anything you can remember out loud.</p>",
+    i:["3, 7, 14, 30, and 90 day summaries","Average Glucose, Time in Range, GMI","Very High is above 250, Very Low is below 54","Receiver reports refresh hourly"],
+    q:'"GMI can be an indicator of how well glucose levels are managed. GMI will likely differ from A1C." / "Target Range: 70&ndash;180 mg/dL. Very High: Above 250 mg/dL. Very Low: Below 54 mg/dL."' },
+
+  { n:"10", t:"Next Sensor Session", s:"Grace periods, swapping over, getting the old one off",
+    p:"<p>When a sensor reaches the end you get warnings, and then a <strong>12 hour grace period</strong> begins. During grace the device works exactly as it always did. Nothing is wrong, nothing is degraded. It is deliberate slack so you can change the sensor when it suits you rather than at midnight.</p><p>You have to end the old session before starting a new one. Either let grace run out, or end it early from <span class=\"path\">Connections &gt; Sensor &gt; Replace Sensor</span> on the phone, or <span class=\"path\">Menu &gt; Replace Sensor</span> on the receiver. Do it on one device only. The other catches up on its own.</p><p>Getting the old patch off without taking skin with it: loosen an edge, soak it in baby oil or an adhesive remover, and peel slowly, folding the patch back over itself, in the direction the hair grows. Never one hard rip.</p>",
+    i:["Warnings before expiry, then 12 hours of grace","Ending a session automatically or early","Removing the patch without tearing skin","Clearing old sensors out of the phone's Bluetooth list"],
+    q:'"The grace period gives you more time to replace your sensor so you can do it when it\'s convenient for you... During the grace period, your sensor continues to work as it did during the sensor session." / "Pull off the patch slowly, folding it over itself, in the same direction of hair growth."' },
+
+  { n:"11", t:"Troubleshooting", s:"Eleven problems and what to do about each",
+    p:"<p>Organised by symptom, which makes it the most usable chapter in the book. The full list of what it covers is below.</p><p><strong>Water:</strong> the sensor is waterproof to 8 feet, so shower, bathe, and swim with it on. The receiver is not waterproof and must stay dry. Underwater, Bluetooth stops working, so expect a gap in the graph while swimming. It fills itself back in afterwards.</p><p><strong>Itchy or sore skin</strong> is common and usually fixable. Never use the same site twice in a row, moisturise between sensors but never on the day of insertion, and if there is real itching, burning, or a rash, that is a call to the doctor, not something to put up with.</p><p><strong>Air travel:</strong> the sensor can go through the walk-through metal detector and the body scanner, or he can request a hand wand and pat-down instead. Because security usually takes the phone and receiver off you, use the meter until you are through. On the plane, phone in airplane mode, receiver simply stays on.</p><p><strong>Charging the receiver:</strong> Dexcom's own cable and charger, up to 3 hours for a full charge.</p>",
+    i:["Accuracy and calibration","Adhesive patch peeling, and skin irritation","Cannot hear alarms, on phone or receiver","Cannot see the receiver screen","Brief Sensor Issue, Sensor Failed, pairing trouble, Signal Loss","Gaps in the trend graph","Recharging the receiver","Travel and airport security","Updating the app and the receiver","Water, showering, swimming","X-rays, CT scans, radiation therapy"],
+    q:'"Once inserted, the sensor is waterproof up to 8 feet. The receiver isn\'t. Swim, shower, and take a bath with the sensor, but leave the receiver out of the water." / "You can wear your Dexcom G7 sensor when going through walk-through metal detectors and Advanced Imaging Technology (AIT) body scanners."' },
+
+  { n:"A", t:"Dexcom Clarity", s:"The bigger reports, for appointments",
+    p:"<p>Clarity is the fuller reporting system, on the web at dexcom.com/clarityapp and as its own app. If he uses the phone app, his data flows there automatically. If he only uses the receiver, it has to be plugged into a computer, and the manual says to do that <strong>at least once every 6 months</strong>, which is also how the receiver gets its software updates.</p><p>The clinic can be given a sharing code so they can see the data during a visit. That is worth setting up once and never thinking about again.</p>",
+    i:["Automatic upload from the phone app","Manual upload from the receiver, every 6 months minimum","Authorising the clinic with a sharing code"],
+    q:'"If you only use the receiver, upload your data to Dexcom Clarity at dexcom.com/clarityapp at least once every 6 months."' },
+
+  { n:"B", t:"Taking Care of It", s:"Cleaning, storing, throwing away",
+    p:"<p>Sensors stay in the box until the moment they go on, stored between 36 and 86 degrees Fahrenheit. The fridge is fine. <strong>The freezer is not.</strong></p><p>The receiver gets cleaned when dirty and at least monthly: a damp cloth with hand soap, or a bleach or ammonium wipe, three passes up and down and three across, then air dry. Keep water out of the USB port. Do not let sunscreen or insect repellent get on it.</p>",
+    i:["Sensor storage between 36 and 86 degrees, never frozen","Cleaning and disinfecting the receiver","Keeping physical control of the receiver for privacy","Disposal by local rules, with the cap screwed back on"],
+    q:'"Store at temperatures between 36&deg;F and 86&deg;F, but not in a freezer." / "Clean when dirty or at least once a month."' },
+
+  { n:"C", t:"Warranty", s:"What is covered",
+    p:"<p>Separate limited warranties for the receiver and for the sensors. In practice, if a sensor fails early or falls off early, ring Dexcom and they replace it. This is routine and happens to everybody.</p>",
+    i:["Receiver limited warranty","Sensor limited warranty"], q:"" },
+
+  { n:"D", t:"Terms of Use and Open Source", s:"Legal and licensing",
+    p:"<p>Terms of use and open source software notices. Nothing here affects how the device is used day to day.</p>",
+    i:["Terms of use","Open source software code"], q:"" },
+
+  { n:"E", t:"Technical Information", s:"The accuracy studies, in full",
+    p:"<p>The engineering appendix, and by far the longest. It holds the clinical accuracy data, including how reliably the low alarm fires when you actually are low, plus radio specifications and electromagnetic compatibility.</p><p>Not bedtime reading, but this is the section to look up if anyone ever asks how accurate this thing really is. The answer is in there, with numbers.</p>",
+    i:["Device performance characteristics and accuracy tables","Alert detection and prediction rates","Product specifications","Radio regulations compliance"], q:"" },
+
+  { n:"F", t:"Packaging Symbols and Index", s:"Decoding the box",
+    p:"<p>Every symbol printed on the packaging, explained. The Use By date matters most: a sensor can be started on or before that date, never after, and starting one on the date still gives full wear.</p>",
+    i:["Packaging symbol key","Full index"],
+    q:'"Don\'t start a sensor past its Use By Date (YYYY-MM-DD) because it may give incorrect results. You can start a new sensor on or before its Use By Date. This gives you full wear."' }
+];
+document.getElementById("chapList").innerHTML = CHAPTERS.map(function(c){
+  var inside = c.i && c.i.length
+    ? '<div class="inside"><b>What is actually in this chapter</b><ul>'+c.i.map(function(x){return "<li>"+x+"</li>";}).join("")+"</ul></div>" : "";
+  var src = c.q
+    ? '<details class="src"><summary>The manual\'s exact words</summary><div class="quote"><p>'+c.q+
+      '</p><span class="cite">Dexcom G7 User Guide, chapter '+c.n+'</span></div></details>' : "";
+  return '<details class="chap"><summary><span class="chap-n">'+c.n+'</span>'+
+    '<span class="chap-t">'+c.t+'<span class="chap-s">'+c.s+'</span></span></summary>'+
+    '<div class="chap-body">'+c.p+inside+src+'</div></details>';
+}).join("");
+
+/* ============ GLOSSARY ============ */
+var GLOSS = [
+  ["Sensor reading","Sensor Reading","The number on the screen. It comes from the fluid just under your skin, not from blood, which is why it never exactly matches a finger stick."],
+  ["Finger stick number","BG Meter Value","What the old meter tells you, measured in actual blood. Still the tie-breaker whenever the two disagree or the screen has no number."],
+  ["The fluid it reads","Interstitial fluid","The fluid in between your cells. Sugar reaches it a few minutes after it reaches your blood, which is the whole reason for the lag."],
+  ["The 12 hour cushion","Grace Period","Spare time on purpose at the end of a sensor's life. Everything works normally. Change it when convenient."],
+  ["Getting acquainted","Sensor Warmup","The first stretch after a new sensor goes on. No numbers, no alarms. Not a fault."],
+  ["One sensor's lifetime","Sensor Session","From the moment a sensor is paired to the moment it is stopped."],
+  ["Doubling up on insulin","Stacking Insulin","Taking another dose before the last one has finished working. The classic route to a crash a few hours later."],
+  ["Low","Hypoglycemia","Sugar too low. Needs treating, and needs treating promptly."],
+  ["High","Hyperglycemia","Sugar too high. Needs treating, but usually with patience rather than more insulin straight away."],
+  ["Whoever is watching","Follower","Anyone he has invited to see his numbers on their own phone through the Dexcom Follow app."],
+  ["Him, in the app's words","Sharer","The person wearing the sensor and sending the data out."],
+  ["Anything with a screen","Display Device","Phone, watch, or receiver. Whatever is showing the number."],
+  ["The dedicated handset","Receiver","Dexcom's own small device. Does one job, needs no internet, cannot be disturbed by phone settings."],
+  ["Percent of the day in the band","Time in Range","How much of the time he sat between 70 and 180. The number most doctors now watch."],
+  ["Estimated A1C","GMI","Glucose Management Indicator. An estimate of A1C from sensor data. It will not match a lab A1C, and that is expected."],
+  ["Equipment messages","System Alerts","Alarms about the gear, not about sugar. Signal Loss, pairing messages, low battery, and so on."],
+  ["Serious equipment messages","Technical Alerts","The subset that means you are getting no readings at all. These add sound if ignored, even on vibrate."]
+];
+document.getElementById("glossList").innerHTML = GLOSS.map(function(g){
+  return '<div class="gl-row"><p class="gl-t">'+g[0]+'<em>'+g[1]+'</em></p><p>'+g[2]+'</p></div>';
+}).join("");
+
+/* ============ SPEED RUNS ============ */
+var RUNS = [
+  { id:"read", t:"Read my number right now", n:"4 steps", steps:[
+    { h:"Look at the big number.", p:["That is your sugar right now, in mg/dL. A brand new one arrives every 5 minutes, so it is never more than 5 minutes old."] },
+    { h:"Now look at the arrow beside it.", p:["Flat means steady. Slanted means moving gently. Straight up or down means moving properly. Two arrows means moving fast.","The arrow is telling you what the next half hour looks like. A 70 sitting still and a 70 falling fast need completely different responses."] },
+    { h:"Check the colour.", p:["White or grey means you are inside your range and there is nothing to do.","Yellow means high. Red means low."], flag:"Same three colours everywhere: phone, watch, receiver, and the widget. Learn them once." },
+    { h:"If anything is missing, stop and get the meter.", p:["No number, or no arrow, or a system message across the screen. Any of those and this device does not get a vote."], flagWarn:"No number or no arrow means no decision. Finger stick instead." }
+  ]},
+
+  { id:"alarm", t:"An alarm just went off", n:"5 steps", steps:[
+    { h:"Take a breath. Read the words first.", p:["The screen says which alarm it is. That single word changes everything you do next, so read it before you do anything else.","Nothing bad happens while you take ten seconds to read it."] },
+    { h:"Does it say Urgent Low, or Low?", p:["Then treat it the way the doctor has told you to. Fast sugar, juice, tablets, whatever the plan is.","Urgent Low means you are at 55 or below right now."] },
+    { h:"Does it say Urgent Low Soon?", p:["You are still above 55, but falling fast enough to get there within 20 minutes.","Eat or drink something now. That alarm exists to give you a head start, so take it."] },
+    { h:"Does it say High?", p:["Ask one question first: have you taken insulin in the last hour or two?","If you have, the answer is usually to wait. Insulin takes time. Taking more on top of it is how people end up low later."], flag:"The manual's own example says exactly this: after a High alarm 30 minutes post-dose, the correct action is nothing at all." },
+    { h:"Now press OK.", p:["Until you acknowledge it, it comes back every 5 minutes. That is by design, not a fault.","Deal with the situation first. Press OK second."] }
+  ]},
+
+  { id:"nonum", t:"There is no number on the screen", n:"5 steps", steps:[
+    { h:"Do not pull the sensor off.", p:["Almost every no-number situation fixes itself. Pulling it off guarantees it will not."] },
+    { h:"Read the message on the screen.", p:["Signal Loss means the phone and sensor lost touch. Brief Sensor Issue means the sensor cannot read you this minute. Sensor Warmup means a new sensor is settling in.","All three are the equipment talking, not your body."] },
+    { h:"Get the meter out and use that meanwhile.", p:["No readings and no alarms until it is sorted. The meter is what you decide from until the number comes back."] },
+    { h:"Bring the phone or receiver close.", p:["Within 33 feet, and on the same side of your body as the sensor. Walls, water, and your own body block the signal.","If Bluetooth got switched off somehow, switch it back on. Give it up to 5 minutes to reconnect."] },
+    { h:"Still wrong after a while? Ring them.", p:["Signal Loss lasting over 30 minutes, or Brief Sensor Issue lasting over 3 hours, is worth a phone call.","Dexcom support: 1-888-738-3646. They answer 24 hours a day and they are used to this call."] }
+  ]},
+
+  { id:"insert", t:"Put a new sensor on", n:"8 steps", steps:[
+    { h:"Pick the spot: back of the upper arm.", p:["Not the belly, even if the old G6 went there. Adults, upper arm, back of it.","Choose a different spot from last time so the skin can recover. Avoid anywhere you sleep on, anywhere within 3 inches of an injection site, and anywhere scarred, tattooed, or hairy."] },
+    { h:"Wash, wipe, and let it dry.", p:["Hands first, soap and water, dried properly.","Then the site with an alcohol wipe to strip the oils off."], flag:"Let the skin dry all the way. This one detail is the difference between a sensor that lasts the whole run and one that lifts on day three." },
+    { h:"Unscrew the cap.", p:["Do not touch the needle inside. Do not use it if the cap was already opened or looks damaged.","Have the overpatch out of the box and ready before you start."] },
+    { h:"Press it down, then press the button.", p:["Relax the arm. Muscles tensed makes it worse.","Push the applicator flat against the skin until the clear ring disappears. Keep pressing down while you press the button."], flag:"It will not fire until it is pressed properly flat. If nothing happens, press harder rather than repositioning." },
+    { h:"Lift the applicator off, and keep it.", p:["The pairing code is printed on it, and you may need that code again."] },
+    { h:"Press for 10 seconds, then rub 3 times.", p:["Press down on the top of the sensor and count a slow ten.","Then rub firmly around the patch three times to seal the edges."] },
+    { h:"Put the overpatch on.", p:["Peel off both clear liners without touching the white adhesive, leaving the coloured liner on for now.","Hold the coloured tab and lay the overpatch around the sensor. Rub around it. Now pull the coloured liner off. Rub around it again."], flag:"The overpatch is required, not a spare. It is what keeps the sensor on for the full run." },
+    { h:"Finish on the phone or receiver, then wait.", p:["Go back to the device and finish pairing.","Then it warms up. No numbers and no alarms until warmup finishes. Use the meter until it does.","Throw the applicator away with the cap screwed back on."] }
+  ]},
+
+  { id:"swap", t:"Change the sensor when it is due", n:"5 steps", steps:[
+    { h:"You will get plenty of warning.", p:["Alarms tell you the session is nearly up. Then a 12 hour grace period starts.","Nothing is wrong during grace. It works exactly as it always has. That time is spare on purpose."] },
+    { h:"Check how long is actually left.", p:["Phone: Connections, then Sensor. Receiver: Menu, Information, Sensor, Sensor Info."] },
+    { h:"End the old session.", p:["Phone: Connections, Sensor, then Replace Sensor. Receiver: Menu, then Replace Sensor.","Do it on one device only. The other one catches up by itself."] },
+    { h:"Peel the old patch off gently.", p:["Loosen an edge first. Baby oil or an adhesive remover soaked into the patch makes it far easier.","Pull slowly, folding the patch back over itself, going the same way the hair grows. Never one hard rip."] },
+    { h:"New sensor, new spot.", p:["Only one sensor at a time, and never the same site twice in a row.","The eight insertion steps are in the speed run above if you want them one at a time."] }
+  ]},
+
+  { id:"family", t:"Let family see the numbers", n:"4 steps", steps:[
+    { h:"This is done on his phone, once.", p:["It needs the phone app. The receiver on its own cannot share.","Open the app and go to Connections, then Share. Turn Share on."] },
+    { h:"Invite them by email.", p:["Tap Invite Follower and put in a name and an email address.","Then choose what they get to see: just the number and arrow, or the trend graph as well. He picks, and he can change it later."] },
+    { h:"They install Dexcom Follow on their own phone.", p:["They open the invitation email on the phone itself and tap the link. Follow is a separate free app, and they do not need the main Dexcom app at all.","Invitations expire after 7 days, so tell them to do it that evening."] },
+    { h:"They set their own alarms.", p:["In Follow, the gear icon next to his name sets a Low, a High, and a No Data alert, each with a delay so a brief dip does not wake them.","Urgent Low is fixed at 55 for followers too."], flagWarn:"Never treat off the Follow app. What a follower sees is always older than what he sees. If it looks bad, ring him and have him check his own screen." }
+  ]}
+];
+
+var runList = document.getElementById("runList");
+runList.innerHTML = RUNS.map(function(r,i){
+  return '<button class="run-b" data-run="'+i+'"><b>'+r.t+'</b><span>'+r.n+'</span></button>';
+}).join("");
+
+var runner   = document.getElementById("runner");
+var elTitle  = document.getElementById("runnerTitle");
+var elPips   = document.getElementById("runPips");
+var elCount  = document.getElementById("runCount");
+var elHead   = document.getElementById("runHead");
+var elBody   = document.getElementById("runBody");
+var btnBack  = document.getElementById("runBack");
+var btnNext  = document.getElementById("runNext");
+var btnDone  = document.getElementById("runDone");
+var btnSay   = document.getElementById("runSay");
+var cur = null, idx = 0, opener = null;
+
+function paintStep(){
+  var st = cur.steps[idx], n = cur.steps.length;
+  elTitle.textContent = cur.t;
+  elCount.textContent = "Step " + (idx+1) + " of " + n;
+  elHead.textContent  = st.h;
+  var html = st.p.map(function(x){ return '<p class="step-p">'+x+"</p>"; }).join("");
+  if (st.flag)     html += '<div class="step-flag">'+st.flag+"</div>";
+  if (st.flagWarn) html += '<div class="step-flag warn">'+st.flagWarn+"</div>";
+  elBody.innerHTML = html;
+  var pips = "";
+  for (var i = 0; i < n; i++) pips += '<span class="pip'+(i<=idx?" done":"")+'"></span>';
+  elPips.innerHTML = pips;
+  var last = idx === n - 1;
+  btnBack.disabled = idx === 0;
+  // On the last step the big coloured button becomes Finish, so the
+  // primary action is never a greyed-out one.
+  btnNext.hidden = last;
+  btnDone.className = last ? "btn-lg" : "btn-gh";
+  btnDone.textContent = last ? "That's everything. Close." : "Finish early";
+  // Next vanishes on the last step, so don't let focus vanish with it.
+  if (last && document.activeElement === btnNext) btnDone.focus();
+  stopSpeech();
+  document.querySelector(".runner-body").scrollTop = 0;
+}
+function openRun(i, from){
+  cur = RUNS[i]; idx = 0; opener = from || null;
+  runner.hidden = false;
+  document.body.style.overflow = "hidden";
+  paintStep();
+  btnNext.focus();
+}
+function closeRun(){
+  stopSpeech();
+  runner.hidden = true;
+  document.body.style.overflow = "";
+  if (opener) opener.focus();
+}
+runList.addEventListener("click", function(e){
+  var b = e.target.closest("[data-run]");
+  if (b) openRun(parseInt(b.dataset.run, 10), b);
+});
+btnNext.onclick  = function(){ if (idx < cur.steps.length-1){ idx++; paintStep(); } };
+btnBack.onclick  = function(){ if (idx > 0){ idx--; paintStep(); } };
+btnDone.onclick  = closeRun;
+document.getElementById("runClose").onclick = closeRun;
+btnSay.onclick = function(){
+  var st = cur.steps[idx];
+  var txt = st.h + " " + st.p.join(" ") + " " + (st.flag||"") + " " + (st.flagWarn||"");
+  speak(btnSay, txt);
+};
+document.addEventListener("keydown", function(e){
+  if (runner.hidden) return;
+  if (e.key === "Escape"){ closeRun(); }
+  else if (e.key === "ArrowRight"){ btnNext.click(); }
+  else if (e.key === "ArrowLeft"){ btnBack.click(); }
+});
+
+/* ============ FILTER ============ */
+var filter = document.getElementById("filter");
+var hitNote = document.getElementById("hitNote");
+var chapEls = Array.prototype.slice.call(document.querySelectorAll(".chap"));
+chapEls.forEach(function(el){ el.dataset.hay = el.textContent.toLowerCase(); });
+
+filter.addEventListener("input", function(){
+  var q = filter.value.trim().toLowerCase();
+  if (!q){
+    chapEls.forEach(function(el){ el.hidden = false; el.open = false; });
+    hitNote.hidden = true;
+    return;
+  }
+  var hits = 0;
+  chapEls.forEach(function(el){
+    var match = el.dataset.hay.indexOf(q) > -1;
+    el.hidden = !match;
+    el.open = match;
+    if (match) hits++;
+  });
+  hitNote.hidden = false;
+  hitNote.textContent = hits === 0
+    ? 'Nothing matched "' + filter.value + '". Try a simpler word, or ring Dexcom on 1-888-738-3646.'
+    : hits + (hits === 1 ? " chapter mentions " : " chapters mention ") + '"' + filter.value + '"';
+});
+
+})();
+</script>
+</body>
+</html>
