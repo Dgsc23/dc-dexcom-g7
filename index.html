@@ -397,7 +397,13 @@ svg{display:block;max-width:100%;height:auto}
 .inside li{margin-bottom:.2rem}
 .path{
   font-family:var(--mono);font-size:.9em;background:var(--surface-2);
-  padding:.08em .38em;border-radius:2px;white-space:nowrap;
+  padding:.08em .38em;border-radius:2px;
+  /* Kept on one line where there is room, but allowed to wrap on a small
+     phone rather than pushing the whole page sideways. */
+  white-space:nowrap;
+}
+@media (max-width:26rem){
+  .path{white-space:normal;overflow-wrap:anywhere}
 }
 .chap-body .path{background:var(--ground)}
 
@@ -438,11 +444,23 @@ svg{display:block;max-width:100%;height:auto}
   font-family:var(--mono);font-size:calc(.72rem * var(--scale));
   text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);
 }
-.pl-x{
+.pl-x,.pl-tiny{
   background:none;border:1px solid var(--rule-strong);border-radius:3px;
-  padding:.22rem .7rem;font-size:calc(.82rem * var(--scale));color:var(--ink-soft);
+  padding:.28rem .75rem;font-size:calc(.85rem * var(--scale));color:var(--ink-soft);
+  white-space:nowrap;min-height:2rem;
 }
-.pl-x:hover{border-color:var(--accent);color:var(--accent)}
+.pl-x:hover,.pl-tiny:hover{border-color:var(--accent);color:var(--accent)}
+.pl-mini{
+  display:flex;align-items:center;gap:.3rem;background:none;
+  border:1px solid var(--rule-strong);border-radius:3px;
+  padding:.28rem .7rem;font-size:calc(.85rem * var(--scale));
+  color:var(--ink-soft);white-space:nowrap;min-height:2rem;
+}
+.pl-mini:hover{border-color:var(--accent);color:var(--accent)}
+/* Tucked away: the bar shrinks to one line but the reading carries on. */
+.player.mini #plBody{display:none}
+.player.mini .player-in{padding-top:.5rem;padding-bottom:.55rem}
+.player.mini .pl-head{margin-bottom:0}
 
 .pl-seek{margin-bottom:.5rem}
 #plSeek{
@@ -511,9 +529,14 @@ body.playing .runner-foot{padding-bottom:calc(var(--player-h,10rem) + .8rem)}
    hunted for. Labels stay under every icon: glyphs alone are guesswork. */
 .dock{
   position:fixed;left:0;right:0;bottom:0;z-index:50;
-  display:grid;grid-template-columns:repeat(4,1fr);
   background:var(--surface);border-top:1px solid var(--rule-strong);
   padding-bottom:env(safe-area-inset-bottom);
+}
+/* Capped and centred so the controls stay together on an iPad instead of
+   drifting to the far corners of a 1024pt screen. */
+.dock-in{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  max-width:34rem;margin:0 auto;
 }
 .dock button{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -569,6 +592,26 @@ body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
   font-size:calc(.95rem * var(--scale));line-height:1.4;margin-top:.12rem;
 }
 .big-go{flex:none;color:var(--accent)}
+/* Finished once already. Still fully usable, just quietly acknowledged, so
+   he can see what he has been through without anything being taken away. */
+.big.done .big-txt b::after{
+  content:" \2713";color:var(--accent);font-weight:700;
+}
+.big.done .big-go{opacity:.45}
+
+/* The one piece of motion on the page. When a walk-through closes, the button
+   he just finished breathes twice so his eye lands somewhere known instead of
+   on a screen that silently changed. Slow, soft, self-cancelling, and off
+   entirely for anyone who asks for reduced motion. */
+.big.cue{animation:cuePulse 1.6s ease-out 2}
+@keyframes cuePulse{
+  0%   {box-shadow:0 0 0 0 var(--accent-soft)}
+  35%  {box-shadow:0 0 0 6px var(--accent-soft)}
+  100% {box-shadow:0 0 0 0 rgba(0,0,0,0)}
+}
+@media (prefers-reduced-motion:reduce){
+  .big.cue{animation:none;border-color:var(--accent)}
+}
 .big.urgent{border-color:var(--low);background:var(--low-soft)}
 .big.urgent .big-go{color:var(--low)}
 .big.urgent:hover,.big.urgent:focus-visible{border-color:var(--low);background:var(--low-soft)}
@@ -856,6 +899,31 @@ footer p{margin-bottom:.7rem}
   .chap>summary{grid-template-columns:1.8rem 1fr;gap:.6rem;padding:.9rem 1rem}
   .chap-body{padding:0 1rem 1.1rem}
 }
+/* ============ TABLET / iPAD ============ */
+/* A tablet has room, but a wall of text is no kinder at 1024pt than at 390.
+   The column stays a comfortable reading width and everything simply gets a
+   little larger and better centred. */
+@media (min-width:34rem){
+  .simple{max-width:33rem;padding-top:2.75rem}
+  .big{min-height:4.6rem;padding:1.15rem 1.3rem}
+  .big-txt b{font-size:calc(1.36rem * var(--scale))}
+  .dock button{min-height:4.2rem}
+  .dock b{font-size:calc(.86rem * var(--scale))}
+  .player-in{max-width:33rem;padding:.85rem 1.15rem 1rem}
+  .pl-b{min-height:4rem}
+  .pl-b b{font-size:calc(.88rem * var(--scale))}
+  .pl-s{padding:.6rem 1.35rem;min-height:2.9rem}
+  .runner-inner{max-width:36rem}
+  .step-h{font-size:calc(2.2rem * var(--scale))}
+  .step-p{font-size:calc(1.24rem * var(--scale))}
+  .choice{font-size:calc(1.12rem * var(--scale));min-height:3.5rem}
+}
+@media (min-width:60rem){
+  /* Desktop and landscape iPad Pro: hold the reading column, do not sprawl. */
+  .simple{max-width:34rem}
+  body{font-size:calc(1.16rem * var(--scale))}
+}
+
 /* iOS: dynamic toolbars make 100% height unreliable for a fixed overlay. */
 @supports (height:100dvh){ .runner{height:100dvh} }
 .runner-bar{padding-top:calc(.7rem + env(safe-area-inset-top))}
@@ -1331,9 +1399,14 @@ input,select,textarea{font-size:max(16px,1rem)}
 <div class="player" id="player" hidden role="region" aria-label="Reading out loud">
   <div class="player-in">
     <div class="pl-head">
+      <button class="pl-mini" id="plMini" aria-expanded="true" aria-controls="plBody">
+        <span id="plMiniIcon">&#9662;</span><span id="plMiniLab">Hide</span>
+      </button>
       <span class="pl-what" id="plWhat">Reading</span>
+      <button class="pl-tiny" id="plTinyPlay" hidden aria-label="Pause">Pause</button>
       <button class="pl-x" id="plClose" aria-label="Stop reading and close">Done</button>
     </div>
+   <div id="plBody">
 
     <div class="pl-seek" id="plSeekWrap">
       <input type="range" id="plSeek" min="0" max="1000" value="0" step="1" aria-label="Position in the recording">
@@ -1360,6 +1433,7 @@ input,select,textarea{font-size:max(16px,1rem)}
       <span class="pl-slab" id="plSpeedLab">Normal speed</span>
       <button class="pl-s" id="plFaster" aria-label="Faster">Faster</button>
     </div>
+   </div>
   </div>
 </div>
 
@@ -1429,6 +1503,7 @@ input,select,textarea{font-size:max(16px,1rem)}
 
 <!-- ==================== DOCK ==================== -->
 <nav class="dock" id="dock" aria-label="Quick navigation">
+ <div class="dock-in">
   <button data-dock="ask">
     <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.8-5a8.3 8.3 0 0 1-.8-3.6 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 8.5 8"/></svg>
     <b>Ask</b>
@@ -1445,6 +1520,7 @@ input,select,textarea{font-size:max(16px,1rem)}
     <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="13" width="18" height="5" rx="1.5"/></svg>
     <b>Buttons</b>
   </button>
+ </div>
 </nav>
 
 <!-- ==================== SPEED RUN VIEWER ==================== -->
@@ -1611,12 +1687,21 @@ function paintPlayState(){
   plPlayLab.textContent = paused ? "Play" : "Pause";
   plIcon.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
   plPlay.setAttribute("aria-label", paused ? "Play" : "Pause");
+  var t = document.getElementById("plTinyPlay");
+  if (t){ t.textContent = paused ? "Play" : "Pause"; t.setAttribute("aria-label", paused ? "Play" : "Pause"); }
 }
 function showPlayer(btn, seekable){
-  // Name what is being read, taken from the nearest heading.
+  // Name what is being read: the card's own heading if it has one, otherwise
+  // the heading of the section it sits in.
   var card = btn.closest(".card, .msg, .runner-inner, .screen");
-  var h = card && card.querySelector(".card-t, .step-h, .who, h2, h3");
-  plWhat.textContent = "Reading: " + ((h ? h.textContent : "") || "this page").trim();
+  var h = card && card.querySelector(".card-t, .step-h, .who, h3");
+  var name = h ? h.textContent : "";
+  if (!name.trim()){
+    var sec = btn.closest("section");
+    var sh = sec && sec.querySelector("h2");
+    name = sh ? sh.textContent : (sec ? sec.getAttribute("data-label") || "" : "");
+  }
+  plWhat.textContent = "Reading: " + (name.trim() || "this page");
 
   plSeekWrap.hidden = !seekable;
   plSeek.disabled = !seekable;
@@ -1633,7 +1718,8 @@ function showPlayer(btn, seekable){
 
   elPlayer.hidden = false;
   document.body.classList.add("playing");
-  document.documentElement.style.setProperty("--player-h", elPlayer.offsetHeight + "px");
+  elPlayer.classList.toggle("mini", localStorage.getItem("g7mini") === "1");
+  paintMini();
   paintPlayState();
   paintProgress();
   if (tick) clearInterval(tick);
@@ -1664,6 +1750,26 @@ plPlay.onclick = function(){
 document.getElementById("plSlower").onclick = function(){ if (spIdx > 0){ spIdx--; paintSpeed(); } };
 document.getElementById("plFaster").onclick = function(){ if (spIdx < SPEEDS.length-1){ spIdx++; paintSpeed(); } };
 document.getElementById("plClose").onclick = function(){ hush(); };
+
+/* Tuck the controls away without stopping the reading. The choice sticks, so
+   once he has decided he prefers it small it stays small. */
+var plMini = document.getElementById("plMini");
+var plTinyPlay = document.getElementById("plTinyPlay");
+function paintMini(){
+  var mini = elPlayer.classList.contains("mini");
+  document.getElementById("plMiniIcon").innerHTML = mini ? "&#9652;" : "&#9662;";
+  document.getElementById("plMiniLab").textContent = mini ? "Controls" : "Hide";
+  plMini.setAttribute("aria-expanded", mini ? "false" : "true");
+  plTinyPlay.hidden = !mini;
+  document.documentElement.style.setProperty("--player-h", elPlayer.offsetHeight + "px");
+}
+function setMini(on){
+  elPlayer.classList.toggle("mini", !!on);
+  localStorage.setItem("g7mini", on ? "1" : "0");
+  paintMini();
+}
+plMini.onclick = function(){ setMini(!elPlayer.classList.contains("mini")); };
+plTinyPlay.onclick = function(){ plPlay.click(); };
 plSeek.addEventListener("input", function(){
   seeking = true;
   if (player && isFinite(player.duration)){
@@ -2184,6 +2290,29 @@ function paintStep(){
   stopSpeech();
   document.querySelector(".runner-body").scrollTop = 0;
 }
+/* Which walk-throughs he has been through, so the menu can show it. */
+function doneRuns(){
+  try { return JSON.parse(localStorage.getItem("g7done") || "[]"); } catch (e) { return []; }
+}
+function markRunDone(id){
+  var d = doneRuns();
+  if (d.indexOf(id) < 0){ d.push(id); localStorage.setItem("g7done", JSON.stringify(d)); }
+}
+function paintDoneMenu(cueId){
+  var d = doneRuns();
+  Array.prototype.forEach.call(document.querySelectorAll("[data-menu]"), function(b){
+    var m = MENU[+b.dataset.menu];
+    if (!m || !m.run) return;
+    b.classList.toggle("done", d.indexOf(m.run) > -1);
+    if (cueId && m.run === cueId){
+      b.classList.remove("cue");
+      void b.offsetWidth;                 // restart the animation
+      b.classList.add("cue");
+      setTimeout(function(){ b.classList.remove("cue"); }, 3600);
+    }
+  });
+}
+
 function openRun(i, from){
   cur = RUNS[i]; curIdx = i; idx = 0; opener = from || null;
   runner.hidden = false;
@@ -2193,9 +2322,12 @@ function openRun(i, from){
 }
 function closeRun(){
   stopSpeech();
+  var finished = cur && idx === cur.steps.length - 1;
+  var id = cur ? cur.id : null;
   runner.hidden = true;
   document.body.style.overflow = "";
   if (opener) opener.focus();
+  if (finished && id){ markRunDone(id); paintDoneMenu(id); }
 }
 runList.addEventListener("click", function(e){
   var b = e.target.closest("[data-run]");
@@ -2645,6 +2777,7 @@ setMode(localStorage.getItem("g7mode") === "full" ? "full" : "simple", true);
 toFullBtn.onclick = function(){ setMode("full"); };
 document.getElementById("toSimple").onclick = function(){ setMode("simple"); };
 
+paintDoneMenu();
 bigMenu.addEventListener("click", function(e){
   var b = e.target.closest("[data-menu]");
   if (!b) return;
