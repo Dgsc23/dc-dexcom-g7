@@ -421,6 +421,91 @@ svg{display:block;max-width:100%;height:auto}
 }
 .tel:hover{text-decoration:underline}
 
+/* ============ PLAYER ============ */
+/* One bar at the bottom rather than controls buried in every card. It takes
+   the dock's place while something is reading, so the two never collide, and
+   the buttons stay big enough to hit without looking. */
+.player{
+  position:fixed;left:0;right:0;bottom:0;z-index:120;
+  background:var(--surface);border-top:1px solid var(--rule-strong);
+  box-shadow:0 -6px 18px rgba(0,0,0,.07);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.player-in{max-width:30rem;margin:0 auto;padding:.7rem 1rem .85rem}
+.pl-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.4rem}
+.pl-what{
+  flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-family:var(--mono);font-size:calc(.72rem * var(--scale));
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);
+}
+.pl-x{
+  background:none;border:1px solid var(--rule-strong);border-radius:3px;
+  padding:.22rem .7rem;font-size:calc(.82rem * var(--scale));color:var(--ink-soft);
+}
+.pl-x:hover{border-color:var(--accent);color:var(--accent)}
+
+.pl-seek{margin-bottom:.5rem}
+#plSeek{
+  -webkit-appearance:none;appearance:none;width:100%;height:1.5rem;
+  background:none;margin:0;display:block;cursor:pointer;
+}
+#plSeek::-webkit-slider-runnable-track{
+  height:.5rem;border-radius:3px;background:var(--surface-2);
+  border:1px solid var(--rule);
+}
+#plSeek::-moz-range-track{
+  height:.5rem;border-radius:3px;background:var(--surface-2);
+  border:1px solid var(--rule);
+}
+#plSeek::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:1.35rem;height:1.35rem;
+  border-radius:50%;background:var(--accent);border:2px solid var(--surface);
+  margin-top:-.48rem;box-shadow:0 1px 3px rgba(0,0,0,.25);
+}
+#plSeek::-moz-range-thumb{
+  width:1.35rem;height:1.35rem;border-radius:50%;
+  background:var(--accent);border:2px solid var(--surface);
+}
+#plSeek:disabled{opacity:.4;cursor:default}
+.pl-times{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:calc(.76rem * var(--scale));color:var(--ink-faint);margin-top:-.15rem;
+}
+
+.pl-row{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:.5rem;margin-bottom:.55rem}
+.pl-b{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.15rem;background:var(--ground);border:1px solid var(--rule-strong);
+  border-radius:5px;padding:.55rem .3rem;min-height:3.6rem;color:var(--ink);
+}
+.pl-b b{font-weight:600;font-size:calc(.8rem * var(--scale));line-height:1.15;white-space:nowrap}
+.pl-b:hover:not([disabled]){border-color:var(--accent);color:var(--accent)}
+.pl-b[disabled]{opacity:.35;cursor:default}
+.pl-main{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pl-main:hover{filter:brightness(1.08);color:var(--on-accent)}
+
+.pl-speed{
+  display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:center;
+}
+.pl-s{
+  background:var(--ground);border:1px solid var(--rule-strong);border-radius:5px;
+  padding:.5rem 1rem;font-size:calc(.92rem * var(--scale));font-weight:600;min-height:2.6rem;
+}
+.pl-s:hover:not([disabled]){border-color:var(--accent);color:var(--accent)}
+.pl-s[disabled]{opacity:.35;cursor:default}
+.pl-slab{
+  text-align:center;font-size:calc(.88rem * var(--scale));color:var(--ink-soft);
+}
+/* While the player is up it stands in for the dock, and the run-through's own
+   footer moves clear of it. */
+body.playing .dock{display:none}
+body.playing .runner-foot{padding-bottom:calc(var(--player-h,10rem) + .8rem)}
+@media (max-width:33rem){
+  .pl-b b{font-size:calc(.74rem * var(--scale))}
+  .player-in{padding:.6rem .8rem .75rem}
+}
+
 /* ============ DOCK (always-there navigation) ============ */
 /* Fixed to the bottom so it is thumb-reachable on a phone and never has to be
    hunted for. Labels stay under every icon: glyphs alone are guesswork. */
@@ -743,8 +828,14 @@ footer p{margin-bottom:.7rem}
 /* ============ PHONE ============ */
 @media (max-width:33rem){
   .wrap{padding:0 1rem}
-  .bar-in{padding:.5rem 1rem}
-  .bar-name{font-size:calc(.9rem * var(--scale))}
+  .bar-in{padding:.5rem 1rem;flex-wrap:nowrap}
+  .bar-name{
+    font-size:calc(.9rem * var(--scale));
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
+  }
+  /* The dock already carries Ask, so drop the duplicate rather than let the
+     bar wrap onto a second line. */
+  .bar-ask{display:none}
   h1{font-size:calc(2.05rem * var(--scale))}
   h2{font-size:calc(1.55rem * var(--scale))}
   .card,.ask-wrap,.screen,.call{padding:1.1rem}
@@ -1236,6 +1327,42 @@ input,select,textarea{font-size:max(16px,1rem)}
 </div>
 </div>
 
+<!-- ==================== PLAYER ==================== -->
+<div class="player" id="player" hidden role="region" aria-label="Reading out loud">
+  <div class="player-in">
+    <div class="pl-head">
+      <span class="pl-what" id="plWhat">Reading</span>
+      <button class="pl-x" id="plClose" aria-label="Stop reading and close">Done</button>
+    </div>
+
+    <div class="pl-seek" id="plSeekWrap">
+      <input type="range" id="plSeek" min="0" max="1000" value="0" step="1" aria-label="Position in the recording">
+      <div class="pl-times"><span id="plNow">0:00</span><span id="plLeft">0:00</span></div>
+    </div>
+
+    <div class="pl-row">
+      <button class="pl-b" id="plBack" aria-label="Go back 10 seconds">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6"/></svg>
+        <b>Back 10</b>
+      </button>
+      <button class="pl-b pl-main" id="plPlay" aria-label="Pause">
+        <svg id="plIcon" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4.2" height="16" rx="1.2"/><rect x="13.8" y="4" width="4.2" height="16" rx="1.2"/></svg>
+        <b id="plPlayLab">Pause</b>
+      </button>
+      <button class="pl-b" id="plFwd" aria-label="Go forward 10 seconds">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6"/></svg>
+        <b>Forward 10</b>
+      </button>
+    </div>
+
+    <div class="pl-speed">
+      <button class="pl-s" id="plSlower" aria-label="Slower">Slower</button>
+      <span class="pl-slab" id="plSpeedLab">Normal speed</span>
+      <button class="pl-s" id="plFaster" aria-label="Faster">Faster</button>
+    </div>
+  </div>
+</div>
+
 <!-- ==================== PRINT: the fridge card ==================== -->
 <div id="printCard">
   <h1>Dexcom G7: the short version</h1>
@@ -1417,8 +1544,141 @@ function hush(){
     if (speaking.dataset.label) speaking.textContent = speaking.dataset.label;
   }
   speaking = null;
+  hidePlayer();
 }
 var stopSpeech = hush;
+
+/* ============ PLAYER CONTROLS ============ */
+/* Speed is described in words. "Zero point seven five times" means nothing to
+   most people; "a bit slower" does. */
+var SPEEDS = [0.6, 0.75, 0.85, 1, 1.15, 1.3, 1.5, 1.75, 2];
+var SPEED_LAB = ["Much slower","Slower","A bit slower","Normal speed",
+                 "A bit faster","Faster","Much faster","Very fast","Double speed"];
+var spIdx = (function(){
+  var v = parseFloat(localStorage.getItem("g7speed") || "1");
+  var i = SPEEDS.indexOf(v);
+  return i < 0 ? 3 : i;
+})();
+var SPEED = SPEEDS[spIdx];
+
+var elPlayer = document.getElementById("player");
+var plWhat = document.getElementById("plWhat");
+var plSeek = document.getElementById("plSeek");
+var plSeekWrap = document.getElementById("plSeekWrap");
+var plNow = document.getElementById("plNow");
+var plLeft = document.getElementById("plLeft");
+var plPlay = document.getElementById("plPlay");
+var plPlayLab = document.getElementById("plPlayLab");
+var plIcon = document.getElementById("plIcon");
+var plBack = document.getElementById("plBack");
+var plFwd = document.getElementById("plFwd");
+var plSpeedLab = document.getElementById("plSpeedLab");
+var seeking = false, tick = null;
+
+var ICON_PAUSE = '<rect x="6" y="4" width="4.2" height="16" rx="1.2"/><rect x="13.8" y="4" width="4.2" height="16" rx="1.2"/>';
+var ICON_PLAY  = '<path d="M7 4.5v15l13-7.5z"/>';
+
+function mmss(s){
+  if (!isFinite(s) || s < 0) s = 0;
+  var m = Math.floor(s / 60), r = Math.floor(s % 60);
+  return m + ":" + (r < 10 ? "0" : "") + r;
+}
+function paintSpeed(){
+  SPEED = SPEEDS[spIdx];
+  plSpeedLab.textContent = SPEED_LAB[spIdx] +
+    (SPEED === 1 ? "" : " (" + String(+SPEED.toFixed(2)) + "x)");
+  document.getElementById("plSlower").disabled = spIdx === 0;
+  document.getElementById("plFaster").disabled = spIdx === SPEEDS.length - 1;
+  if (player) player.playbackRate = SPEED;
+  localStorage.setItem("g7speed", String(SPEED));
+}
+function paintProgress(){
+  if (!player || seeking) return;
+  var d = player.duration;
+  if (isFinite(d) && d > 0){
+    plSeek.value = String(Math.round(player.currentTime / d * 1000));
+    plNow.textContent = mmss(player.currentTime);
+    plLeft.textContent = "-" + mmss(d - player.currentTime);
+  }
+}
+function isPaused(){
+  if (player) return player.paused;
+  // The fallback voice can pause and resume, even though it cannot seek.
+  return !!(window.speechSynthesis && window.speechSynthesis.paused);
+}
+function paintPlayState(){
+  var paused = isPaused();
+  plPlayLab.textContent = paused ? "Play" : "Pause";
+  plIcon.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
+  plPlay.setAttribute("aria-label", paused ? "Play" : "Pause");
+}
+function showPlayer(btn, seekable){
+  // Name what is being read, taken from the nearest heading.
+  var card = btn.closest(".card, .msg, .runner-inner, .screen");
+  var h = card && card.querySelector(".card-t, .step-h, .who, h2, h3");
+  plWhat.textContent = "Reading: " + ((h ? h.textContent : "") || "this page").trim();
+
+  plSeekWrap.hidden = !seekable;
+  plSeek.disabled = !seekable;
+  plBack.disabled = !seekable;
+  plFwd.disabled = !seekable;
+  // Speech synthesis cannot seek, nor change rate once it has started.
+  if (seekable){
+    paintSpeed();
+  } else {
+    document.getElementById("plSlower").disabled = true;
+    document.getElementById("plFaster").disabled = true;
+    plSpeedLab.textContent = "Speed set for the next one";
+  }
+
+  elPlayer.hidden = false;
+  document.body.classList.add("playing");
+  document.documentElement.style.setProperty("--player-h", elPlayer.offsetHeight + "px");
+  paintPlayState();
+  paintProgress();
+  if (tick) clearInterval(tick);
+  // The fallback still needs a tick so the Play/Pause label tracks reality.
+  tick = setInterval(function(){ paintProgress(); paintPlayState(); }, 250);
+}
+function hidePlayer(){
+  if (tick){ clearInterval(tick); tick = null; }
+  elPlayer.hidden = true;
+  document.body.classList.remove("playing");
+}
+function nudge(sec){
+  if (!player || !isFinite(player.duration)) return;
+  player.currentTime = Math.max(0, Math.min(player.duration - 0.05, player.currentTime + sec));
+  paintProgress();
+}
+plBack.onclick = function(){ nudge(-10); };
+plFwd.onclick  = function(){ nudge(10); };
+plPlay.onclick = function(){
+  if (player){
+    if (player.paused) player.play(); else player.pause();
+  } else if (window.speechSynthesis){
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    else window.speechSynthesis.pause();
+  }
+  paintPlayState();
+};
+document.getElementById("plSlower").onclick = function(){ if (spIdx > 0){ spIdx--; paintSpeed(); } };
+document.getElementById("plFaster").onclick = function(){ if (spIdx < SPEEDS.length-1){ spIdx++; paintSpeed(); } };
+document.getElementById("plClose").onclick = function(){ hush(); };
+plSeek.addEventListener("input", function(){
+  seeking = true;
+  if (player && isFinite(player.duration)){
+    var t = (+plSeek.value / 1000) * player.duration;
+    plNow.textContent = mmss(t);
+    plLeft.textContent = "-" + mmss(player.duration - t);
+  }
+});
+plSeek.addEventListener("change", function(){
+  if (player && isFinite(player.duration)){
+    player.currentTime = (+plSeek.value / 1000) * player.duration;
+  }
+  seeking = false;
+});
+paintSpeed();
 
 function synth(btn, text, who){
   if (!window.speechSynthesis){
@@ -1437,7 +1697,10 @@ function synth(btn, text, who){
   chunks.forEach(function(c, i){
     var u = new SpeechSynthesisUtterance(c);
     if (v){ u.voice = v; u.lang = v.lang; }
-    u.rate = 0.9; u.pitch = 1;
+    // The chosen speed applies to the fallback voice too, even though it
+    // cannot be changed once an utterance has started.
+    u.rate = Math.max(0.4, Math.min(2.5, 0.9 * SPEED));
+    u.pitch = 1;
     if (i === chunks.length - 1) u.onend = function(){ if (speaking === btn) hush(); };
     window.speechSynthesis.speak(u);
   });
@@ -1454,6 +1717,7 @@ function speak(btn, text, who, clipId){
   if (clipId && CLIPS[clipId]){
     var a = new Audio(AUDIO_BASE + clipId + ".mp3");
     a.preload = "auto";
+    a.playbackRate = SPEED;
     player = a;
     a.onended = function(){ if (speaking === btn) hush(); };
     a.onerror = function(){
@@ -1461,16 +1725,20 @@ function speak(btn, text, who, clipId){
       if (speaking !== btn) return;
       player = null;
       synth(btn, text, who);
+      showPlayer(btn, false);
     };
     var pr = a.play();
     if (pr && pr.catch) pr.catch(function(){
       if (speaking !== btn) return;
       player = null;
       synth(btn, text, who);
+      showPlayer(btn, false);
     });
+    showPlayer(btn, true);
     return;
   }
   synth(btn, text, who);
+  showPlayer(btn, false);
 }
 
 document.addEventListener("click", function(e){
